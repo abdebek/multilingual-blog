@@ -1,0 +1,61 @@
+---
+import { getLangFromUrl, getDirection } from '../utils/i18n';
+import Header from '../components/Header/Header.astro';
+import Footer from '../components/Footer.astro';
+import '@fontsource/cairo';
+import '@fontsource/roboto';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const dir = getDirection(lang);
+---
+
+<!doctype html>
+<html lang={lang} dir={dir}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class={`${dir === 'rtl' ? 'font-cairo' : 'font-roboto'}`}>
+    <Header />
+    <slot />
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --accent: 136, 58, 234;
+    --accent-light: 224, 204, 250;
+    --accent-dark: 49, 10, 101;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Ensure full height of the viewport */
+    display: flex;
+    flex-direction: column; /* Stack header, slot, and footer */
+  }
+
+  body {
+    font-family: system-ui, sans-serif;
+    background: #f6f6f6;
+    background-size: 224px;
+  }
+
+  main {
+    flex: 1; /* Make the main content grow to fill available space */
+  }
+
+  footer {
+    margin-top: auto; /* Push footer to the bottom */
+  }
+</style>

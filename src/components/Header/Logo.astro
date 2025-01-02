@@ -1,0 +1,15 @@
+---
+import { useTranslations } from '../../utils/i18n';
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<a href={`/${lang}`} class="flex items-center gap-2">
+  <img src="/logo.svg" alt={t('site.title')} class="h-8 w-auto" />
+  <span class:list={[
+    'text-xl font-bold text-gray-800',
+    lang === 'ar' ? 'font-cairo' : 'font-roboto'
+  ]}>
+    {t('site.title')}
+  </span>
+</a>

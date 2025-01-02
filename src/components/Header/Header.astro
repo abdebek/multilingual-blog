@@ -1,0 +1,21 @@
+---
+import Logo from './Logo.astro';
+import NavLinks from './NavLinks.astro';
+import LanguageDropdown from './LanguageDropdown.astro';
+import { getLangFromUrl } from '../../utils/i18n';
+
+const lang = getLangFromUrl(Astro.url);
+---
+<header class:list={[
+  'sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-200',
+  'px-4 h-16',
+  lang === 'ar' ? 'font-cairo' : 'font-roboto'
+]}>
+  <div class="max-w-7xl mx-auto h-full flex items-center justify-between gap-4">
+    <Logo lang={lang} />
+    <div class="flex items-center gap-4">
+      <NavLinks lang={lang} />
+      <LanguageDropdown lang={lang} />
+    </div>
+  </div>
+</header>

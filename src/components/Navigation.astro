@@ -1,0 +1,31 @@
+---
+import { getLangFromUrl, useTranslations } from '../utils/i18n';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<nav class="navigation">
+  <a href={`/${lang}`}>{t('nav.home')}</a>
+  <a href={`/${lang}/blog`}>{t('nav.blog')}</a>
+  <a href={`/${lang}/about`}>{t('nav.about')}</a>
+  <a href={`/${lang}/contact`}>{t('nav.contact')}</a>
+</nav>
+
+<style>
+  .navigation {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 2rem;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .navigation a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+  }
+  .navigation a:hover {
+    color: rgb(var(--accent));
+  }
+</style>

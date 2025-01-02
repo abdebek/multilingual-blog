@@ -1,0 +1,56 @@
+---
+import { languages } from '../../i18n/ui';
+
+const { lang } = Astro.props;
+---
+
+<div class="relative inline-block text-left">
+  <button
+    type="button"
+    class="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-gray-100"
+    id="language-button"
+    aria-expanded="false"
+    aria-haspopup="true"
+  >
+    {languages[lang]}
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  <div
+    class="hidden absolute right-2 mt-2 w-36 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none left-0 right-auto"
+    role="menu"
+    id="language-menu"
+  >
+    <div class="py-1" role="none">
+      {Object.entries(languages).map(([code, label]) => (
+        <a
+          href={`/${code}`}
+          class:list={[
+            'block px-4 py-2 text-sm hover:bg-gray-100',
+            code === lang ? 'text-gray-900 font-medium' : 'text-gray-700'
+          ]}
+          role="menuitem"
+        >
+          {label}
+        </a>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  const button = document.getElementById('language-button');
+  const menu = document.getElementById('language-menu');
+
+  const toggleMenu = () => menu?.classList.toggle('hidden');
+  const hideMenu = (e: MouseEvent) => {
+    if (!button?.contains(e.target as Node)) {
+      menu?.classList.add('hidden');
+    }
+  };
+
+  button?.addEventListener('click', toggleMenu);
+  document.addEventListener('click', hideMenu);
+</script>

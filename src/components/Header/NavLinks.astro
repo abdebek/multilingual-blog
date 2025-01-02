@@ -1,0 +1,57 @@
+---
+import { useTranslations } from '../../utils/i18n';
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const links = [
+  { href: 'blog', label: 'nav.blog' },
+  { href: 'about', label: 'nav.about' },
+  { href: 'contact', label: 'nav.contact' },
+];
+---
+<nav class="hidden md:flex items-center gap-6" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+  {links.map(({ href, label }) => (
+    <a 
+      href={`/${lang}/${href}`}
+      class="text-gray-600 hover:text-gray-900 transition-colors"
+    >
+      {t(label)}
+    </a>
+  ))}
+</nav>
+
+<button 
+  class="md:hidden p-2 text-gray-600"
+  id="mobile-menu-button"
+  aria-label="Toggle Menu"
+>
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
+
+<div 
+  class="hidden md:hidden fixed inset-x-0 top-16 bg-white border-b border-gray-200 shadow-lg"
+  id="mobile-menu"
+>
+  <nav class="container mx-auto px-4 py-2" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+    {links.map(({ href, label }) => (
+      <a 
+        href={`/${lang}/${href}`}
+        class="block py-2 text-gray-600 hover:text-gray-900 transition-colors"
+      >
+        {t(label)}
+      </a>
+    ))}
+  </nav>
+</div>
+
+<script>
+  const button = document.getElementById('mobile-menu-button');
+  const menu = document.getElementById('mobile-menu');
+
+  button?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+</script>

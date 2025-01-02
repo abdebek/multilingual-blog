@@ -1,0 +1,33 @@
+---
+import { languages } from '../i18n/ui';
+
+---
+
+<div class="language-picker">
+  {Object.entries(languages).map(([lang, label]) => (
+    <a href={`/${lang}`} class="lang-link">
+      {label}
+    </a>
+  ))}
+</div>
+
+<style>
+  .language-picker {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    justify-content: flex-end;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .lang-link {
+    text-decoration: none;
+    color: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s;
+  }
+  .lang-link:hover {
+    background-color: #f0f0f0;
+  }
+</style>
