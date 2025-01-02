@@ -22,8 +22,16 @@ const dir = getDirection(lang);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script>
+      import { getInitialTheme, setTheme } from '../utils/theme';
+      const theme = getInitialTheme();
+      setTheme(theme);
+    </script>
   </head>
-  <body class={`${dir === 'rtl' ? 'font-cairo' : 'font-roboto'}`}>
+  <body class:list={[
+    `${dir === 'rtl' ? 'font-cairo' : 'font-roboto'}`,
+    'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100'
+  ]}>
     <Header />
     <slot />
     <Footer />

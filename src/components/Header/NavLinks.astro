@@ -14,7 +14,7 @@ const links = [
   {links.map(({ href, label }) => (
     <a 
       href={`/${lang}/${href}`}
-      class="text-gray-600 hover:text-gray-900 transition-colors"
+      class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
     >
       {t(label)}
     </a>
@@ -22,7 +22,7 @@ const links = [
 </nav>
 
 <button 
-  class="md:hidden p-2 text-gray-600"
+  class="md:hidden p-2 text-gray-600 dark:text-gray-300"
   id="mobile-menu-button"
   aria-label="Toggle Menu"
 >
@@ -32,14 +32,14 @@ const links = [
 </button>
 
 <div 
-  class="hidden md:hidden fixed inset-x-0 top-16 bg-white border-b border-gray-200 shadow-lg"
+  class="hidden md:hidden fixed inset-x-0 top-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-lg"
   id="mobile-menu"
 >
   <nav class="container mx-auto px-4 py-2" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
     {links.map(({ href, label }) => (
       <a 
         href={`/${lang}/${href}`}
-        class="block py-2 text-gray-600 hover:text-gray-900 transition-colors"
+        class="block py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
       >
         {t(label)}
       </a>
