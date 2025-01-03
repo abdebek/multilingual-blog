@@ -1,5 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
+import AboutContent from '../../../components/AboutContent.astro';
 import { getLangFromUrl, useTranslations } from '../../../utils/i18n';
 import { languages } from '../../../i18n/ui';
 
@@ -14,6 +15,6 @@ const t = useTranslations(lang);
 <Layout title={t('nav.about')}>
   <main class="container mx-auto px-4 py-8">
     <h1 class="text-4xl font-bold text-center mb-8">{t('nav.about')}</h1>
-    <!-- Add about content here -->
+    <AboutContent lang={lang} />
   </main>
 </Layout>
