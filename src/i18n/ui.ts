@@ -29,7 +29,7 @@ export const ui = {
     "contact.form.name": "Name",
     "contact.form.email": "Email",
     "contact.form.message": "Message",
-    "contact.form.submit": "Send Message",
+    "contact.form.submit": "Submit",
     "theme.toggle": "Toggle dark mode",
     "footer.tagline": "Stay Curious, Stay Inspired.",
     "footer.description":
@@ -65,7 +65,7 @@ export const ui = {
     "contact.form.name": "İsim",
     "contact.form.email": "E-posta",
     "contact.form.message": "Mesaj",
-    "contact.form.submit": "Mesaj Gönder",
+    "contact.form.submit": "Gönder",
     "theme.toggle": "Karanlık modu değiştir",
     "footer.tagline": "Merak Edin, İlham Alın.",
     "footer.description":
@@ -101,7 +101,7 @@ export const ui = {
     "contact.form.name": "الاسم",
     "contact.form.email": "البريد الإلكتروني",
     "contact.form.message": "الرسالة",
-    "contact.form.submit": "إرسال الرسالة",
+    "contact.form.submit": "ارسل",
     "theme.toggle": "تبديل الوضع المظلم",
     "footer.tagline": "ابقَ فضوليًا، وابقَ مُلهَمًا.",
     "footer.description": "نشارك القصص والأفكار والرؤى من جميع أنحاء العالم.",
