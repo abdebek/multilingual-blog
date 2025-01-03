@@ -35,24 +35,24 @@ const footerLinks = [
 const currentYear = new Date().getFullYear();
 ---
 <footer class:list={[
-  'bg-gray-100 border-t border-gray-200',
+  'bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700',
   'px-4 py-8',
   lang === 'ar' ? 'font-cairo text-right' : 'font-roboto text-left'
 ]}>
   <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     <!-- Tagline Section -->
     <div>
-      <h1 class="text-xl font-semibold text-gray-800">{t('footer.tagline')}</h1>
-      <p class="mt-4 text-gray-600">{t('footer.description')}</p>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">{t('footer.tagline')}</h1>
+      <p class="mt-4 text-gray-600 dark:text-gray-300">{t('footer.description')}</p>
     </div>
 
     <!-- Footer Links -->
     <div>
-      <h2 class="text-lg font-medium text-gray-800 mb-4">{t('footer.linksTitle')}</h2>
+      <h2 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">{t('footer.linksTitle')}</h2>
       <ul class="space-y-2">
         {footerLinks.map(({ href, label }) => (
           <li>
-            <a href={href} class="text-gray-600 hover:text-gray-900 transition-colors">
+            <a href={href} class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
               {label}
             </a>
           </li>
@@ -62,21 +62,20 @@ const currentYear = new Date().getFullYear();
 
     <!-- Social Links -->
     <div>
-      <h2 class="text-lg font-medium text-gray-800 mb-4">{t('footer.followUs')}</h2>
+      <h2 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">{t('footer.followUs')}</h2>
       <div class={`flex ${lang === 'ar' ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
-  {socialLinks.map(({ href, path, label }) => (
-    <a href={href} class="text-gray-600 hover:text-gray-800" aria-label={t(label)}>
-      <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-        <path d={path} />
-      </svg>
-    </a>
-  ))}
-</div>
-
-    </div>
+        {socialLinks.map(({ href, path, label }) => (
+          <a href={href} class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100" aria-label={t(label)}>
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d={path} />
+            </svg>
+          </a>
+        ))}
+      </div>
+  </div>
 
   <!-- Footer Bottom -->
-  <div class="mt-8 border-t pt-4 text-sm text-gray-500 text-center col-span-full">
+  <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-4 text-sm text-gray-500 dark:text-gray-400 text-center col-span-full">
     <p>&copy; {currentYear} {t('site.title')}. {t('footer.rightsReserved')}</p>
     <p>{t('footer.madeWithLove')}</p>
   </div>
