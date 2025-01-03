@@ -24,6 +24,7 @@ export const ui = {
     "about.team.sarah": "Editor-in-Chief",
     "about.team.ahmed": "Content Director",
     "contact.title": "Contact Us",
+    "contact.us": "Reach out to us",
     "contact.intro":
       "Have a question or suggestion? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.",
     "contact.form.name": "Name",
@@ -60,6 +61,7 @@ export const ui = {
     "about.team.sarah": "Genel Editör",
     "about.team.ahmed": "İçerik Direktörü",
     "contact.title": "İletişim",
+    "contact.us": "Bizimle iletişime geçin",
     "contact.intro":
       "Bir sorunuz veya öneriniz mi var? Sizden haber almaktan mutluluk duyarız. Aşağıdaki formu doldurun, en kısa sürede size geri döneceğiz.",
     "contact.form.name": "İsim",
@@ -96,6 +98,7 @@ export const ui = {
     "about.team.sarah": "رئيس التحرير",
     "about.team.ahmed": "مدير المحتوى",
     "contact.title": "اتصل بنا",
+    "contact.us": "تواصل معنا",
     "contact.intro":
       "هل لديك سؤال أو اقتراح؟ يسعدنا أن نسمع منك. املأ النموذج أدناه وسنعود إليك في أقرب وقت ممكن.",
     "contact.form.name": "الاسم",
