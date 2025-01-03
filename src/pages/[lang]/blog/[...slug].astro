@@ -8,7 +8,7 @@ export async function getStaticPaths() {
   return posts.map((post) => ({
     params: {
       lang: post.data.lang,
-      slug: post.slug.split('/').pop()
+      slug: post.slug.split('/').pop(),
     },
     props: { post },
   }));
@@ -20,11 +20,11 @@ const lang = getLangFromUrl(Astro.url);
 ---
 
 <Layout title={post.data.title}>
-  <main class="container mx-auto px-4 py-8">
-    <article class="prose lg:prose-xl mx-auto dark:prose-invert">
+  <main class="container mx-5 lg:mx-12 xl:mx-24 px-4 py-8">
+    <article class="prose lg:prose-xl dark:prose-invert">
       <h1>{post.data.title}</h1>
       <time datetime={post.data.pubDate.toISOString()} class="text-gray-500 dark:text-gray-400">
-        {post.data.pubDate.toLocaleDateString()}
+        {post.data.pubDate.toLocaleDateString(lang)}
       </time>
       <Content />
     </article>
