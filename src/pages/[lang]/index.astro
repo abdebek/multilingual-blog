@@ -14,15 +14,6 @@ const t = useTranslations(lang);
 <Layout title={t('site.title')}>
   <main class="container mx-auto px-4 py-8">
     <h1 class="text-4xl font-bold text-center mb-8">{t('site.title')}</h1>
-    <div class="flex justify-center mb-6">
-      <button
-        id="theme-toggle"
-        class="px-4 py-2 bg-gray-200 text-black rounded dark:bg-gray-800 dark:text-white"
-        onclick="toggleTheme()"
-      >
-        {t('theme.toggle')}
-      </button>
-    </div>
     <section class="text-center mb-12">
       <p class="text-lg">
         {t('footer.description')}
@@ -43,13 +34,15 @@ const t = useTranslations(lang);
         <p><strong>Ahmed:</strong> {t('about.team.ahmed')}</p>
       </div>
     </section>
+    
     <section class="mt-12 text-center">
       <h2 class="text-3xl font-semibold mb-6">{t('contact.title')}</h2>
       <p>{t('contact.intro')}</p>
-      <button class="mt-4 px-6 py-2 bg-blue-500 text-white rounded">
+      <a href={`/${lang}/contact`} class="mt-4 inline-block px-6 py-2 bg-blue-500 text-white rounded">
         {t('contact.form.submit')}
-      </button>
+      </a>
     </section>
+
   </main>
   <script>
     function toggleTheme() {

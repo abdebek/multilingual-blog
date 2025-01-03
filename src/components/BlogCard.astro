@@ -3,10 +3,11 @@ interface Props {
   title: string;
   description: string;
   url: string;
-  pubDate: Date;
+  pubDate: string;
 }
 
 const { title, description, url, pubDate } = Astro.props;
+const formattedPubDate = new Date(pubDate);
 ---
 
 <article class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
@@ -15,8 +16,8 @@ const { title, description, url, pubDate } = Astro.props;
     <p class="text-gray-600 dark:text-gray-300 mb-4">    
       {description}
     </p>
-    <time datetime={pubDate.toISOString()} class="text-sm text-gray-500 dark:text-gray-400">
-      {pubDate.toLocaleDateString()}
+    <time datetime={formattedPubDate.toISOString()} class="text-sm text-gray-500 dark:text-gray-400">
+      {formattedPubDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
     </time>
   </a>
 </article>
