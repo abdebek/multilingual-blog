@@ -1,0 +1,42 @@
+backend:
+  name: git-gateway
+  branch: work
+local_backend: true
+media_folder: "public/uploads"
+publish_mode: editorial_workflow
+public_folder: "/uploads"
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    label_singular: "Blog Post"
+    folder: "src/content/blog"
+    create: true
+    path: "{{lang}}/{{slug}}"
+    slug: "{{slug}}"
+    format: "frontmatter"
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+      - label: "Description"
+        name: "description"
+        widget: "text"
+      - label: "Publish Date"
+        name: "pubDate"
+        widget: "date"
+        format: "YYYY-MM-DD"
+      - label: "Language"
+        name: "lang"
+        widget: "select"
+        options:
+          - { label: "English", value: "en" }
+          - { label: "Türkçe", value: "tr" }
+          - { label: "العربية", value: "ar" }
+        default: "en"
+      - label: "Featured Image"
+        name: "image"
+        widget: "image"
+        required: false
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
