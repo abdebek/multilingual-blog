@@ -67,10 +67,28 @@ const metaDescription = description || t('footer.description');
     <meta property="twitter:description" content={metaDescription} />
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-    <script>
-      import { getInitialTheme, setTheme } from '../utils/theme';
-      const theme = getInitialTheme();
-      setTheme(theme);
+    <script is:inline>
+      const getInitialTheme = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      };
+
+      const setTheme = (theme) => {
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.style.colorScheme = 'dark';
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.style.colorScheme = 'light';
+        }
+      };
+
+      setTheme(getInitialTheme());
     </script>
   </head>
   <body class:list={[
