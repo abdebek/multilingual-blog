@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
-import { languages, ui, defaultLang } from '../../i18n/ui';
+import { languages, defaultLang } from '../../i18n/ui';
+import { ui } from '../../i18n/utils';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map((lang) => ({ params: { lang } }));
