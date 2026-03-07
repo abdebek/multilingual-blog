@@ -38,21 +38,24 @@ A starter for building blogs in multiple languages. Built with Astro 5 and Tailw
 - **Search**: To test search locally, run `npm run build` followed by `npm run preview`.
 - **CMS**: Uses Decap CMS with Netlify Identity. To remove it, delete the `public/admin` folder, `src/pages/admin/index.astro`, and the script in `src/layouts/Layout.astro`.
 
-## Deployment to Netlify
+## Deployment to Netlify (CMS & GitHub Integration)
 
-This template is optimized for Netlify. Follow these steps for a complete setup:
+This template uses a **Headless CMS** workflow. When you save a post in the admin panel, it is committed directly to your GitHub repository, which then triggers a new site build.
 
-1. **Push to GitHub**: Push your code to a GitHub repository.
-2. **Create a Netlify Site**: Connect your repository to Netlify. The `netlify.toml` file will automatically configure the build settings.
-3. **Enable Netlify Identity**:
-   - Go to your site dashboard on Netlify.
-   - Navigate to **Site configuration** > **Identity**.
+Follow these steps for a complete setup:
+
+1. **Push to GitHub**: Push your code to your own GitHub repository.
+2. **Connect to Netlify**: Create a new site from Git on Netlify and select your repo.
+3. **Enable Authentication (Identity)**:
+   - In the Netlify dashboard, go to **Site configuration** > **Identity**.
    - Click **Enable Identity**.
-   - Under **Registration preferences**, select **Invite only** (recommended for private blogs).
-   - Under **Services** > **Git Gateway**, click **Enable Git Gateway**. This allows Decap CMS to save posts directly to your GitHub repo.
-4. **Access the CMS**:
-   - Once deployed, visit `your-site-url.com/admin/`.
-   - You can now log in via the Netlify Identity widget and start writing!
+   - Under **Registration preferences**, change to **Invite only** to secure your admin panel.
+4. **Enable GitHub Access (Git Gateway)**:
+   - In the same Identity settings, scroll down to **Services** > **Git Gateway**.
+   - Click **Enable Git Gateway**. This authorizes the CMS to commit changes to your GitHub repository on your behalf.
+5. **Access the Admin Panel**:
+   - Visit `your-site-url.com/admin/`.
+   - Log in using your email (you may need to "Invite" yourself from the Identity tab first).
 
 ## Form Handling
 
