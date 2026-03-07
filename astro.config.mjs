@@ -7,6 +7,9 @@ export default defineConfig({
   site: 'https://multilingual-blog.example.com',
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      cssMinify: 'lightningcss'
+    }
   },
   image: {
     domains: ['picsum.photos', 'images.unsplash.com'],
