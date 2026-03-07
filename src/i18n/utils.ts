@@ -1,4 +1,10 @@
-import { languages, defaultLang } from './ui';
-import uiData from './ui.json';
+import { languages } from './ui';
+import en from './locales/en.json';
+import tr from './locales/tr.json';
+import ar from './locales/ar.json';
 
-export const ui = uiData as Record<keyof typeof languages, Record<string, string>>;
+export const ui: Record<keyof typeof languages, Record<string, string>> = {
+  en,
+  tr,
+  ar,
+};
