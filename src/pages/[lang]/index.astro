@@ -28,11 +28,11 @@ const latestPosts = posts
           {t('site.title')}
         </h1>
         <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed mb-10 max-w-2xl mx-auto">
-          {t('footer.description')}
+          {t('site.description')}
         </p>
         <div class="flex items-center justify-center gap-4">
           <a href={`/${lang}/blog`} class="px-8 py-3.5 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-medium transition-all shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 hover:-translate-y-0.5">
-            Read Our Blog
+            {t('home.hero.cta.blog')}
           </a>
           <a href={`/${lang}/about`} class="px-8 py-3.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-700 rounded-full font-medium transition-all hover:bg-gray-50 dark:hover:bg-gray-700">
             {t('nav.about')}
@@ -48,11 +48,11 @@ const latestPosts = posts
         <section class="mb-24">
           <div class="flex justify-between items-end mb-10">
             <div>
-              <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">Latest Posts</h2>
-              <p class="text-gray-500 dark:text-gray-400">Discover our most recent stories and updates.</p>
+              <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">{t('home.latest.title')}</h2>
+              <p class="text-gray-500 dark:text-gray-400">{t('home.latest.desc')}</p>
             </div>
             <a href={`/${lang}/blog`} class="hidden md:flex items-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium transition-colors">
-              View all
+              {t('home.latest.viewAll')}
               <svg class="w-5 h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -72,7 +72,7 @@ const latestPosts = posts
           </div>
           <div class="mt-10 md:hidden flex justify-center">
             <a href={`/${lang}/blog`} class="px-6 py-3 border border-gray-200 dark:border-gray-700 rounded-full text-gray-600 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors w-full text-center">
-              View all posts
+              {t('home.latest.viewAll')}
             </a>
           </div>
         </section>
@@ -102,11 +102,11 @@ const latestPosts = posts
           <ul class="space-y-3 text-gray-600 dark:text-gray-400">
             <li class="flex items-center">
               <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-              <strong class="text-gray-900 dark:text-gray-200 mr-2">Sarah:</strong> {t('about.team.sarah')}
+              <strong class="text-gray-900 dark:text-gray-200 mr-2">Sarah Johnson:</strong> {t('about.team.sarah')}
             </li>
             <li class="flex items-center">
               <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-              <strong class="text-gray-900 dark:text-gray-200 mr-2">Ahmed:</strong> {t('about.team.ahmed')}
+              <strong class="text-gray-900 dark:text-gray-200 mr-2">Ahmed Hassan:</strong> {t('about.team.ahmed')}
             </li>
           </ul>
         </div>

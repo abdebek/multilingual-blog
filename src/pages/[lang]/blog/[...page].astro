@@ -1,0 +1,160 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../../layouts/Layout.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import { getLangFromUrl, useTranslations } from '../../../utils/i18n';
+import { languages } from '../../../i18n/ui';
+
+export async function getStaticPaths({ paginate }: any) {
+  const allPosts = await getCollection('blog');
+  
+  return Object.keys(languages).flatMap((lang) => {
+    const filteredPosts = allPosts
+      .filter((post) => post.data.lang === lang)
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+      
+    return paginate(filteredPosts, {
+      params: { lang },
+      pageSize: 6,
+    });
+  });
+}
+
+const { page } = Astro.props;
+const { lang } = Astro.params;
+const t = useTranslations(lang as any);
+
+const posts = page.data;
+const featuredPost = page.currentPage === 1 ? posts[0] : null;
+const otherPosts = page.currentPage === 1 ? posts.slice(1) : posts;
+---
+
+<Layout title={t('nav.blog')}>
+  <main class="container mx-auto px-4 py-12 w-full max-w-7xl">
+    <div class="mb-16">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4">
+        {t('blog.title')}
+      </h1>
+      <p class="text-lg text-gray-500 dark:text-gray-400 max-w-2xl">
+        {t('blog.description')}
+      </p>
+    </div>
+
+    {posts.length > 0 ? (
+      <div class="space-y-20">
+        <!-- Featured Post (Only on Page 1) -->
+        {featuredPost && (
+          <section>
+            <a href={`/${lang}/blog/${featuredPost.slug.split('/').pop()}`} class="group relative block overflow-hidden rounded-3xl bg-white dark:bg-gray-800 shadow-sm transition-all duration-500 hover:shadow-2xl border border-gray-100 dark:border-gray-700">
+              <div class="grid grid-cols-1 lg:grid-cols-2">
+                <div class="aspect-[16/10] lg:aspect-auto overflow-hidden relative">
+                  {featuredPost.data.image ? (
+                    <Image 
+                      src={featuredPost.data.image} 
+                      alt={featuredPost.data.title}
+                      width={1200}
+                      height={800}
+                      class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div class="h-full w-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
+                       <svg class="w-24 h-24 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                       </svg>
+                    </div>
+                  )}
+                </div>
+                <div class="p-8 md:p-12 lg:p-12 flex flex-col justify-center">
+                  <div class="flex items-center gap-3 mb-6">
+                    <span class="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-xs font-bold uppercase tracking-wider rounded-full">
+                      {t('blog.latest')}
+                    </span>
+                    <span class="text-gray-400 dark:text-gray-500 text-sm">•</span>
+                    <time datetime={featuredPost.data.pubDate.toISOString()} class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                      {featuredPost.data.pubDate.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </time>
+                  </div>
+                  <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
+                    {featuredPost.data.title}
+                  </h2>
+                  <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed line-clamp-3">
+                    {featuredPost.data.description}
+                  </p>
+                  <div class="flex items-center text-primary-600 dark:text-primary-400 font-bold">
+                    {t('blog.readFull')}
+                    <svg class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </section>
+        )}
+
+        <!-- All Posts Grid -->
+        <section>
+          <div class="flex items-center justify-between mb-12">
+            <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              {page.currentPage === 1 ? t('blog.more') : `${t('blog.title')} - ${t('pagination.page')} ${page.currentPage}`}
+            </h2>
+            <div class="h-px flex-1 bg-gray-100 dark:bg-gray-800 ml-8 hidden sm:block"></div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {otherPosts.map((post) => (
+              <BlogCard
+                title={post.data.title}
+                description={post.data.description}
+                url={`/${lang}/blog/${post.slug.split('/').pop()}`}
+                pubDate={post.data.pubDate}
+                image={post.data.image}
+                lang={lang || 'en'}
+              />
+            ))}
+          </div>
+        </section>
+
+        <!-- Pagination Navigation -->
+        {(page.url.prev || page.url.next) && (
+          <nav class="flex justify-center items-center gap-4 mt-16 pt-12 border-t border-gray-100 dark:border-gray-800">
+            {page.url.prev ? (
+              <a href={page.url.prev} class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-full font-bold border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l-7 7m0 0l7 7m-7-7h18" /></svg>
+                {t('pagination.previous')}
+              </a>
+            ) : (
+              <span class="inline-flex items-center gap-2 px-6 py-3 bg-gray-50 dark:bg-gray-900 text-gray-300 dark:text-gray-600 rounded-full font-bold border border-gray-100 dark:border-gray-800 cursor-not-allowed">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l-7 7m0 0l7 7m-7-7h18" /></svg>
+                {t('pagination.previous')}
+              </span>
+            )}
+            
+            <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
+              {t('pagination.page')} <span class="text-gray-900 dark:text-white">{page.currentPage}</span> {t('pagination.of')} {page.lastPage}
+            </div>
+
+            {page.url.next ? (
+              <a href={page.url.next} class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-full font-bold border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm">
+                {t('pagination.next')}
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l7-7m0 0l-7-7m7 7H3" /></svg>
+              </a>
+            ) : (
+              <span class="inline-flex items-center gap-2 px-6 py-3 bg-gray-50 dark:bg-gray-900 text-gray-300 dark:text-gray-600 rounded-full font-bold border border-gray-100 dark:border-gray-800 cursor-not-allowed">
+                {t('pagination.next')}
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l7-7m0 0l-7-7m7 7H3" /></svg>
+              </span>
+            )}
+          </nav>
+        )}
+      </div>
+    ) : (
+      <div class="text-center py-24 bg-gray-50 dark:bg-gray-800/50 rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+        <p class="text-xl text-gray-500 dark:text-gray-400 font-medium">
+          {t('blog.noPosts')}
+        </p>
+      </div>
+    )}
+  </main>
+</Layout>

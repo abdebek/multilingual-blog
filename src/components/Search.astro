@@ -63,9 +63,9 @@ const isDev = import.meta.env.DEV;
             <div class="inline-flex p-3 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 mb-4">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             </div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Search unavailable in Dev Mode</h3>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('search.devMode')}</h3>
             <p class="text-gray-500 dark:text-gray-400 text-sm max-w-sm mx-auto leading-relaxed">
-              Pagefind only works after a production build. Run <code class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded font-mono">npm run build</code> and <code class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded font-mono">npm run preview</code> to test search locally.
+              {t('search.devModeDesc')}
             </p>
           </div>
         )}
@@ -73,11 +73,11 @@ const isDev = import.meta.env.DEV;
 
       <div class="px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center text-[11px] text-gray-400 font-medium">
         <div class="flex items-center gap-4">
-          <span class="flex items-center gap-1.5"><kbd class="px-1 py-0.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded shadow-sm">↵</kbd> to select</span>
-          <span class="flex items-center gap-1.5"><kbd class="px-1 py-0.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded shadow-sm">↑↓</kbd> to navigate</span>
+          <span class="flex items-center gap-1.5"><kbd class="px-1 py-0.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded shadow-sm">↵</kbd> {t('search.select')}</span>
+          <span class="flex items-center gap-1.5"><kbd class="px-1 py-0.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded shadow-sm">↑↓</kbd> {t('search.navigate')}</span>
         </div>
         <div class="flex items-center gap-1">
-          Search powered by <span class="text-primary-500 font-bold">Pagefind</span>
+          {t('search.powered')} <span class="text-primary-500 font-bold">Pagefind</span>
         </div>
       </div>
     </div>

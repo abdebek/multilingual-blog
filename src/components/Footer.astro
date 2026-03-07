@@ -78,9 +78,8 @@ const currentYear = new Date().getFullYear();
   <!-- Footer Bottom -->
   <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-500">
     <p>&copy; {currentYear} {t('site.title')}. {t('footer.rightsReserved')}</p>
-    <p class="mt-2 md:mt-0 flex items-center">
-      {t('footer.madeWithLove')}
-      <span class="text-red-500 mx-1">❤</span>
-    </p>
+    <blockquote class="mt-4 md:mt-0 italic font-serif border-l-2 md:border-l-0 md:border-x-0 border-primary-500 pl-4 md:pl-0">
+      &ldquo;{t('footer.quote')}&rdquo;
+    </blockquote>
   </div>
 </footer>

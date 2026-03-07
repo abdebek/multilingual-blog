@@ -7,6 +7,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  image: {
+    domains: ['picsum.photos', 'images.unsplash.com'],
+  },
   integrations: [
     pagefind()
   ],

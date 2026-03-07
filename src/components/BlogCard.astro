@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { useTranslations } from '../utils/i18n';
 
 interface Props {
   title: string;
@@ -12,12 +13,13 @@ interface Props {
 
 const { title, description, url, pubDate, image, lang } = Astro.props;
 const formattedPubDate = new Date(pubDate);
+const t = useTranslations(lang as any);
 ---
 
-<article class="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:border-primary-500/30 transition-all duration-300 flex flex-col h-full hover:-translate-y-1">
+<article class="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:border-primary-500/30 transition-all duration-300 flex flex-col h-full hover:-translate-y-1 text-left">
   <a href={url} class="flex flex-col h-full">
     {image ? (
-      <div class="aspect-[16/10] w-full overflow-hidden bg-gray-100 dark:bg-gray-700 relative">
+      <div class="aspect-[16/10] w-full overflow-hidden bg-gray-100 dark:bg-gray-700 relative text-left">
         <Image 
           src={image} 
           alt={title} 
@@ -38,13 +40,13 @@ const formattedPubDate = new Date(pubDate);
       <time datetime={formattedPubDate.toISOString()} class="text-xs font-semibold tracking-wide text-primary-600 dark:text-primary-400 uppercase mb-3 block">
         {formattedPubDate.toLocaleDateString(lang, { year: 'numeric', month: 'short', day: 'numeric' })}
       </time>
-      <h2 class="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">{title}</h2>
+      <h2 class="text-xl font-bold mb-3 text-gray-900 dark:text-white line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">{title}</h2>
       <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 flex-grow text-sm leading-relaxed">    
         {description}
       </p>
-      <div class="mt-auto pt-4 flex items-center text-sm font-medium text-primary-600 dark:text-primary-400 group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors">
-        Read Article
-        <svg class="ml-1 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="mt-auto pt-4 flex items-center text-sm font-bold text-primary-600 dark:text-primary-400 group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors">
+        {t('blog.readArticle')}
+        <svg class={`ml-1 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 ${lang === 'ar' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
       </div>
