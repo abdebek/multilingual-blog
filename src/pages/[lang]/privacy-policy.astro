@@ -1,0 +1,47 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getLangFromUrl, useTranslations } from '../../../utils/i18n';
+import { languages } from '../../../i18n/ui';
+
+export function getStaticPaths() {
+  return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout title={t('footer.privacyPolicy')}>
+  <main class="container mx-auto px-4 py-16 md:py-24 max-w-4xl">
+    <article class="prose prose-lg dark:prose-invert prose-primary mx-auto">
+      <h1>{t('footer.privacyPolicy')}</h1>
+      <p class="lead">
+        Your privacy is important to us. This page explains how we handle your data.
+      </p>
+      
+      <h2>1. Data Collection</h2>
+      <p>
+        We do not collect any personal information from our visitors unless you voluntarily provide it via our contact form.
+      </p>
+
+      <h2>2. Analytics</h2>
+      <p>
+        We may use privacy-friendly analytics to understand how our site is being used and to improve the user experience.
+      </p>
+
+      <h2>3. Cookies</h2>
+      <p>
+        This site uses essential cookies to remember your theme preference (Light/Dark mode) and your selected language.
+      </p>
+
+      <h2>4. Contact Form</h2>
+      <p>
+        Information submitted via the contact form is processed by Netlify Forms and is used solely to respond to your inquiries.
+      </p>
+
+      <div class="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 italic text-sm">
+        Note: This is a template privacy policy. Please update this content to match your specific requirements and local laws.
+      </div>
+    </article>
+  </main>
+</Layout>
