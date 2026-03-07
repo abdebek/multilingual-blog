@@ -1,7 +1,7 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
-import { getLangFromUrl, useTranslations } from '../../../utils/i18n';
-import { languages } from '../../../i18n/ui';
+import Layout from '../../layouts/Layout.astro';
+import { getLangFromUrl, useTranslations } from '../../utils/i18n';
+import { languages } from '../../i18n/ui';
 
 export function getStaticPaths() {
   return Object.keys(languages).map((lang) => ({ params: { lang } }));
@@ -39,7 +39,7 @@ const t = useTranslations(lang);
         Information submitted via the contact form is processed by Netlify Forms and is used solely to respond to your inquiries.
       </p>
 
-      <div class="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 italic text-sm">
+      <div class="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 italic text-sm text-center">
         Note: This is a template privacy policy. Please update this content to match your specific requirements and local laws.
       </div>
     </article>
