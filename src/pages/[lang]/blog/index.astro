@@ -33,6 +33,8 @@ const sortedPosts = posts.sort(
               description={post.data.description}
               url={`/${lang}/blog/${post.slug.split('/').pop()}`}
               pubDate={post.data.pubDate}
+              image={post.data.image}
+              lang={lang}
             />
           ))
         }

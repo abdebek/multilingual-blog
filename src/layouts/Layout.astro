@@ -30,8 +30,28 @@ const metaDescription = description || t('footer.description');
     <title>{title} | {t('site.title')}</title>
     <meta name="description" content={metaDescription} />
     
-    <!-- Netlify Identity Widget -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- Netlify Identity Widget (Lazy Loaded) -->
+    <script>
+      // Only load the widget if we are on the admin page or have an identity token in the URL
+      if (window.location.hash.includes('_token=') || window.location.pathname.includes('/admin')) {
+        const script = document.createElement('script');
+        script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+        script.defer = true;
+        document.head.appendChild(script);
+
+        script.onload = () => {
+          if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", (user) => {
+              if (!user && window.location.hash.includes('_token=')) {
+                window.netlifyIdentity.on("login", () => {
+                  document.location.href = "/admin/";
+                });
+              }
+            });
+          }
+        };
+      }
+    </script>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -51,17 +71,6 @@ const metaDescription = description || t('footer.description');
       import { getInitialTheme, setTheme } from '../utils/theme';
       const theme = getInitialTheme();
       setTheme(theme);
-
-      // Handle Netlify Identity redirect
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
     </script>
   </head>
   <body class:list={[

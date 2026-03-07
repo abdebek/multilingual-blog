@@ -1,54 +1,45 @@
-# Astro Starter Kit: Basics
+# Multilingual Blog Template (Astro)
 
-```sh
-npm create astro@latest -- --template basics
-```
+A high-performance, SEO-optimized, and feature-rich multilingual blog starter built with **Astro**, **Tailwind CSS**, and **Decap CMS**.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## Features
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- **Multilingual Support**: English, Turkish, and Arabic (RTL) out of the box.
+- **Search**: Fast, client-side multilingual search using **Pagefind**.
+- **RSS & Sitemaps**: Localized RSS feeds and SEO-ready metadata.
+- **Dark Mode**: Built-in theme toggling.
+- **CMS**: Pre-configured **Decap CMS** for easy content editing.
+- **Performance**: Zero-weight layout (Netlify Identity loads only when needed).
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## Getting Started
 
-## 🚀 Project Structure
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-Inside of your Astro project, you'll see the following folders and files:
+2. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+3. **Open the CMS locally**:
+   In a separate terminal, run the proxy server:
+   ```bash
+   npm run cms-proxy
+   ```
+   Then visit `http://localhost:4321/admin/`.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## CMS Configuration
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+This template uses **Decap CMS** with **Netlify Identity**. 
 
-Any static assets, like images, can be placed in the `public/` directory.
+- **To change languages**: Update `src/i18n/ui.ts` and `public/admin/config.yml`.
+- **To remove the CMS**: Simply delete the `public/admin` folder and the CMS script block in `src/layouts/Layout.astro`.
 
-## 🧞 Commands
+## Deployment
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+This template is optimized for **Netlify**:
+1. Connect your repo to Netlify.
+2. Enable **Netlify Identity** in the Netlify dashboard.
+3. Add the **Git Gateway** service in Identity settings.

@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
 import { getLangFromUrl, useTranslations } from '../../utils/i18n';
 import { languages } from '../../i18n/ui';
 
@@ -9,6 +11,11 @@ export function getStaticPaths() {
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const posts = await getCollection('blog', ({ data }) => data.lang === lang);
+const latestPosts = posts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
 
 <Layout title={t('site.title')}>
@@ -19,7 +26,31 @@ const t = useTranslations(lang);
         {t('footer.description')}
       </p>
     </section>
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    {latestPosts.length > 0 && (
+      <section class="mb-16">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-3xl font-bold">{t('nav.blog')}</h2>
+          <a href={`/${lang}/blog`} class="text-blue-500 hover:underline">
+            {t('nav.blog')} &rarr;
+          </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {latestPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              url={`/${lang}/blog/${post.slug.split('/').pop()}`}
+              pubDate={post.data.pubDate}
+              image={post.data.image}
+              lang={lang}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
       <div class="p-6 bg-gray-100 rounded shadow dark:bg-gray-700">
         <h2 class="text-2xl font-semibold mb-4">{t('about.story.title')}</h2>
         <p>{t('about.story.content')}</p>
