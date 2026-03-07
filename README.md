@@ -1,45 +1,52 @@
-# Multilingual Blog Template (Astro)
+# Multilingual Blog Template
 
-A high-performance, SEO-optimized, and feature-rich multilingual blog starter built with **Astro**, **Tailwind CSS**, and **Decap CMS**.
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/abdebek/multilingual-blog)
+
+A starter for building blogs in multiple languages. Built with Astro 5 and Tailwind CSS 4.
 
 ## Features
 
-- **Multilingual Support**: English, Turkish, and Arabic (RTL) out of the box.
-- **Search**: Fast, client-side multilingual search using **Pagefind**.
-- **RSS & Sitemaps**: Localized RSS feeds and SEO-ready metadata.
-- **Dark Mode**: Built-in theme toggling.
-- **CMS**: Pre-configured **Decap CMS** for easy content editing.
-- **Performance**: Zero-weight layout (Netlify Identity loads only when needed).
+- **Languages**: English, Turkish, and Arabic (RTL) support.
+- **Search**: Client-side search using Pagefind. (Requires build to work).
+- **RSS**: Localized feeds for each language.
+- **CMS**: Decap CMS pre-configured for local and production use.
+- **Design**: Clean interface using nature-themed placeholders instead of human photos.
+- **Dark Mode**: Support for light and dark themes.
 
 ## Getting Started
 
-1. **Install dependencies**:
+1. **Install**:
    ```bash
    npm install
    ```
 
-2. **Run the development server**:
+2. **Develop**:
    ```bash
    npm run dev
    ```
 
-3. **Open the CMS locally**:
-   In a separate terminal, run the proxy server:
+3. **Use the CMS locally**:
+   Start the proxy server in a separate terminal:
    ```bash
    npm run cms-proxy
    ```
    Then visit `http://localhost:4321/admin/`.
 
-## CMS Configuration
+## Configuration
 
-This template uses **Decap CMS** with **Netlify Identity**. 
-
-- **To change languages**: Update `src/i18n/ui.ts` and `public/admin/config.yml`.
-- **To remove the CMS**: Simply delete the `public/admin` folder and the CMS script block in `src/layouts/Layout.astro`.
+- **Translations**: Manage all UI text in `src/i18n/ui.ts`.
+- **Search**: To test search locally, run:
+  ```bash
+  npm run build
+  ```
+  Followed by:
+  ```bash
+  npm run preview
+  ```
+- **CMS**: Uses Decap CMS with Netlify Identity. To remove it, delete the `public/admin` folder, `src/pages/admin/index.astro`, and the script in `src/layouts/Layout.astro`.
 
 ## Deployment
 
-This template is optimized for **Netlify**:
-1. Connect your repo to Netlify.
-2. Enable **Netlify Identity** in the Netlify dashboard.
-3. Add the **Git Gateway** service in Identity settings.
+1. Connect your repository to Netlify.
+2. Enable Netlify Identity in your site settings.
+3. Enable Git Gateway under Identity > Services.
