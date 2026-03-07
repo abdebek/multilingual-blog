@@ -50,6 +50,7 @@ Follow these steps for a complete setup:
    - In the Netlify dashboard, go to **Site configuration** > **Identity**.
    - Click **Enable Identity**.
    - Under **Registration preferences**, change to **Invite only** to secure your admin panel.
+   - (Optional) Under **External providers**, click **Add provider** and select **Google** to enable Gmail login.
 4. **Enable GitHub Access (Git Gateway)**:
    - In the same Identity settings, scroll down to **Services** > **Git Gateway**.
    - Click **Enable Git Gateway**. This authorizes the CMS to commit changes to your GitHub repository on your behalf.
