@@ -29,6 +29,7 @@ const metaDescription = description || t('footer.description');
     
     <title>{title} | {t('site.title')}</title>
     <meta name="description" content={metaDescription} />
+    <link rel="canonical" href={Astro.url} />
     
     <!-- Netlify Identity Widget (Lazy Loaded) -->
     <script>
@@ -96,10 +97,13 @@ const metaDescription = description || t('footer.description');
     `${dir === 'rtl' ? 'font-cairo' : 'font-sans antialiased'}`,
     'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300'
   ]}>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-[200] focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg">
+      {t('nav.skip')}
+    </a>
     <div data-pagefind-ignore class="relative z-[100]">
       <Header />
     </div>
-    <main class="flex-grow w-full" data-pagefind-body data-pagefind-filter={`lang:${lang}`}>
+    <main id="main-content" class="flex-grow w-full" data-pagefind-body data-pagefind-filter={`lang:${lang}`}>
       <slot />
     </main>
     <div data-pagefind-ignore>

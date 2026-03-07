@@ -2,30 +2,30 @@
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/abdebek/multilingual-blog)
 
-A starter for building blogs in multiple languages. Built with Astro 5 and Tailwind CSS 4.
+A starter for building blogs in multiple languages. Manage your content without using a code editor. Built with Astro 5 and Tailwind CSS 4.
 
-## Features
+## Key Features
 
-- **Languages**: English, Turkish, and Arabic (RTL) support.
-- **Search**: Client-side search using Pagefind. (Requires build to work).
-- **RSS**: Localized feeds for each language.
-- **CMS**: Decap CMS pre-configured for local and production use.
-- **Design**: Clean interface using nature-themed placeholders instead of human photos.
-- **Dark Mode**: Support for light and dark themes.
+- **No Code Editor Required**: Write and publish posts using the integrated UI. Your content is automatically committed to your GitHub repository as Markdown.
+- **Easy Setup and Hosting**: Connect your GitHub repository to Netlify for automated builds, free global hosting, and built-in form handling.
+- **Integrated CMS**: Pre-configured Decap CMS provides a professional interface for writing posts and managing images.
+- **Multilingual**: Support for English, Turkish, and Arabic (RTL) included. No hardcoded text in the UI.
+- **Search**: Client-side search using Pagefind. (Works after the site is built).
+- **Clean Design**: A professional interface using nature-themed placeholders instead of human photos.
 
 ## Getting Started
 
-1. **Install**:
+1. **Install dependencies**:
    ```bash
    npm install
    ```
 
-2. **Develop**:
+2. **Local development**:
    ```bash
    npm run dev
    ```
 
-3. **Use the CMS locally**:
+3. **Local CMS access**:
    Start the proxy server in a separate terminal:
    ```bash
    npm run cms-proxy
@@ -34,30 +34,20 @@ A starter for building blogs in multiple languages. Built with Astro 5 and Tailw
 
 ## Configuration
 
-- **Translations**: Manage all UI text in `src/i18n/ui.ts`.
-- **Search**: To test search locally, run `npm run build` followed by `npm run preview`.
-- **CMS**: Uses Decap CMS with Netlify Identity. To remove it, delete the `public/admin` folder, `src/pages/admin/index.astro`, and the script in `src/layouts/Layout.astro`.
+- **Translations**: UI text is managed in `src/i18n/ui.ts`.
+- **Search**: To test search on your machine, run `npm run build` followed by `npm run preview`.
+- **CMS Removal**: To remove the CMS, delete the `public/admin` folder, `src/pages/admin/index.astro`, and the script in `src/layouts/Layout.astro`.
 
-## Deployment to Netlify (CMS & GitHub Integration)
+## Deployment to Netlify
 
-This template uses a **Headless CMS** workflow. When you save a post in the admin panel, it is committed directly to your GitHub repository, which then triggers a new site build.
+This template uses a workflow where saving a post in the admin panel commits it to your GitHub repository, which triggers a new build of your site.
 
-Follow these steps for a complete setup:
+1. **Push your code** to a GitHub repository.
+2. **Create a new site** on Netlify and connect it to your repository.
+3. **Enable Identity**: Dashboard > Site configuration > Identity > Enable Identity. (We recommend setting registration to "Invite only").
+4. **Enable Git Gateway**: Identity > Services > Git Gateway > Enable Git Gateway.
+5. **Add Google Login** (Optional): Identity > External providers > Add provider > Google.
 
-1. **Push to GitHub**: Push your code to your own GitHub repository.
-2. **Connect to Netlify**: Create a new site from Git on Netlify and select your repo.
-3. **Enable Authentication (Identity)**:
-   - In the Netlify dashboard, go to **Site configuration** > **Identity**.
-   - Click **Enable Identity**.
-   - Under **Registration preferences**, change to **Invite only** to secure your admin panel.
-   - (Optional) Under **External providers**, click **Add provider** and select **Google** to enable Gmail login.
-4. **Enable GitHub Access (Git Gateway)**:
-   - In the same Identity settings, scroll down to **Services** > **Git Gateway**.
-   - Click **Enable Git Gateway**. This authorizes the CMS to commit changes to your GitHub repository on your behalf.
-5. **Access the Admin Panel**:
-   - Visit `your-site-url.com/admin/`.
-   - Log in using your email (you may need to "Invite" yourself from the Identity tab first).
+## Contact Form
 
-## Form Handling
-
-The contact form uses **Netlify Forms**. Submissions will automatically appear in your Netlify dashboard under the **Forms** tab.
+The contact form uses **Netlify Forms**. Submissions are received automatically in your Netlify dashboard under the **Forms** tab.

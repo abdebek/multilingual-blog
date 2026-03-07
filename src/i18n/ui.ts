@@ -75,6 +75,7 @@ export const ui = {
     "pagination.next": "Next",
     "pagination.page": "Page",
     "pagination.of": "of",
+    "nav.skip": "Skip to content",
     "home.hero.cta.blog": "Read Our Blog",
     "home.latest.title": "Latest Posts",
     "home.latest.desc": "Discover our most recent stories and updates.",
@@ -82,6 +83,7 @@ export const ui = {
     "contact.success.title": "Message Sent!",
     "contact.success.message": "Thank you for reaching out. We have received your message and will get back to you soon.",
     "contact.success.back": "Back to Home",
+    "contact.error": "There was an error sending your message. Please try again.",
   },
   tr: {
     "nav.home": "Ana Sayfa",
@@ -151,6 +153,7 @@ export const ui = {
     "pagination.next": "Sonraki",
     "pagination.page": "Sayfa",
     "pagination.of": "/",
+    "nav.skip": "İçeriğe atla",
     "home.hero.cta.blog": "Blogumuzu Okuyun",
     "home.latest.title": "Son Yazılar",
     "home.latest.desc": "En son hikayelerimizi ve güncellemelerimizi keşfedin.",
@@ -158,6 +161,7 @@ export const ui = {
     "contact.success.title": "Mesaj Gönderildi!",
     "contact.success.message": "Bizimle iletişime geçtiğiniz için teşekkürler. Mesajınızı aldık ve en kısa sürede size geri döneceğiz.",
     "contact.success.back": "Ana Sayfaya Dön",
+    "contact.error": "Mesajınız gönderilirken bir hata oluştu. Lütfen tekrar deneyin.",
   },
   ar: {
     "nav.home": "الرئيسية",
@@ -226,6 +230,7 @@ export const ui = {
     "pagination.next": "التالي",
     "pagination.page": "صفحة",
     "pagination.of": "من",
+    "nav.skip": "تخطي إلى المحتوى",
     "home.hero.cta.blog": "اقرأ مدونتنا",
     "home.latest.title": "أحدث المقالات",
     "home.latest.desc": "اكتشف أحدث قصصنا وتحديثاتنا.",
@@ -233,5 +238,6 @@ export const ui = {
     "contact.success.title": "تم إرسال الرسالة!",
     "contact.success.message": "شكراً لتواصلك معنا. لقد تلقينا رسالتك وسنرد عليك في أقرب وقت ممكن.",
     "contact.success.back": "العودة إلى الرئيسية",
+    "contact.error": "حدث خطأ أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى.",
   },
 } as const;
