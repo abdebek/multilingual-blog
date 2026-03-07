@@ -25,7 +25,7 @@ const t = useTranslations(lang);
   <main class="container mx-auto px-4 py-12 md:py-20 w-full max-w-4xl">
     <div class="mb-10">
       <a href={`/${lang}/blog`} class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors">
-        <svg class={`w-5 h-5 mr-2 ${lang === 'ar' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        <svg class="w-5 h-5 mr-2 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         {t('blog.back')}
       </a>
     </div>
