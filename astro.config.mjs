@@ -1,6 +1,16 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
+import pagefind from 'astro-pagefind';
 
 export default defineConfig({
-  integrations: [tailwind()],
+  site: 'https://multilingual-blog.example.com',
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  image: {
+    domains: ['picsum.photos', 'images.unsplash.com'],
+  },
+  integrations: [
+    pagefind()
+  ],
 });

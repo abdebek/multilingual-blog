@@ -24,18 +24,28 @@ const { lang } = Astro.props;
     id="language-menu"
   >
     <div class="py-1" role="none">
-      {Object.entries(languages).map(([code, label]) => (
-        <a
-          href={`/${code}`}
-          class:list={[
-            'block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700',
-            code === lang ? 'text-gray-900 dark:text-gray-100 font-medium' : 'text-gray-700 dark:text-gray-400'
-          ]}
-          role="menuitem"
-        >
-          {label}
-        </a>
-      ))}
+      {Object.entries(languages).map(([code, label]) => {
+        const segments = Astro.url.pathname.split('/').filter(Boolean);
+        if (segments[0] in languages) {
+          segments[0] = code;
+        } else {
+          segments.unshift(code);
+        }
+        const newPath = '/' + segments.join('/') + Astro.url.search;
+        
+        return (
+          <a
+            href={newPath}
+            class:list={[
+              'block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700',
+              code === lang ? 'text-gray-900 dark:text-gray-100 font-medium' : 'text-gray-700 dark:text-gray-400'
+            ]}
+            role="menuitem"
+          >
+            {label}
+          </a>
+        );
+      })}
     </div>
   </div>
 </div>

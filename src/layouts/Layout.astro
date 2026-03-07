@@ -1,17 +1,22 @@
 ---
-import { getLangFromUrl, getDirection } from '../utils/i18n';
+import { getLangFromUrl, getDirection, useTranslations } from '../utils/i18n';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer.astro';
 import '@fontsource/cairo';
-import '@fontsource/roboto';
+import '../styles/global.css';
 
 interface Props {
   title: string;
+  description?: string;
+  image?: string;
 }
 
-const { title } = Astro.props;
+const { title, description, image = '/logo.svg' } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const dir = getDirection(lang);
+const t = useTranslations(lang);
+
+const metaDescription = description || t('footer.description');
 ---
 
 <!doctype html>
@@ -21,7 +26,47 @@ const dir = getDirection(lang);
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    
+    <title>{title} | {t('site.title')}</title>
+    <meta name="description" content={metaDescription} />
+    
+    <!-- Netlify Identity Widget (Lazy Loaded) -->
+    <script>
+      // Only load the widget if we are on the admin page or have an identity token in the URL
+      if (window.location.hash.includes('_token=') || window.location.pathname.includes('/admin')) {
+        const script = document.createElement('script');
+        script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+        script.defer = true;
+        document.head.appendChild(script);
+
+        script.onload = () => {
+          if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", (user) => {
+              if (!user && window.location.hash.includes('_token=')) {
+                window.netlifyIdentity.on("login", () => {
+                  document.location.href = "/admin/";
+                });
+              }
+            });
+          }
+        };
+      }
+    </script>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={metaDescription} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
     <script>
       import { getInitialTheme, setTheme } from '../utils/theme';
       const theme = getInitialTheme();
@@ -29,41 +74,18 @@ const dir = getDirection(lang);
     </script>
   </head>
   <body class:list={[
-    `${dir === 'rtl' ? 'font-cairo' : 'font-roboto'}`,
-    'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100'
+    'min-h-screen flex flex-col selection:bg-blue-200 selection:text-blue-900',
+    `${dir === 'rtl' ? 'font-cairo' : 'font-sans antialiased'}`,
+    'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300'
   ]}>
-    <Header />
-    <slot />
-    <Footer />
+    <div data-pagefind-ignore class="relative z-[100]">
+      <Header />
+    </div>
+    <main class="flex-grow w-full" data-pagefind-body data-pagefind-filter={`lang:${lang}`}>
+      <slot />
+    </main>
+    <div data-pagefind-ignore>
+      <Footer />
+    </div>
   </body>
 </html>
-
-<style is:global>
-  :root {
-    --accent: 136, 58, 234;
-    --accent-light: 224, 204, 250;
-    --accent-dark: 49, 10, 101;
-  }
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%; /* Ensure full height of the viewport */
-    display: flex;
-    flex-direction: column; /* Stack header, slot, and footer */
-  }
-
-  body {
-    font-family: system-ui, sans-serif;
-    background: #f6f6f6;
-    background-size: 224px;
-  }
-
-  main {
-    flex: 1; /* Make the main content grow to fill available space */
-  }
-
-  footer {
-    margin-top: auto; /* Push footer to the bottom */
-  }
-</style>
