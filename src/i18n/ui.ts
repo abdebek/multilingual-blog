@@ -43,6 +43,9 @@ export const ui = {
     "social.twitter": "Twitter",
     "social.facebook": "Facebook",
     "social.instagram": "Instagram",
+    "blog.noPosts": "No blog posts yet.",
+    "search.placeholder": "Search posts...",
+    "search.noResults": "No results found.",
   },
   tr: {
     "nav.home": "Ana Sayfa",
@@ -61,7 +64,7 @@ export const ui = {
     "about.team.sarah": "Genel Editör",
     "about.team.ahmed": "İçerik Direktörü",
     "contact.title": "İletişim",
-    "contact.us": "Bizimle iletişime geçin",
+    "contact.us": "Bizimle iletiشime geçin",
     "contact.intro":
       "Bir sorunuz veya öneriniz mi var? Sizden haber almaktan mutluluk duyarız. Aşağıdaki formu doldurun, en kısa sürede size geri döneceğiz.",
     "contact.form.name": "İsim",
@@ -80,6 +83,9 @@ export const ui = {
     "social.twitter": "Twitter",
     "social.facebook": "Facebook",
     "social.instagram": "Instagram",
+    "blog.noPosts": "Henüz blog yazısı yok.",
+    "search.placeholder": "Yazılarda ara...",
+    "search.noResults": "Sonuç bulunamadı.",
   },
   ar: {
     "nav.home": "الرئيسية",
@@ -116,5 +122,8 @@ export const ui = {
     "social.twitter": "تويتر",
     "social.facebook": "فيسبوك",
     "social.instagram": "إنستغرام",
+    "blog.noPosts": "لا يوجد منشورات حتى الآن.",
+    "search.placeholder": "ابحث في المقالات...",
+    "search.noResults": "لا توجد نتائج.",
   },
 } as const;

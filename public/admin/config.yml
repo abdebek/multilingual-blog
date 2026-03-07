@@ -1,10 +1,10 @@
 backend:
   name: git-gateway
-  branch: work
+  branch: main
 local_backend: true
 media_folder: "public/uploads"
-publish_mode: editorial_workflow
 public_folder: "/uploads"
+publish_mode: editorial_workflow
 collections:
   - name: "blog"
     label: "Blog Posts"
@@ -30,8 +30,8 @@ collections:
         widget: "select"
         options:
           - { label: "English", value: "en" }
-          - { label: "Türkçe", value: "tr" }
-          - { label: "العربية", value: "ar" }
+          - { label: "Turkish", value: "tr" }
+          - { label: "Arabic", value: "ar" }
         default: "en"
       - label: "Featured Image"
         name: "image"

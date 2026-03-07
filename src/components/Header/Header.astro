@@ -3,6 +3,7 @@ import Logo from './Logo.astro';
 import NavLinks from './NavLinks.astro';
 import LanguageDropdown from './LanguageDropdown.astro';
 import ThemeToggle from '../ThemeToggle.astro';
+import Search from '../Search.astro';
 import { getLangFromUrl } from '../../utils/i18n';
 
 const lang = getLangFromUrl(Astro.url);
@@ -14,10 +15,13 @@ const lang = getLangFromUrl(Astro.url);
 ]}>
   <div class="max-w-7xl mx-auto h-full flex items-center justify-between gap-4">
     <Logo lang={lang} />
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-2 md:gap-4">
       <NavLinks lang={lang} />
-      <ThemeToggle lang={lang} />
-      <LanguageDropdown lang={lang} />
+      <div class="flex items-center gap-1 md:gap-2 border-l border-gray-200 dark:border-gray-700 pl-2 md:pl-4">
+        <Search lang={lang} />
+        <ThemeToggle lang={lang} />
+        <LanguageDropdown lang={lang} />
+      </div>
     </div>
   </div>
 </header>
