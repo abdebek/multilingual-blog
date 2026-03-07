@@ -35,18 +35,25 @@ A starter for building blogs in multiple languages. Built with Astro 5 and Tailw
 ## Configuration
 
 - **Translations**: Manage all UI text in `src/i18n/ui.ts`.
-- **Search**: To test search locally, run:
-  ```bash
-  npm run build
-  ```
-  Followed by:
-  ```bash
-  npm run preview
-  ```
+- **Search**: To test search locally, run `npm run build` followed by `npm run preview`.
 - **CMS**: Uses Decap CMS with Netlify Identity. To remove it, delete the `public/admin` folder, `src/pages/admin/index.astro`, and the script in `src/layouts/Layout.astro`.
 
-## Deployment
+## Deployment to Netlify
 
-1. Connect your repository to Netlify.
-2. Enable Netlify Identity in your site settings.
-3. Enable Git Gateway under Identity > Services.
+This template is optimized for Netlify. Follow these steps for a complete setup:
+
+1. **Push to GitHub**: Push your code to a GitHub repository.
+2. **Create a Netlify Site**: Connect your repository to Netlify. The `netlify.toml` file will automatically configure the build settings.
+3. **Enable Netlify Identity**:
+   - Go to your site dashboard on Netlify.
+   - Navigate to **Site configuration** > **Identity**.
+   - Click **Enable Identity**.
+   - Under **Registration preferences**, select **Invite only** (recommended for private blogs).
+   - Under **Services** > **Git Gateway**, click **Enable Git Gateway**. This allows Decap CMS to save posts directly to your GitHub repo.
+4. **Access the CMS**:
+   - Once deployed, visit `your-site-url.com/admin/`.
+   - You can now log in via the Netlify Identity widget and start writing!
+
+## Form Handling
+
+The contact form uses **Netlify Forms**. Submissions will automatically appear in your Netlify dashboard under the **Forms** tab.
