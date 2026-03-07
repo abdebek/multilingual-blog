@@ -13,13 +13,37 @@ const t = useTranslations(lang);
 ---
 
 <Layout title={t('nav.contact')}>
-  <main class="container mx-5 lg:mx-12 xl:mx-24 px-4 py-8">
-    <h1 class="text-4xl font-bold text-center mb-8">{t('nav.contact')}</h1>
-    <div class="max-w-2xl mx-auto mb-12 text-center">
-      <p class="text-lg text-gray-600 dark:text-gray-300">
-        {t('contact.intro')}
-      </p>
+  <main class="flex flex-col items-center">
+    <!-- Hero Section -->
+    <section class="w-full relative bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-primary-50 to-white dark:from-gray-800 dark:to-gray-900 z-0"></div>
+      <div class="container mx-auto px-4 py-20 md:py-28 relative z-10 text-center max-w-4xl">
+        <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-8 text-gray-900 dark:text-white leading-tight">
+          {t('contact.title')}
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
+          {t('contact.intro')}
+        </p>
+      </div>
+    </section>
+
+    <!-- Form Section -->
+    <div class="container mx-auto px-4 py-16 md:py-24 relative z-10">
+      <ContactForm lang={lang} />
     </div>
-    <ContactForm lang={lang} />
+
+    <!-- Additional Info -->
+    <section class="container mx-auto px-4 pb-24 max-w-4xl text-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div class="p-8 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 tracking-wide uppercase">Email Us</h3>
+          <p class="text-primary-600 dark:text-primary-400 font-medium text-lg">hello@example.com</p>
+        </div>
+        <div class="p-8 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 tracking-wide uppercase">Follow Us</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-lg">@multilingual_blog</p>
+        </div>
+      </div>
+    </section>
   </main>
 </Layout>

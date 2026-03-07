@@ -3,7 +3,6 @@ import { getLangFromUrl, getDirection, useTranslations } from '../utils/i18n';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer.astro';
 import '@fontsource/cairo';
-import '@fontsource/roboto';
 
 interface Props {
   title: string;
@@ -74,14 +73,14 @@ const metaDescription = description || t('footer.description');
     </script>
   </head>
   <body class:list={[
-    'min-h-screen flex flex-col',
-    `${dir === 'rtl' ? 'font-cairo' : 'font-roboto'}`,
-    'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100'
+    'min-h-screen flex flex-col selection:bg-blue-200 selection:text-blue-900',
+    `${dir === 'rtl' ? 'font-cairo' : 'font-sans antialiased'}`,
+    'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300'
   ]}>
-    <div data-pagefind-ignore>
+    <div data-pagefind-ignore class="relative z-[100]">
       <Header />
     </div>
-    <main class="flex-grow" data-pagefind-body data-pagefind-filter={`lang:${lang}`}>
+    <main class="flex-grow w-full" data-pagefind-body data-pagefind-filter={`lang:${lang}`}>
       <slot />
     </main>
     <div data-pagefind-ignore>
@@ -92,8 +91,8 @@ const metaDescription = description || t('footer.description');
 
 <style is:global>
   :root {
-    --accent: 136, 58, 234;
-    --accent-light: 224, 204, 250;
-    --accent-dark: 49, 10, 101;
+    --accent: 59, 130, 246; /* Tailwind blue-500 */
+    --accent-light: 147, 197, 253; /* Tailwind blue-300 */
+    --accent-dark: 30, 58, 138; /* Tailwind blue-900 */
   }
 </style>

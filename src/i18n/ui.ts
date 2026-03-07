@@ -46,6 +46,9 @@ export const ui = {
     "blog.noPosts": "No blog posts yet.",
     "search.placeholder": "Search posts...",
     "search.noResults": "No results found.",
+    "contact.success.title": "Message Sent!",
+    "contact.success.message": "Thank you for reaching out. We have received your message and will get back to you soon.",
+    "contact.success.back": "Back to Home",
   },
   tr: {
     "nav.home": "Ana Sayfa",
@@ -86,6 +89,9 @@ export const ui = {
     "blog.noPosts": "Henüz blog yazısı yok.",
     "search.placeholder": "Yazılarda ara...",
     "search.noResults": "Sonuç bulunamadı.",
+    "contact.success.title": "Mesaj Gönderildi!",
+    "contact.success.message": "Bizimle iletişime geçtiğiniz için teşekkürler. Mesajınızı aldık ve en kısa sürede size geri döneceğiz.",
+    "contact.success.back": "Ana Sayfaya Dön",
   },
   ar: {
     "nav.home": "الرئيسية",
@@ -125,5 +131,8 @@ export const ui = {
     "blog.noPosts": "لا يوجد منشورات حتى الآن.",
     "search.placeholder": "ابحث في المقالات...",
     "search.noResults": "لا توجد نتائج.",
+    "contact.success.title": "تم إرسال الرسالة!",
+    "contact.success.message": "شكراً لتواصلك معنا. لقد تلقينا رسالتك وسنرد عليك في أقرب وقت ممكن.",
+    "contact.success.back": "العودة إلى الرئيسية",
   },
 } as const;

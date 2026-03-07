@@ -35,24 +35,24 @@ const footerLinks = [
 const currentYear = new Date().getFullYear();
 ---
 <footer class:list={[
-  'bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700',
-  'px-4 py-8',
-  lang === 'ar' ? 'font-cairo text-right' : 'font-roboto text-left'
+  'bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800',
+  'px-4 py-12 md:py-16 mt-auto',
+  lang === 'ar' ? 'font-cairo text-right' : 'text-left'
 ]}>
-  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
     <!-- Tagline Section -->
-    <div>
-      <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">{t('footer.tagline')}</h1>
-      <p class="mt-4 text-gray-600 dark:text-gray-300">{t('footer.description')}</p>
+    <div class="lg:col-span-2">
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">{t('footer.tagline')}</h1>
+      <p class="text-gray-600 dark:text-gray-400 max-w-md leading-relaxed">{t('footer.description')}</p>
     </div>
 
     <!-- Footer Links -->
     <div>
-      <h2 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">{t('footer.linksTitle')}</h2>
-      <ul class="space-y-2">
+      <h2 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-6">{t('footer.linksTitle')}</h2>
+      <ul class="space-y-4">
         {footerLinks.map(({ href, label }) => (
           <li>
-            <a href={href} class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+            <a href={href} class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium">
               {label}
             </a>
           </li>
@@ -62,21 +62,25 @@ const currentYear = new Date().getFullYear();
 
     <!-- Social Links -->
     <div>
-      <h2 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">{t('footer.followUs')}</h2>
-      <div class={`flex ${lang === 'ar' ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
+      <h2 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-6">{t('footer.followUs')}</h2>
+      <div class={`flex ${lang === 'ar' ? 'space-x-reverse space-x-5' : 'space-x-5'}`}>
         {socialLinks.map(({ href, path, label }) => (
-          <a href={href} class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100" aria-label={t(label)}>
+          <a href={href} class="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors transform hover:-translate-y-1 duration-200" aria-label={t(label)}>
             <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
               <path d={path} />
             </svg>
           </a>
         ))}
       </div>
+    </div>
   </div>
 
   <!-- Footer Bottom -->
-  <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-4 text-sm text-gray-500 dark:text-gray-400 text-center col-span-full">
+  <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-500">
     <p>&copy; {currentYear} {t('site.title')}. {t('footer.rightsReserved')}</p>
-    <p>{t('footer.madeWithLove')}</p>
+    <p class="mt-2 md:mt-0 flex items-center">
+      {t('footer.madeWithLove')}
+      <span class="text-red-500 mx-1">❤</span>
+    </p>
   </div>
 </footer>
