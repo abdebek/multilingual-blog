@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-import pagefind from 'astro-pagefind';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
@@ -15,7 +14,6 @@ export default defineConfig({
     domains: ['picsum.photos', 'images.unsplash.com'],
   },
   integrations: [
-    pagefind(),
     sitemap()
   ],
 });

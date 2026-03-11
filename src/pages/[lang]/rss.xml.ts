@@ -22,7 +22,7 @@ export async function GET(context: any) {
       title: post.data.title,
       pubDate: post.data.pubDate,
       description: post.data.description,
-      link: `/${lang}/blog/${post.slug.split('/').pop()}/`,
+      link: `/${lang}/blog/${post.id.split('/').pop()}/`,
     })),
     customData: `<language>${lang}</language>`,
   });
