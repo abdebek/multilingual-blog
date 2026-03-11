@@ -23,8 +23,8 @@ const t = useTranslations(lang);
 ---
 
 <Layout title={post.data.title}>
-  <main class="container mx-auto px-4 py-12 md:py-20 w-full max-w-4xl">
-    <div class="mb-10">
+  <main class="container mx-auto px-4 py-10 md:px-6 md:py-16 w-full max-w-6xl">
+    <div class="mb-8">
       <a href={`/${lang}/blog`} class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors">
         <svg class="w-5 h-5 mr-2 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         {t('blog.back')}
@@ -32,18 +32,7 @@ const t = useTranslations(lang);
     </div>
     
     <article class="prose prose-lg md:prose-xl dark:prose-invert prose-primary mx-auto w-full max-w-none">
-      {post.data.image && (
-        <div class="aspect-video w-full rounded-2xl overflow-hidden mb-12 shadow-xl border border-gray-100 dark:border-gray-800">
-          <Image 
-            src={post.data.image} 
-            alt={post.data.title} 
-            width={1200}
-            height={675}
-            class="w-full h-full object-cover m-0"
-          />
-        </div>
-      )}
-      <header class="mb-12 text-center max-w-3xl mx-auto">
+      <header class="mb-10 text-center max-w-5xl mx-auto">
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 text-gray-900 dark:text-white leading-tight">
           {post.data.title}
         </h1>
@@ -55,8 +44,20 @@ const t = useTranslations(lang);
           <span>{Math.ceil(post.body.split(/\s+/).length / 200)} {t('blog.readTime')}</span>
         </div>
       </header>
+
+      {post.data.image && (
+        <div class="aspect-[16/8.5] w-full rounded-2xl overflow-hidden mb-12 shadow-xl border border-gray-100 dark:border-gray-800">
+          <Image 
+            src={post.data.image} 
+            alt={post.data.title} 
+            width={1400}
+            height={744}
+            class="w-full h-full object-cover m-0"
+          />
+        </div>
+      )}
       
-      <div class="bg-white dark:bg-gray-900 rounded-3xl md:p-8">
+      <div class="bg-white dark:bg-gray-900 rounded-3xl md:px-2 md:py-4 lg:px-4">
         <Content />
       </div>
     </article>
