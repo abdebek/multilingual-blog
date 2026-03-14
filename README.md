@@ -2,7 +2,7 @@
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/abdebek/multilingual-blog)
 
-A starter for building blogs in multiple languages. Manage your content without using a code editor. Built with Astro 5 and Tailwind CSS 4.
+A starter for building blogs in multiple languages. Manage your content without using a code editor. Built with Astro 6 and Tailwind CSS 4.
 
 ## Key Features
 
