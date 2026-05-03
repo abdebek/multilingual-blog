@@ -1,0 +1,96 @@
+---
+// Lightweight galactic cursor — no stardust trail, GPU-accelerated transform.
+---
+
+<div class="cursor-glow" id="galactic-cursor"></div>
+
+<style>
+  @media (hover: hover) {
+    .cursor-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 24px;
+      margin-left: -12px;
+      margin-top: -12px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168,85,247,0.9) 0%, rgba(99,102,241,0.5) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 9999;
+      box-shadow: 0 0 12px 2px rgba(168,85,247,0.25);
+      transition: width 0.2s, height 0.2s, margin 0.2s;
+      will-change: transform;
+      transform: translate3d(-100px, -100px, 0);
+    }
+
+    .cursor-glow.hovering {
+      width: 48px;
+      height: 48px;
+      margin-left: -24px;
+      margin-top: -24px;
+    }
+  }
+
+  @media (hover: none) {
+    .cursor-glow {
+      display: none;
+    }
+  }
+</style>
+
+<script is:inline>
+(function() {
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  var glow = document.getElementById('galactic-cursor');
+  if (!glow) return;
+
+  document.body.style.cursor = 'none';
+
+  var mx = -100, my = -100, cx = -100, cy = -100;
+  var lastMove = 0;
+  var running = false;
+  var rafId = null;
+
+  function onMove(e) {
+    var now = performance.now();
+    if (now - lastMove < 16) return; // throttle to ~60fps
+    lastMove = now;
+    mx = e.clientX;
+    my = e.clientY;
+    if (!running) {
+      running = true;
+      tick();
+    }
+  }
+
+  function tick() {
+    var dx = mx - cx;
+    var dy = my - cy;
+    var idle = performance.now() - lastMove > 120;
+    if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5 && idle) {
+      running = false;
+      return; // stop RAF when settled and idle
+    }
+    cx += dx * 0.25;
+    cy += dy * 0.25;
+    glow.style.transform = 'translate3d(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px,0)';
+    rafId = requestAnimationFrame(tick);
+  }
+
+  document.addEventListener('mousemove', onMove, { passive: true });
+
+  document.addEventListener('mouseover', function(e) {
+    if (e.target.closest('a, button, [role="button"], input, textarea, select')) {
+      glow.classList.add('hovering');
+    }
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    if (e.target.closest('a, button, [role="button"], input, textarea, select')) {
+      glow.classList.remove('hovering');
+    }
+  });
+})();
+</script>

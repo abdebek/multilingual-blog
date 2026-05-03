@@ -1,0 +1,282 @@
+---
+// Cosmic background using SVG stars + CSS animations. Minimal JS.
+---
+
+<div class="cosmic-bg" aria-hidden="true">
+  <div class="nebula nebula-purple"></div>
+  <div class="nebula nebula-blue"></div>
+  <div class="nebula nebula-pink"></div>
+  <div class="nebula nebula-cyan"></div>
+
+  <svg class="stars-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <g id="stars-far"></g>
+    <g id="stars-mid"></g>
+    <g id="stars-near"></g>
+  </svg>
+
+  <div class="shooting-stars">
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+  </div>
+
+  <div class="supernova supernova-1"></div>
+  <div class="supernova supernova-2"></div>
+  <div class="supernova supernova-3"></div>
+</div>
+
+<style>
+  .cosmic-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 0%, #1a1a3e 0%, #0a0a1a 50%, #050510 100%);
+  }
+
+  html:not(.dark) .cosmic-bg {
+    background: radial-gradient(ellipse at 50% 0%, #ede9fe 0%, #f5f3ff 50%, #ffffff 100%);
+  }
+
+  .nebula {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.6;
+    animation: nebula-float 15s ease-in-out infinite alternate;
+    mix-blend-mode: screen;
+  }
+
+  .nebula-purple {
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(168,85,247,0.8) 0%, rgba(124,58,237,0.4) 40%, transparent 70%);
+    top: -15%;
+    left: -10%;
+    animation-duration: 20s;
+  }
+
+  .nebula-blue {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(99,102,241,0.7) 0%, rgba(79,70,229,0.3) 40%, transparent 70%);
+    bottom: -20%;
+    right: -5%;
+    animation-duration: 25s;
+    animation-delay: -5s;
+  }
+
+  .nebula-pink {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(236,72,153,0.6) 0%, rgba(219,39,119,0.2) 40%, transparent 70%);
+    top: 40%;
+    left: 45%;
+    animation-duration: 18s;
+    animation-delay: -8s;
+  }
+
+  .nebula-cyan {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(34,211,238,0.5) 0%, rgba(6,182,212,0.2) 40%, transparent 70%);
+    top: 10%;
+    right: 25%;
+    animation-duration: 22s;
+    animation-delay: -12s;
+  }
+
+  @keyframes nebula-float {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    33% { transform: translate(40px, -30px) scale(1.08) rotate(5deg); }
+    66% { transform: translate(-30px, 40px) scale(0.95) rotate(-3deg); }
+    100% { transform: translate(20px, 15px) scale(1.02) rotate(2deg); }
+  }
+
+  html:not(.dark) .nebula {
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+  }
+
+  .stars-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .stars-svg circle {
+    fill: white;
+    animation: star-twinkle 3s ease-in-out infinite alternate;
+    will-change: opacity;
+  }
+
+  .stars-svg circle.bright {
+    animation-name: star-pulse;
+  }
+
+  @keyframes star-twinkle {
+    0% { opacity: 0.15; }
+    100% { opacity: 0.9; }
+  }
+
+  @keyframes star-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  html:not(.dark) .stars-svg circle {
+    fill: #a78bfa;
+    opacity: 0.8;
+  }
+
+  html:not(.dark) .stars-svg circle.bright {
+    fill: #8b5cf6;
+    opacity: 1;
+  }
+
+  .shooting-stars {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .shooting-star {
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(168,85,247,0.8) 50%, transparent 100%);
+    border-radius: 999px;
+    opacity: 0;
+    filter: drop-shadow(0 0 6px rgba(168,85,247,0.8));
+    animation: shoot 1.2s linear forwards;
+  }
+
+  .shooting-star::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 4px rgba(255,255,255,0.8), 0 0 20px 8px rgba(168,85,247,0.4);
+  }
+
+  @keyframes shoot {
+    0% { opacity: 1; transform: translateX(0) translateY(0) rotate(-45deg); }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(400px) translateY(400px) rotate(-45deg); }
+  }
+
+  .supernova {
+    position: absolute;
+    border-radius: 50%;
+    animation: supernova-pulse 4s ease-in-out infinite;
+  }
+
+  .supernova-1 {
+    width: 6px;
+    height: 6px;
+    background: white;
+    top: 20%;
+    left: 15%;
+    box-shadow: 0 0 20px 8px rgba(168,85,247,0.6);
+    animation-delay: 0s;
+  }
+
+  .supernova-2 {
+    width: 4px;
+    height: 4px;
+    background: #c4b5fd;
+    top: 60%;
+    left: 75%;
+    box-shadow: 0 0 15px 6px rgba(196,181,253,0.5);
+    animation-delay: -1.5s;
+  }
+
+  .supernova-3 {
+    width: 5px;
+    height: 5px;
+    background: white;
+    top: 35%;
+    left: 55%;
+    box-shadow: 0 0 25px 10px rgba(99,102,241,0.5);
+    animation-delay: -3s;
+  }
+
+  @keyframes supernova-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(2); opacity: 1; box-shadow: 0 0 40px 16px rgba(168,85,247,0.8), 0 0 80px 32px rgba(168,85,247,0.2); }
+  }
+
+  html:not(.dark) .nebula-purple {
+    background: radial-gradient(circle, rgba(139,92,246,0.5) 0%, rgba(124,58,237,0.2) 40%, transparent 70%);
+  }
+
+  html:not(.dark) .nebula-blue {
+    background: radial-gradient(circle, rgba(99,102,241,0.4) 0%, rgba(79,70,229,0.15) 40%, transparent 70%);
+  }
+
+  html:not(.dark) .nebula-pink {
+    background: radial-gradient(circle, rgba(236,72,153,0.3) 0%, rgba(219,39,119,0.1) 40%, transparent 70%);
+  }
+
+  html:not(.dark) .nebula-cyan {
+    background: radial-gradient(circle, rgba(34,211,238,0.3) 0%, rgba(6,182,212,0.1) 40%, transparent 70%);
+  }
+
+  html:not(.dark) .supernova {
+    opacity: 0.4;
+  }
+
+  html:not(.dark) .shooting-star {
+    background: linear-gradient(90deg, #6d28d9 0%, #a78bfa 50%, transparent 100%);
+    filter: drop-shadow(0 0 6px rgba(109,40,217,0.5));
+  }
+
+  html:not(.dark) .shooting-star::before {
+    background: #7c3aed;
+    box-shadow: 0 0 10px 4px rgba(109,40,217,0.4);
+  }
+</style>
+
+<script is:inline>
+(function() {
+  var svgNS = 'http://www.w3.org/2000/svg';
+  var layers = [
+    { id: 'stars-far', count: 40, r: 0.15, bright: 0.08 },
+    { id: 'stars-mid', count: 25, r: 0.3, bright: 0.15 },
+    { id: 'stars-near', count: 12, r: 0.5, bright: 0.4 }
+  ];
+
+  layers.forEach(function(layer) {
+    var g = document.getElementById(layer.id);
+    if (!g) return;
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < layer.count; i++) {
+      var c = document.createElementNS(svgNS, 'circle');
+      c.setAttribute('cx', (Math.random() * 100).toFixed(2));
+      c.setAttribute('cy', (Math.random() * 100).toFixed(2));
+      c.setAttribute('r', (layer.r + Math.random() * 0.15).toFixed(3));
+      c.style.animationDelay = (Math.random() * -5).toFixed(2) + 's';
+      c.style.animationDuration = (Math.random() * 2 + 2).toFixed(2) + 's';
+      if (Math.random() < layer.bright) c.classList.add('bright');
+      frag.appendChild(c);
+    }
+    g.appendChild(frag);
+  });
+
+  document.querySelectorAll('.shooting-star').forEach(function(star, i) {
+    star.style.top = (Math.random() * 50) + '%';
+    star.style.left = (Math.random() * 50) + '%';
+    star.style.animationDelay = (3 + i * 4 + Math.random() * 2) + 's';
+    star.style.animationIterationCount = 'infinite';
+  });
+})();
+</script>

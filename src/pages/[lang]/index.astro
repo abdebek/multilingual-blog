@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import StarfieldBackground from '../../components/StarfieldBackground.astro';
 import { getCollection } from 'astro:content';
 import { getLangFromUrl, useTranslations } from '../../utils/i18n';
 import { languages } from '../../i18n/ui';
@@ -21,14 +22,20 @@ const latestPosts = posts
 <Layout title={t('site.title')}>
   <main class="flex flex-col items-center">
     <!-- Hero Section -->
-    <section class="w-full relative bg-bg-card border-b border-border overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-primary-50 to-bg-card z-0"></div>
+    <section class="w-full relative border-b border-border overflow-hidden min-h-[70vh] flex items-center justify-center" id="hero-section">
+      <StarfieldBackground />
       <div class="container mx-auto px-4 py-24 md:py-32 relative z-10 text-center max-w-4xl">
-        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-text-primary">
-          {t('site.title')}
+        <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-subtle border border-accent/20 text-accent text-sm font-semibold mb-10 tracking-wide">
+          <svg class="w-4 h-4 animate-spin" style="animation-duration: 8s;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+          </svg>
+          <span>{t('site.title')}</span>
+        </div>
+        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-text-primary leading-snug">
+          {t('site.description')}
         </h1>
         <p class="text-xl md:text-2xl text-text-secondary leading-relaxed mb-10 max-w-2xl mx-auto">
-          {t('site.description')}
+          {t('footer.description')}
         </p>
         <div class="flex items-center justify-center gap-4">
           <a href={`/${lang}/blog`} class="px-8 py-3.5 bg-accent hover:bg-accent-hover text-white rounded-full font-medium transition-all shadow-lg shadow-accent/30 hover:shadow-accent/50 hover:-translate-y-0.5">
@@ -53,7 +60,7 @@ const latestPosts = posts
             </div>
             <a href={`/${lang}/blog`} class="hidden md:flex items-center text-accent hover:text-accent-hover font-medium transition-colors">
               {t('home.latest.viewAll')}
-              <svg class="w-5 h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="w-5 h-5 ms-1 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
@@ -78,35 +85,35 @@ const latestPosts = posts
         </section>
       )}
 
-      <!-- About Grid -->
+      <!-- Feature Grid -->
       <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-        <div class="p-8 bg-bg-card rounded-2xl shadow-sm border border-border">
-          <div class="w-12 h-12 bg-accent-subtle rounded-xl flex items-center justify-center mb-6 text-accent">
-             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        <div class="p-8 bg-bg-card rounded-2xl shadow-sm border border-border hover:border-accent/30 transition-all duration-300 group">
+          <div class="w-14 h-14 bg-accent-subtle rounded-2xl flex items-center justify-center mb-6 text-accent group-hover:scale-110 transition-transform duration-300">
+             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" /><circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.3"/></svg>
           </div>
-          <h2 class="text-2xl font-bold mb-4 text-text-primary">{t('about.story.title')}</h2>
+          <h2 class="text-2xl font-bold mb-3 text-text-primary">{t('about.story.title')}</h2>
           <p class="text-text-secondary leading-relaxed">{t('about.story.content')}</p>
         </div>
-        <div class="p-8 bg-bg-card rounded-2xl shadow-sm border border-border">
-          <div class="w-12 h-12 bg-accent-subtle rounded-xl flex items-center justify-center mb-6 text-accent">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="p-8 bg-bg-card rounded-2xl shadow-sm border border-border hover:border-accent/30 transition-all duration-300 group">
+          <div class="w-14 h-14 bg-accent-subtle rounded-2xl flex items-center justify-center mb-6 text-accent group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" /></svg>
           </div>
-          <h2 class="text-2xl font-bold mb-4 text-text-primary">{t('about.mission.title')}</h2>
+          <h2 class="text-2xl font-bold mb-3 text-text-primary">{t('about.mission.title')}</h2>
           <p class="text-text-secondary leading-relaxed">{t('about.mission.content')}</p>
         </div>
-        <div class="p-8 bg-bg-card rounded-2xl shadow-sm border border-border">
-          <div class="w-12 h-12 bg-accent-subtle rounded-xl flex items-center justify-center mb-6 text-accent">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        <div class="p-8 bg-bg-card rounded-2xl shadow-sm border border-border hover:border-accent/30 transition-all duration-300 group">
+          <div class="w-14 h-14 bg-accent-subtle rounded-2xl flex items-center justify-center mb-6 text-accent group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.348 14.652a3.75 3.75 0 010-5.304m5.304 0a3.75 3.75 0 010 5.304m-7.425 2.122a6.75 6.75 0 010-9.546m9.546 0a6.75 6.75 0 010 9.546M5.106 18.894c-3.808-3.807-3.808-9.98 0-13.788m13.788 0c3.808 3.807 3.808 9.98 0 13.788M12 12h.008v.008H12V12z" /><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
           </div>
-          <h2 class="text-2xl font-bold mb-4 text-text-primary">{t('about.team.title')}</h2>
+          <h2 class="text-2xl font-bold mb-3 text-text-primary">{t('about.team.title')}</h2>
           <ul class="space-y-3 text-text-secondary">
             <li class="flex items-center">
-              <span class="w-2 h-2 bg-accent rounded-full mr-3"></span>
-              <strong class="text-text-primary mr-2">Sarah Johnson:</strong> {t('about.team.sarah')}
+              <span class="w-2 h-2 bg-accent rounded-full me-3 flex-shrink-0"></span>
+              <strong class="text-text-primary me-2">Sarah Johnson:</strong> {t('about.team.sarah')}
             </li>
             <li class="flex items-center">
-              <span class="w-2 h-2 bg-accent rounded-full mr-3"></span>
-              <strong class="text-text-primary mr-2">Ahmed Hassan:</strong> {t('about.team.ahmed')}
+              <span class="w-2 h-2 bg-accent rounded-full me-3 flex-shrink-0"></span>
+              <strong class="text-text-primary me-2">Ahmed Hassan:</strong> {t('about.team.ahmed')}
             </li>
           </ul>
         </div>

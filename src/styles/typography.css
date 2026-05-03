@@ -1,1 +1,30 @@
 @plugin "@tailwindcss/typography";
+
+/* Override prose heading sizes and spacing */
+@layer base {
+  .prose :where(h1):not(:where([class~="not-prose"] *)) {
+    font-size: 2.25em;
+    margin-top: 1.2em;
+    margin-bottom: 0.5em;
+  }
+  .prose :where(h2):not(:where([class~="not-prose"] *)) {
+    font-size: 1.5em;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+  }
+  .prose :where(h3):not(:where([class~="not-prose"] *)) {
+    font-size: 1.25em;
+    margin-top: 1.6em;
+    margin-bottom: 0.5em;
+  }
+  .prose :where(h4):not(:where([class~="not-prose"] *)) {
+    font-size: 1.125em;
+    margin-top: 1.4em;
+    margin-bottom: 0.4em;
+  }
+
+  /* First heading in prose should not have excessive top margin */
+  .prose > :where(h1, h2, h3, h4):first-child {
+    margin-top: 0.5em !important;
+  }
+}

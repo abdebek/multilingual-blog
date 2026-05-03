@@ -83,7 +83,7 @@ const otherPosts = page.currentPage === 1 ? posts.slice(1) : posts;
                   </p>
                   <div class="flex items-center text-accent font-bold">
                     {t('blog.readFull')}
-                    <svg class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="ms-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-2 rtl:-translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </div>
@@ -99,7 +99,7 @@ const otherPosts = page.currentPage === 1 ? posts.slice(1) : posts;
             <h2 class="text-2xl font-bold tracking-tight text-text-primary">
               {page.currentPage === 1 ? t('blog.more') : `${t('blog.title')} - ${t('pagination.page')} ${page.currentPage}`}
             </h2>
-            <div class="h-px flex-1 bg-border-subtle ml-8 hidden sm:block"></div>
+            <div class="h-px flex-1 bg-border-subtle ms-8 hidden sm:block"></div>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

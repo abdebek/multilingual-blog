@@ -8,16 +8,16 @@ import { getLangFromUrl } from '../../utils/i18n';
 
 const lang = getLangFromUrl(Astro.url);
 ---
-<header class:list={[
-  'sticky top-0 z-[100] bg-bg-card/80 backdrop-blur-md border-b border-border/80 shadow-sm',
-  'px-4 h-16 md:h-20 transition-all duration-300',
+<header id="site-header" class:list={[
+  'fixed top-0 left-0 right-0 z-[100] transition-all duration-300',
+  'px-4 h-16 md:h-20',
   lang === 'ar' ? 'font-cairo' : ''
 ]}>
   <div class="max-w-7xl mx-auto h-full flex items-center justify-between gap-4">
     <Logo lang={lang} />
     <div class="flex items-center gap-3 md:gap-8">
       <NavLinks lang={lang} />
-      <div class="flex items-center gap-2 md:gap-4 border-l border-border pl-2 md:pl-6">
+      <div class="flex items-center gap-2 md:gap-4 border-l border-border pl-2 md:pl-6 rtl:border-l-0 rtl:border-r rtl:pl-0 rtl:pr-2 md:rtl:pr-6">
         <div class="hidden sm:block">
           <Search lang={lang} />
         </div>
@@ -32,3 +32,27 @@ const lang = getLangFromUrl(Astro.url);
     </div>
   </div>
 </header>
+
+<!-- Spacer to prevent content jump -->
+<div class="h-16 md:h-20"></div>
+
+<script is:inline>
+  (function() {
+    const header = document.getElementById('site-header');
+    if (!header) return;
+
+    function onScroll() {
+      const scrolled = window.scrollY > 10;
+      if (scrolled) {
+        header.classList.add('bg-bg-card/90', 'backdrop-blur-xl', 'border-b', 'border-border/80', 'shadow-lg');
+        header.classList.remove('bg-transparent');
+      } else {
+        header.classList.remove('bg-bg-card/90', 'backdrop-blur-xl', 'border-b', 'border-border/80', 'shadow-lg');
+        header.classList.add('bg-transparent');
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
