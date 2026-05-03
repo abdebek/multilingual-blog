@@ -3,6 +3,8 @@ import { getLangFromUrl, getDirection, useTranslations } from '../utils/i18n';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer.astro';
 import ThemeProvider from '../components/ThemeProvider.astro';
+import ChatWidget from '../components/ChatWidget.astro';
+import GalacticCursor from '../components/GalacticCursor.astro';
 import '@fontsource/cairo';
 import '../styles/global.css';
 import '../styles/themes.css';
@@ -89,5 +91,9 @@ const metaDescription = description || t('footer.description');
     <div data-pagefind-ignore>
       <Footer />
     </div>
+    <div data-pagefind-ignore>
+      <ChatWidget lang={lang} />
+    </div>
+    <GalacticCursor />
   </body>
 </html>
