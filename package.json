@@ -12,16 +12,16 @@
     "cms-proxy": "netlify-cms-proxy-server"
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.17",
-    "@astrojs/sitemap": "^3.7.1",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
     "@fontsource/cairo": "^5.2.7",
     "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.2.1",
-    "astro": "^6.0.2",
-    "tailwindcss": "^4.2.1"
+    "@tailwindcss/vite": "^4.2.4",
+    "astro": "^6.2.1",
+    "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
     "netlify-cms-proxy-server": "^1.3.24",
-    "pagefind": "^1.4.0"
+    "pagefind": "^1.5.2"
   }
 }
