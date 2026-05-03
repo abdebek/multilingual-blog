@@ -105,21 +105,21 @@
     pointer-events: none;
   }
 
-  .stars-svg circle {
+  :global(.stars-svg circle) {
     fill: white;
     opacity: 0.55;
   }
 
-  .stars-svg circle.bright {
+  :global(.stars-svg circle.bright) {
     opacity: 0.85;
   }
 
-  html:not(.dark) .stars-svg circle {
+  html:not(.dark) :global(.stars-svg circle) {
     fill: #a78bfa;
     opacity: 0.6;
   }
 
-  html:not(.dark) .stars-svg circle.bright {
+  html:not(.dark) :global(.stars-svg circle.bright) {
     fill: #8b5cf6;
     opacity: 0.9;
   }

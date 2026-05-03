@@ -3,8 +3,11 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://multilingual-blog.example.com',
+  site: 'https://pages.waanfeetan.com',
   vite: {
+    server: {
+      allowedHosts: ['pages.waanfeetan.com']
+    },
     plugins: [tailwindcss()],
     build: {
       cssMinify: 'lightningcss'
