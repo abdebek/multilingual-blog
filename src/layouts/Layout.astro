@@ -9,6 +9,8 @@ import '@fontsource/cairo';
 import '../styles/global.css';
 import '../styles/themes.css';
 
+const ENABLE_AI = import.meta.env.ENABLE_AI === 'true';
+
 interface Props {
   title: string;
   description?: string;
@@ -91,9 +93,11 @@ const metaDescription = description || t('footer.description');
     <div data-pagefind-ignore>
       <Footer />
     </div>
-    <div data-pagefind-ignore>
-      <ChatWidget lang={lang} />
-    </div>
+    {ENABLE_AI && (
+      <div data-pagefind-ignore>
+        <ChatWidget lang={lang} />
+      </div>
+    )}
     <GalacticCursor />
   </body>
 </html>

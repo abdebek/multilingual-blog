@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "node scripts/build-kb.mjs && astro build && pagefind --site dist",
+    "build:ai": "node scripts/build-with-ai.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "cms-proxy": "netlify-cms-proxy-server"
@@ -21,6 +22,7 @@
     "@tailwindcss/vite": "^4.2.4",
     "@xenova/transformers": "^2.17.2",
     "astro": "^6.2.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {

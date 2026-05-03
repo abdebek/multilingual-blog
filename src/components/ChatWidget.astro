@@ -6,12 +6,10 @@ const t = useTranslations(lang);
 ---
 
 <div id="chat-widget-container" class="fixed bottom-6 right-6 z-[150] flex flex-col items-end">
-  <!-- Chat Panel -->
   <div
     id="chat-panel"
     class="hidden mb-4 w-[380px] max-w-[calc(100vw-2rem)] h-[520px] max-h-[calc(100vh-8rem)] bg-bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all"
   >
-    <!-- Header -->
     <div class="px-5 py-4 bg-accent border-b border-border flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
@@ -31,7 +29,6 @@ const t = useTranslations(lang);
       </button>
     </div>
 
-    <!-- Messages -->
     <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
       <div class="flex items-start gap-3">
         <div class="w-7 h-7 bg-accent-subtle rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -45,9 +42,7 @@ const t = useTranslations(lang);
       </div>
     </div>
 
-    <!-- Input / Enable Area -->
     <div id="chat-footer" class="px-4 py-3 border-t border-border bg-bg-page">
-      <!-- Enable AI prompt (shown until user opts in) -->
       <div id="chat-enable-prompt" class="text-center py-2">
         <p class="text-xs text-text-muted mb-3">{t('chat.enableAIDesc')}</p>
         <button
@@ -62,19 +57,18 @@ const t = useTranslations(lang);
         </button>
       </div>
 
-      <!-- Chat form (shown after models loaded) -->
       <form id="chat-form" class="hidden flex items-center gap-2">
         <input
           id="chat-input"
           type="text"
           placeholder={t('chat.placeholder')}
-          class="flex-1 px-4 py-2.5 bg-bg-card border border-border rounded-xl text-sm text-text-primary placeholder-text-muted focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all"
+          class="flex-1 px-4 py-2.5 bg-bg-card border border-border rounded-xl text-sm text-text-primary placeholder-text-muted focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all disabled:opacity-50"
           autocomplete="off"
         />
         <button
           type="submit"
           id="chat-send"
-          class="p-2.5 bg-accent hover:bg-accent-hover text-white rounded-xl transition-colors flex items-center justify-center"
+          class="p-2.5 bg-accent hover:bg-accent-hover text-white rounded-xl transition-colors flex items-center justify-center disabled:opacity-50"
           aria-label={t('chat.send')}
         >
           <svg id="send-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,7 +84,6 @@ const t = useTranslations(lang);
     </div>
   </div>
 
-  <!-- Toggle Button -->
   <button
     id="chat-toggle"
     type="button"
@@ -107,211 +100,195 @@ const t = useTranslations(lang);
 </div>
 
 <script is:inline define:vars={{ lang, thinkingText: t('chat.thinking'), errorText: t('chat.error'), readyText: t('chat.welcome') }}>
-  (function() {
-    const toggleBtn = document.getElementById('chat-toggle');
-    const panel = document.getElementById('chat-panel');
-    const closeBtn = document.getElementById('chat-close');
-    const messagesEl = document.getElementById('chat-messages');
-    const form = document.getElementById('chat-form');
-    const input = document.getElementById('chat-input');
-    const sendBtn = document.getElementById('chat-send');
-    const sendIcon = document.getElementById('send-icon');
-    const loadingIcon = document.getElementById('loading-icon');
-    const iconOpen = document.getElementById('chat-icon-open');
-    const iconClose = document.getElementById('chat-icon-close');
-    const enablePrompt = document.getElementById('chat-enable-prompt');
-    const enableBtn = document.getElementById('chat-enable-btn');
-    const footerText = document.getElementById('chat-footer-text');
+(function() {
+  var LS_KEY = 'gp-ai-enabled';
+  var toggleBtn = document.getElementById('chat-toggle');
+  var panel = document.getElementById('chat-panel');
+  var closeBtn = document.getElementById('chat-close');
+  var messagesEl = document.getElementById('chat-messages');
+  var form = document.getElementById('chat-form');
+  var input = document.getElementById('chat-input');
+  var sendBtn = document.getElementById('chat-send');
+  var sendIcon = document.getElementById('send-icon');
+  var loadingIcon = document.getElementById('loading-icon');
+  var iconOpen = document.getElementById('chat-icon-open');
+  var iconClose = document.getElementById('chat-icon-close');
+  var enablePrompt = document.getElementById('chat-enable-prompt');
+  var enableBtn = document.getElementById('chat-enable-btn');
+  var footerText = document.getElementById('chat-footer-text');
 
-    let isOpen = false;
-    let isLoading = false;
-    let kb = null;
-    let embedder = null;
-    let generator = null;
-    let modelsLoaded = false;
+  var isOpen = false;
+  var isLoading = false;
+  var worker = null;
+  var workerReady = false;
+  var msgId = 0;
 
-    function togglePanel() {
-      isOpen = !isOpen;
-      panel.classList.toggle('hidden', !isOpen);
-      iconOpen.classList.toggle('hidden', isOpen);
-      iconClose.classList.toggle('hidden', !isOpen);
-      if (isOpen && modelsLoaded) {
-        input.focus();
-      }
+  function togglePanel() {
+    isOpen = !isOpen;
+    panel.classList.toggle('hidden', !isOpen);
+    iconOpen.classList.toggle('hidden', isOpen);
+    iconClose.classList.toggle('hidden', !isOpen);
+    if (isOpen && workerReady) {
+      input.focus();
+    }
+  }
+
+  toggleBtn.addEventListener('click', togglePanel);
+  closeBtn.addEventListener('click', togglePanel);
+
+  function addMessage(text, role, isThinking) {
+    var wrapper = document.createElement('div');
+    wrapper.className = isThinking ? 'flex items-start gap-3 thinking-msg' : 'flex items-start gap-3';
+
+    if (role === 'assistant') {
+      wrapper.innerHTML = '<div class="w-7 h-7 bg-accent-subtle rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div><div class="bg-bg-page rounded-xl rounded-tl-sm px-4 py-3 text-sm text-text-secondary max-w-[85%]">' + (isThinking ? '<span class="inline-flex gap-1"><span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce" style="animation-delay:0.1s"></span><span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce" style="animation-delay:0.2s"></span></span>' : escapeHtml(text)) + '</div>';
+    } else {
+      wrapper.innerHTML = '<div class="ml-auto bg-accent text-white rounded-xl rounded-tr-sm px-4 py-3 text-sm max-w-[85%]">' + escapeHtml(text) + '</div>';
     }
 
-    toggleBtn.addEventListener('click', togglePanel);
-    closeBtn.addEventListener('click', togglePanel);
+    messagesEl.appendChild(wrapper);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return wrapper;
+  }
 
-    enableBtn.addEventListener('click', function() {
-      enableBtn.disabled = true;
-      enableBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Loading...';
-      loadModels();
-    });
+  function removeThinkingMessages() {
+    document.querySelectorAll('.thinking-msg').forEach(function(el) { el.remove(); });
+  }
 
-    async function loadModels() {
-      try {
-        addMessage(thinkingText.replace('...', ' models...'), 'assistant', true);
-        const { pipeline, env } = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2');
-        env.allowLocalModels = false;
-        env.allowRemoteModels = true;
+  function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
 
-        const kbRes = await fetch('/kb/knowledge-base.json');
-        kb = await kbRes.json();
+  function setLoading(loading) {
+    isLoading = loading;
+    input.disabled = loading || !workerReady;
+    sendBtn.disabled = loading || !workerReady;
+    sendIcon.classList.toggle('hidden', loading);
+    loadingIcon.classList.toggle('hidden', !loading);
+  }
 
-        embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
-        generator = await pipeline('text2text-generation', 'Xenova/flan-t5-small');
+  function showForm() {
+    enablePrompt.classList.add('hidden');
+    form.classList.remove('hidden');
+    form.classList.add('flex');
+    footerText.classList.remove('hidden');
+  }
 
-        modelsLoaded = true;
+  function showStatus(text) {
+    removeThinkingMessages();
+    addMessage(text, 'assistant', true);
+  }
+
+  // Web Worker
+  function initWorker() {
+    if (worker) return;
+    try {
+      worker = new Worker('/ai-worker.js', { type: 'module' });
+    } catch (err) {
+      console.error('Failed to create AI worker:', err);
+      addMessage(errorText, 'assistant');
+      return;
+    }
+
+    worker.onmessage = function(e) {
+      var data = e.data;
+      if (!data) return;
+
+      if (data.type === 'STATUS') {
+        var label = '';
+        if (data.status === 'kb') label = 'Loading knowledge base...';
+        else if (data.status === 'embedder') label = 'Loading embedder (~22 MB)...';
+        else if (data.status === 'generator') label = 'Loading generator (~77 MB)...';
+        else if (data.status === 'retrieving') label = thinkingText;
+        else if (data.status === 'generating') label = 'Generating answer...';
+        if (label) showStatus(label);
+      }
+
+      if (data.type === 'READY') {
+        workerReady = true;
         removeThinkingMessages();
+        setLoading(false);
+        if (isOpen) input.focus();
+      }
 
-        enablePrompt.classList.add('hidden');
-        form.classList.remove('hidden');
-        form.classList.add('flex');
-        footerText.classList.remove('hidden');
-        input.focus();
-
-        addMessage(readyText, 'assistant');
-      } catch (err) {
-        console.error('Failed to load AI models:', err);
+      if (data.type === 'ANSWER') {
         removeThinkingMessages();
-        enableBtn.disabled = false;
-        enableBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> Retry';
-        addMessage(errorText, 'assistant');
-      }
-    }
-
-    // Cosine similarity
-    function cosineSimilarity(a, b) {
-      let dot = 0, normA = 0, normB = 0;
-      for (let i = 0; i < a.length; i++) {
-        dot += a[i] * b[i];
-        normA += a[i] * a[i];
-        normB += b[i] * b[i];
-      }
-      return dot / (Math.sqrt(normA) * Math.sqrt(normB));
-    }
-
-    // Retrieve relevant chunks
-    async function retrieveContext(question) {
-      const qEmbed = await embedder(question, { pooling: 'mean', normalize: true });
-      const qVec = Array.from(qEmbed.data);
-
-      const scored = kb.map(doc => ({
-        ...doc,
-        score: cosineSimilarity(qVec, doc.embedding),
-      }));
-
-      scored.sort((a, b) => b.score - a.score);
-      return scored.slice(0, 3);
-    }
-
-    // Generate answer
-    async function generateAnswer(question, context) {
-      const ctx = context.map(c => c.text).join('\n\n');
-      const prompt = `Answer based on context.\nContext:\n${ctx}\n\nQuestion: ${question}\nAnswer:`;
-      const result = await generator(prompt, { max_new_tokens: 128, do_sample: false });
-      return result[0].generated_text;
-    }
-
-    // Add message to UI
-    function addMessage(text, role, isThinking = false) {
-      const wrapper = document.createElement('div');
-      wrapper.className = isThinking ? 'flex items-start gap-3 thinking-msg' : 'flex items-start gap-3';
-
-      if (role === 'assistant') {
-        wrapper.innerHTML = `
-          <div class="w-7 h-7 bg-accent-subtle rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <div class="bg-bg-page rounded-xl rounded-tl-sm px-4 py-3 text-sm text-text-secondary max-w-[85%]">
-            ${isThinking ? `<span class="inline-flex gap-1"><span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce" style="animation-delay:0.1s"></span><span class="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce" style="animation-delay:0.2s"></span></span>` : escapeHtml(text)}
-          </div>
-        `;
-      } else {
-        wrapper.innerHTML = `
-          <div class="ml-auto bg-accent text-white rounded-xl rounded-tr-sm px-4 py-3 text-sm max-w-[85%]">
-            ${escapeHtml(text)}
-          </div>
-        `;
-      }
-
-      messagesEl.appendChild(wrapper);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-      return wrapper;
-    }
-
-    function removeThinkingMessages() {
-      document.querySelectorAll('.thinking-msg').forEach(el => el.remove());
-    }
-
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
-    function setLoading(loading) {
-      isLoading = loading;
-      input.disabled = loading;
-      sendBtn.disabled = loading;
-      sendIcon.classList.toggle('hidden', loading);
-      loadingIcon.classList.toggle('hidden', !loading);
-    }
-
-    // Handle submit
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const question = input.value.trim();
-      if (!question || isLoading || !modelsLoaded) return;
-
-      addMessage(question, 'user');
-      input.value = '';
-      setLoading(true);
-
-      const thinkingEl = addMessage('', 'assistant', true);
-
-      try {
-        const context = await retrieveContext(question);
-        const answer = await generateAnswer(question, context);
-
-        thinkingEl.remove();
-
-        // Build answer with sources
-        let html = escapeHtml(answer);
-        const sources = context
-          .filter(c => c.url)
-          .map((c, i) => `<a href="${c.url}" class="text-accent hover:underline text-xs">[${i + 1}] ${escapeHtml(c.title || 'Source')}</a>`)
-          .filter((v, i, a) => a.findIndex(t => t === v) === i)
+        var html = escapeHtml(data.payload.answer);
+        var sources = (data.payload.context || [])
+          .filter(function(c) { return c.url; })
+          .map(function(c, i) { return '<a href="' + c.url + '" class="text-accent hover:underline text-xs">[' + (i + 1) + '] ' + escapeHtml(c.title || 'Source') + '</a>'; })
+          .filter(function(v, i, a) { return a.indexOf(v) === i; })
           .slice(0, 2);
 
         if (sources.length) {
-          html += `<div class="mt-2 pt-2 border-t border-border-subtle flex gap-3">${sources.join('')}</div>`;
+          html += '<div class="mt-2 pt-2 border-t border-border-subtle flex gap-3">' + sources.join('') + '</div>';
         }
 
-        const wrapper = document.createElement('div');
+        var wrapper = document.createElement('div');
         wrapper.className = 'flex items-start gap-3';
-        wrapper.innerHTML = `
-          <div class="w-7 h-7 bg-accent-subtle rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <div class="bg-bg-page rounded-xl rounded-tl-sm px-4 py-3 text-sm text-text-secondary max-w-[85%]">
-            ${html}
-          </div>
-        `;
+        wrapper.innerHTML = '<div class="w-7 h-7 bg-accent-subtle rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div><div class="bg-bg-page rounded-xl rounded-tl-sm px-4 py-3 text-sm text-text-secondary max-w-[85%]">' + html + '</div>';
         messagesEl.appendChild(wrapper);
         messagesEl.scrollTop = messagesEl.scrollHeight;
-      } catch (err) {
-        console.error(err);
-        thinkingEl.remove();
-        addMessage(errorText, 'assistant');
-      } finally {
         setLoading(false);
       }
-    });
-  })();
+
+      if (data.type === 'ERROR') {
+        removeThinkingMessages();
+        console.error('AI Worker error:', data.error);
+        addMessage(errorText, 'assistant');
+        setLoading(false);
+        if (!workerReady) {
+          enableBtn.disabled = false;
+          enableBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> Retry';
+        }
+      }
+    };
+
+    worker.onerror = function(err) {
+      console.error('AI Worker error:', err);
+      removeThinkingMessages();
+      addMessage(errorText, 'assistant');
+      setLoading(false);
+    };
+  }
+
+  function loadModels() {
+    initWorker();
+    if (!worker) return;
+    showStatus('Starting AI models...');
+    worker.postMessage({ type: 'LOAD', id: ++msgId });
+  }
+
+  // Check if user previously enabled AI
+  var wasEnabled = localStorage.getItem(LS_KEY) === '1';
+
+  if (wasEnabled) {
+    showForm();
+    loadModels();
+  }
+
+  enableBtn.addEventListener('click', function() {
+    enableBtn.disabled = true;
+    enableBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Loading...';
+    localStorage.setItem(LS_KEY, '1');
+    showForm();
+    loadModels();
+  });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var question = input.value.trim();
+    if (!question || isLoading || !workerReady) return;
+
+    addMessage(question, 'user');
+    input.value = '';
+    setLoading(true);
+
+    if (worker) {
+      worker.postMessage({ type: 'ASK', id: ++msgId, payload: { question: question } });
+    }
+  });
+})();
 </script>

@@ -1,20 +1,46 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { pipeline, env } from '@xenova/transformers';
+
+const ENABLE_AI = process.env.ENABLE_AI === 'true';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const BLOG_DIR = path.join(ROOT, 'src/content/blog');
 const OUTPUT_DIR = path.join(ROOT, 'public/kb');
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'knowledge-base.json');
+const WORKER_SRC = path.join(ROOT, 'scripts/ai-worker.js');
+const WORKER_DEST = path.join(ROOT, 'public/ai-worker.js');
+
+if (!ENABLE_AI) {
+  console.log('AI feature disabled (ENABLE_AI = false). Cleaning up AI assets...');
+  if (fs.existsSync(WORKER_DEST)) {
+    fs.unlinkSync(WORKER_DEST);
+    console.log('  Removed public/ai-worker.js');
+  }
+  if (fs.existsSync(OUTPUT_FILE)) {
+    fs.unlinkSync(OUTPUT_FILE);
+    console.log('  Removed public/kb/knowledge-base.json');
+  }
+  if (fs.existsSync(OUTPUT_DIR) && fs.readdirSync(OUTPUT_DIR).length === 0) {
+    fs.rmdirSync(OUTPUT_DIR);
+    console.log('  Removed empty public/kb/ directory');
+  }
+  process.exit(0);
+}
+
+// AI is enabled — copy worker to public and build KB
+import { pipeline, env } from '@xenova/transformers';
 
 env.allowLocalModels = true;
 env.allowRemoteModels = true;
 
+// Copy worker template to public/
+fs.copyFileSync(WORKER_SRC, WORKER_DEST);
+console.log('Copied ai-worker.js to public/');
+
 function parseMarkdown(filePath) {
   const raw = fs.readFileSync(filePath, 'utf-8');
-  // Normalize line endings
   const content = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 
   const match = content.match(/^---\n([\s\S]*?)\n---\n\n?([\s\S]*)$/);
