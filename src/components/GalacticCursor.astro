@@ -71,26 +71,22 @@
     var idle = performance.now() - lastMove > 120;
     if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5 && idle) {
       running = false;
-      return; // stop RAF when settled and idle
+      return;
     }
     cx += dx * 0.25;
     cy += dy * 0.25;
     glow.style.transform = 'translate3d(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px,0)';
+
+    var el = document.elementFromPoint(mx, my);
+    if (el && el.closest('a, button, [role="button"], input, textarea, select')) {
+      glow.classList.add('hovering');
+    } else {
+      glow.classList.remove('hovering');
+    }
+
     rafId = requestAnimationFrame(tick);
   }
 
   document.addEventListener('mousemove', onMove, { passive: true });
-
-  document.addEventListener('mouseover', function(e) {
-    if (e.target.closest('a, button, [role="button"], input, textarea, select')) {
-      glow.classList.add('hovering');
-    }
-  });
-
-  document.addEventListener('mouseout', function(e) {
-    if (e.target.closest('a, button, [role="button"], input, textarea, select')) {
-      glow.classList.remove('hovering');
-    }
-  });
 })();
 </script>

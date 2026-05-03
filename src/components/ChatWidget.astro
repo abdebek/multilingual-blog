@@ -122,6 +122,14 @@ const t = useTranslations(lang);
   var worker = null;
   var workerReady = false;
   var msgId = 0;
+  var modelLoadStarted = false;
+  var pendingQuestion = null;
+
+  var wasEnabled = localStorage.getItem(LS_KEY) === '1';
+
+  if (wasEnabled) {
+    showForm();
+  }
 
   function togglePanel() {
     isOpen = !isOpen;
@@ -130,6 +138,10 @@ const t = useTranslations(lang);
     iconClose.classList.toggle('hidden', !isOpen);
     if (isOpen && workerReady) {
       input.focus();
+    }
+    if (isOpen && wasEnabled && !modelLoadStarted) {
+      modelLoadStarted = true;
+      loadModels();
     }
   }
 
@@ -211,6 +223,12 @@ const t = useTranslations(lang);
         removeThinkingMessages();
         setLoading(false);
         if (isOpen) input.focus();
+        if (pendingQuestion) {
+          var q = pendingQuestion;
+          pendingQuestion = null;
+          setLoading(true);
+          worker.postMessage({ type: 'ASK', id: ++msgId, payload: { question: q } });
+        }
       }
 
       if (data.type === 'ANSWER') {
@@ -261,34 +279,35 @@ const t = useTranslations(lang);
     worker.postMessage({ type: 'LOAD', id: ++msgId });
   }
 
-  // Check if user previously enabled AI
-  var wasEnabled = localStorage.getItem(LS_KEY) === '1';
-
-  if (wasEnabled) {
-    showForm();
-    loadModels();
-  }
-
   enableBtn.addEventListener('click', function() {
     enableBtn.disabled = true;
     enableBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Loading...';
     localStorage.setItem(LS_KEY, '1');
     showForm();
     loadModels();
+    modelLoadStarted = true;
   });
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     var question = input.value.trim();
-    if (!question || isLoading || !workerReady) return;
+    if (!question || isLoading) return;
 
     addMessage(question, 'user');
     input.value = '';
-    setLoading(true);
 
-    if (worker) {
-      worker.postMessage({ type: 'ASK', id: ++msgId, payload: { question: question } });
+    if (!workerReady) {
+      pendingQuestion = question;
+      if (!modelLoadStarted) {
+        modelLoadStarted = true;
+        loadModels();
+      }
+      setLoading(true);
+      return;
     }
+
+    setLoading(true);
+    worker.postMessage({ type: 'ASK', id: ++msgId, payload: { question: question } });
   });
 })();
 </script>

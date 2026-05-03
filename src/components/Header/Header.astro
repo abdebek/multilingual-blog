@@ -41,15 +41,25 @@ const lang = getLangFromUrl(Astro.url);
     const header = document.getElementById('site-header');
     if (!header) return;
 
+    let ticking = false;
+    let wasScrolled = false;
+
     function onScroll() {
-      const scrolled = window.scrollY > 10;
-      if (scrolled) {
-        header.classList.add('bg-bg-card/90', 'backdrop-blur-xl', 'border-b', 'border-border/80', 'shadow-lg');
-        header.classList.remove('bg-transparent');
-      } else {
-        header.classList.remove('bg-bg-card/90', 'backdrop-blur-xl', 'border-b', 'border-border/80', 'shadow-lg');
-        header.classList.add('bg-transparent');
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const scrolled = window.scrollY > 10;
+        if (scrolled === wasScrolled) return;
+        wasScrolled = scrolled;
+        if (scrolled) {
+          header.classList.add('bg-bg-card/90', 'backdrop-blur-xl', 'border-b', 'border-border/80', 'shadow-lg');
+          header.classList.remove('bg-transparent');
+        } else {
+          header.classList.remove('bg-bg-card/90', 'backdrop-blur-xl', 'border-b', 'border-border/80', 'shadow-lg');
+          header.classList.add('bg-transparent');
+        }
+      });
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
