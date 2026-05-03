@@ -16,10 +16,10 @@ const t = useTranslations(lang);
   <main class="flex flex-col items-center px-4 py-12 md:py-20 w-full max-w-7xl mx-auto">
     
     <div class="text-center mb-16 max-w-3xl">
-      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-text-primary mb-6 leading-tight">
         {t('contact.title')}
       </h1>
-      <p class="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+      <p class="text-xl text-text-secondary leading-relaxed">
         {t('contact.intro')}
       </p>
     </div>
@@ -32,13 +32,13 @@ const t = useTranslations(lang);
     <!-- Additional Info -->
     <section class="w-full max-w-4xl text-center">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div class="p-8 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
-          <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-2 tracking-widest uppercase">{t('contact.email.title')}</h3>
-          <p class="text-primary-600 dark:text-primary-400 font-bold text-xl">hello@example.com</p>
+        <div class="p-8 bg-bg-card rounded-3xl border border-border shadow-sm">
+          <h3 class="text-sm font-bold text-text-primary mb-2 tracking-widest uppercase">{t('contact.email.title')}</h3>
+          <p class="text-accent font-bold text-xl">hello@example.com</p>
         </div>
-        <div class="p-8 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
-          <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-2 tracking-widest uppercase">{t('contact.follow.title')}</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-xl font-medium">@multilingual_blog</p>
+        <div class="p-8 bg-bg-card rounded-3xl border border-border shadow-sm">
+          <h3 class="text-sm font-bold text-text-primary mb-2 tracking-widest uppercase">{t('contact.follow.title')}</h3>
+          <p class="text-text-secondary text-xl font-medium">@multilingual_blog</p>
         </div>
       </div>
     </section>

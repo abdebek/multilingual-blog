@@ -35,24 +35,24 @@ const footerLinks = [
 const currentYear = new Date().getFullYear();
 ---
 <footer class:list={[
-  'bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800',
+  'bg-bg-card border-t border-border',
   'px-4 py-12 md:py-16 mt-auto',
   lang === 'ar' ? 'font-cairo text-right' : 'text-left'
 ]}>
   <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
     <!-- Tagline Section -->
     <div class="lg:col-span-2">
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">{t('footer.tagline')}</h1>
-      <p class="text-gray-600 dark:text-gray-400 max-w-md leading-relaxed">{t('footer.description')}</p>
+      <h1 class="text-2xl font-bold text-text-primary mb-4 tracking-tight">{t('footer.tagline')}</h1>
+      <p class="text-text-secondary max-w-md leading-relaxed">{t('footer.description')}</p>
     </div>
 
     <!-- Footer Links -->
     <div>
-      <h2 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-6">{t('footer.linksTitle')}</h2>
+      <h2 class="text-sm font-bold text-text-primary uppercase tracking-wider mb-6">{t('footer.linksTitle')}</h2>
       <ul class="space-y-4">
         {footerLinks.map(({ href, label }) => (
           <li>
-            <a href={href} class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium">
+            <a href={href} class="text-text-secondary hover:text-accent transition-colors font-medium">
               {label}
             </a>
           </li>
@@ -62,10 +62,10 @@ const currentYear = new Date().getFullYear();
 
     <!-- Social Links -->
     <div>
-      <h2 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-6">{t('footer.followUs')}</h2>
+      <h2 class="text-sm font-bold text-text-primary uppercase tracking-wider mb-6">{t('footer.followUs')}</h2>
       <div class={`flex ${lang === 'ar' ? 'space-x-reverse space-x-5' : 'space-x-5'}`}>
         {socialLinks.map(({ href, path, label }) => (
-          <a href={href} class="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors transform hover:-translate-y-1 duration-200" aria-label={t(label)}>
+          <a href={href} class="text-text-muted hover:text-accent transition-colors transform hover:-translate-y-1 duration-200" aria-label={t(label)}>
             <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
               <path d={path} />
             </svg>
@@ -76,9 +76,9 @@ const currentYear = new Date().getFullYear();
   </div>
 
   <!-- Footer Bottom -->
-  <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-500">
+  <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center text-sm text-text-muted">
     <p>&copy; {currentYear} {t('site.title')}. {t('footer.rightsReserved')}</p>
-    <blockquote class="mt-4 md:mt-0 italic font-serif border-l-2 md:border-l-0 md:border-x-0 border-primary-500 pl-4 md:pl-0">
+    <blockquote class="mt-4 md:mt-0 italic font-serif border-l-2 md:border-l-0 md:border-x-0 border-accent pl-4 md:pl-0">
       &ldquo;{t('footer.quote')}&rdquo;
     </blockquote>
   </div>

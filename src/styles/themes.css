@@ -1,0 +1,96 @@
+/* Forest Theme */
+[data-theme="forest"] {
+  --accent: #10b981;
+  --accent-hover: #059669;
+  --accent-subtle: #ecfdf5;
+  --accent-text: #10b981;
+
+  --primary-50: #ecfdf5;
+  --primary-100: #d1fae5;
+  --primary-200: #a7f3d0;
+  --primary-300: #6ee7b7;
+  --primary-400: #34d399;
+  --primary-500: #10b981;
+  --primary-600: #059669;
+  --primary-700: #047857;
+  --primary-800: #065f46;
+  --primary-900: #064e3b;
+  --primary-950: #022c22;
+}
+
+[data-theme="forest"].dark {
+  --accent: #34d399;
+  --accent-hover: #6ee7b7;
+  --accent-subtle: #064e3b;
+  --accent-text: #34d399;
+
+  --primary-50: #022c22;
+  --primary-100: #064e3b;
+  --primary-200: #065f46;
+  --primary-300: #047857;
+  --primary-400: #059669;
+  --primary-500: #10b981;
+  --primary-600: #34d399;
+  --primary-700: #6ee7b7;
+  --primary-800: #a7f3d0;
+  --primary-900: #d1fae5;
+  --primary-950: #ecfdf5;
+}
+
+/* Midnight Theme */
+[data-theme="midnight"] {
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-elevated: #f1f5f9;
+  --bg-inset: #f8fafc;
+  --bg-hover: #f1f5f9;
+
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --accent-subtle: #eef2ff;
+  --accent-text: #6366f1;
+
+  --primary-50: #eef2ff;
+  --primary-100: #e0e7ff;
+  --primary-200: #c7d2fe;
+  --primary-300: #a5b4fc;
+  --primary-400: #818cf8;
+  --primary-500: #6366f1;
+  --primary-600: #4f46e5;
+  --primary-700: #4338ca;
+  --primary-800: #3730a3;
+  --primary-900: #312e81;
+  --primary-950: #1e1b4b;
+}
+
+[data-theme="midnight"].dark {
+  --bg-page: #020617;
+  --bg-card: #0f172a;
+  --bg-elevated: #1e293b;
+  --bg-inset: #020617;
+  --bg-hover: #1e293b;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+
+  --border: #1e293b;
+  --border-subtle: #0f172a;
+
+  --accent: #818cf8;
+  --accent-hover: #a5b4fc;
+  --accent-subtle: #312e81;
+  --accent-text: #818cf8;
+
+  --primary-50: #1e1b4b;
+  --primary-100: #312e81;
+  --primary-200: #3730a3;
+  --primary-300: #4338ca;
+  --primary-400: #4f46e5;
+  --primary-500: #6366f1;
+  --primary-600: #818cf8;
+  --primary-700: #a5b4fc;
+  --primary-800: #c7d2fe;
+  --primary-900: #e0e7ff;
+  --primary-950: #eef2ff;
+}

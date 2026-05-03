@@ -2,8 +2,10 @@
 import { getLangFromUrl, getDirection, useTranslations } from '../utils/i18n';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer.astro';
+import ThemeProvider from '../components/ThemeProvider.astro';
 import '@fontsource/cairo';
 import '../styles/global.css';
+import '../styles/themes.css';
 
 interface Props {
   title: string;
@@ -26,11 +28,11 @@ const metaDescription = description || t('footer.description');
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    
+
     <title>{title} | {t('site.title')}</title>
     <meta name="description" content={metaDescription} />
     <link rel="canonical" href={Astro.url} />
-    
+
     <!-- Netlify Identity Widget (Lazy Loaded) -->
     <script>
       // Only load the widget if we are on the admin page or have an identity token in the URL
@@ -68,36 +70,14 @@ const metaDescription = description || t('footer.description');
     <meta property="twitter:description" content={metaDescription} />
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-    <script is:inline>
-      const getInitialTheme = () => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 'dark';
-        }
-        return 'light';
-      };
-
-      const setTheme = (theme) => {
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-          document.documentElement.style.colorScheme = 'dark';
-        } else {
-          document.documentElement.classList.remove('dark');
-          document.documentElement.style.colorScheme = 'light';
-        }
-      };
-
-      setTheme(getInitialTheme());
-    </script>
+    <ThemeProvider />
   </head>
   <body class:list={[
-    'min-h-screen flex flex-col selection:bg-blue-200 selection:text-blue-900',
+    'min-h-screen flex flex-col selection:bg-accent-subtle selection:text-accent-hover',
     `${dir === 'rtl' ? 'font-cairo' : 'font-sans antialiased'}`,
-    'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300'
+    'bg-bg-page text-text-primary transition-colors duration-300'
   ]}>
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-[200] focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-[200] focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded-lg">
       {t('nav.skip')}
     </a>
     <div data-pagefind-ignore class="relative z-[100]">

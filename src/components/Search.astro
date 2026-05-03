@@ -11,7 +11,7 @@ const isDev = import.meta.env.DEV;
     <button
       id="search-button-mobile"
       type="button"
-      class="p-2.5 text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all"
+      class="p-2.5 text-text-muted hover:text-accent hover:bg-bg-hover rounded-xl transition-all"
       aria-label={t('search.placeholder')}
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,14 +22,13 @@ const isDev = import.meta.env.DEV;
     <button
       id="search-button-desktop"
       type="button"
-      class="flex items-center gap-3 px-4 py-2 w-48 lg:w-64 text-left text-sm text-gray-400 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-500/50 dark:hover:border-primary-500/50 hover:bg-white dark:hover:bg-gray-800 transition-all group"
+      class="flex items-center gap-3 px-4 py-2 w-48 lg:w-64 text-left text-sm text-text-muted bg-bg-page border border-border rounded-xl hover:border-accent/50 hover:bg-bg-card transition-all group"
     >
-    >
-      <svg class="w-4 h-4 text-gray-400 group-hover:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-4 h-4 text-text-muted group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
       <span class="flex-1">{t('search.placeholder')}</span>
-      <kbd class="hidden lg:inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium text-gray-400 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded">
+      <kbd class="hidden lg:inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium text-text-muted bg-bg-card border border-border rounded">
         <span class="text-xs">⌘</span>K
       </kbd>
     </button>
@@ -37,24 +36,24 @@ const isDev = import.meta.env.DEV;
 
   <div
     id="search-modal"
-    class="hidden fixed inset-0 z-[110] overflow-y-auto bg-gray-950/60 backdrop-blur-sm p-4 pt-[10vh] sm:pt-[15vh]"
+    class="hidden fixed inset-0 z-[110] overflow-y-auto bg-black/60 backdrop-blur-sm p-4 pt-[10vh] sm:pt-[15vh]"
   >
-    <div 
+    <div
       id="search-modal-content"
-      class="max-w-2xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden transform transition-all"
+      class="max-w-2xl mx-auto bg-bg-card rounded-2xl shadow-2xl border border-border overflow-hidden transform transition-all"
     >
-      <div class="p-5 border-b border-gray-100 dark:border-gray-800 flex items-center gap-4">
-        <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="p-5 border-b border-border-subtle flex items-center gap-4">
+        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
         <input
           type="text"
           id="search-input"
           placeholder={t('search.placeholder')}
-          class="flex-1 bg-transparent border-none focus:ring-0 text-xl text-gray-900 dark:text-white placeholder-gray-400 outline-none"
+          class="flex-1 bg-transparent border-none focus:ring-0 text-xl text-text-primary placeholder-text-muted outline-none"
           autocomplete="off"
         />
-        <button id="close-search" type="button" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1">
+        <button id="close-search" type="button" class="text-text-muted hover:text-text-secondary p-1">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
@@ -63,24 +62,24 @@ const isDev = import.meta.env.DEV;
         <!-- Results will be injected here -->
         {isDev && (
           <div class="p-8 text-center">
-            <div class="inline-flex p-3 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 mb-4">
+            <div class="inline-flex p-3 rounded-full bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 mb-4">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             </div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('search.devMode')}</h3>
-            <p class="text-gray-500 dark:text-gray-400 text-sm max-w-sm mx-auto leading-relaxed">
+            <h3 class="text-lg font-bold text-text-primary mb-2">{t('search.devMode')}</h3>
+            <p class="text-text-secondary text-sm max-w-sm mx-auto leading-relaxed">
               {t('search.devModeDesc')}
             </p>
           </div>
         )}
       </div>
 
-      <div class="px-5 py-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center text-[11px] text-gray-400 font-medium">
+      <div class="px-5 py-3 bg-bg-page border-t border-border-subtle flex justify-between items-center text-[11px] text-text-muted font-medium">
         <div class="flex items-center gap-4">
-          <span class="flex items-center gap-1.5"><kbd class="px-1 py-0.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded shadow-sm">↵</kbd> {t('search.select')}</span>
-          <span class="flex items-center gap-1.5"><kbd class="px-1 py-0.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded shadow-sm">↑↓</kbd> {t('search.navigate')}</span>
+          <span class="flex items-center gap-1.5"><kbd class="px-1 py-0.5 bg-bg-card border border-border rounded shadow-sm">↵</kbd> {t('search.select')}</span>
+          <span class="flex items-center gap-1.5"><kbd class="px-1 py-0.5 bg-bg-card border border-border rounded shadow-sm">↑↓</kbd> {t('search.navigate')}</span>
         </div>
         <div class="flex items-center gap-1">
-          {t('search.powered')} <span class="text-primary-500 font-bold">Pagefind</span>
+          {t('search.powered')} <span class="text-accent font-bold">Pagefind</span>
         </div>
       </div>
     </div>
@@ -94,7 +93,7 @@ const isDev = import.meta.env.DEV;
     document.getElementById('search-button-desktop'),
     document.getElementById('search-button-mobile')
   ].filter(Boolean);
-  
+
   const searchModal = document.getElementById('search-modal');
   const searchInput = document.getElementById('search-input');
   const searchResults = document.getElementById('search-results');
@@ -102,6 +101,8 @@ const isDev = import.meta.env.DEV;
 
   // Move modal to body to avoid stacking context issues
   if (searchModal && searchModal.parentElement !== document.body) {
+    const existing = document.body.querySelector('#search-modal');
+    if (existing) existing.remove();
     document.body.appendChild(searchModal);
   }
 
@@ -173,7 +174,7 @@ const isDev = import.meta.env.DEV;
       if (filteredResults.length === 0) {
         searchResults.innerHTML = `
           <div class="p-12 text-center">
-            <p class="text-gray-500 dark:text-gray-400 font-medium">${noResultsText}</p>
+            <p class="text-text-secondary font-medium">${noResultsText}</p>
           </div>
         `;
         return;
@@ -183,14 +184,14 @@ const isDev = import.meta.env.DEV;
       for (const data of filteredResults) {
         const div = document.createElement('a');
         div.href = data.url;
-        div.className = 'block p-4 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-xl transition-all group border border-transparent hover:border-primary-100 dark:hover:border-primary-800';
+        div.className = 'block p-4 hover:bg-accent-subtle rounded-xl transition-all group border border-transparent hover:border-accent-subtle';
         div.innerHTML = `
           <div class="flex items-center justify-between gap-4">
             <div class="flex-1">
-              <h3 class="font-bold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">${data.meta.title}</h3>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5 line-clamp-2 leading-relaxed">${data.excerpt}</p>
+              <h3 class="font-bold text-text-primary group-hover:text-accent transition-colors">${data.meta.title}</h3>
+              <p class="text-xs text-text-secondary mt-1.5 line-clamp-2 leading-relaxed">${data.excerpt}</p>
             </div>
-            <div class="hidden sm:block text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div class="hidden sm:block text-accent opacity-0 group-hover:opacity-100 transition-opacity">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </div>
           </div>

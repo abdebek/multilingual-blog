@@ -2,14 +2,14 @@
 import Logo from './Logo.astro';
 import NavLinks from './NavLinks.astro';
 import LanguageDropdown from './LanguageDropdown.astro';
-import ThemeToggle from '../ThemeToggle.astro';
+import ThemeSelector from '../ThemeSelector.astro';
 import Search from '../Search.astro';
 import { getLangFromUrl } from '../../utils/i18n';
 
 const lang = getLangFromUrl(Astro.url);
 ---
 <header class:list={[
-  'sticky top-0 z-[100] bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/80 dark:border-gray-800/80 shadow-sm shadow-gray-200/20 dark:shadow-black/20',
+  'sticky top-0 z-[100] bg-bg-card/80 backdrop-blur-md border-b border-border/80 shadow-sm',
   'px-4 h-16 md:h-20 transition-all duration-300',
   lang === 'ar' ? 'font-cairo' : ''
 ]}>
@@ -17,7 +17,7 @@ const lang = getLangFromUrl(Astro.url);
     <Logo lang={lang} />
     <div class="flex items-center gap-3 md:gap-8">
       <NavLinks lang={lang} />
-      <div class="flex items-center gap-2 md:gap-4 border-l border-gray-200 dark:border-gray-700 pl-2 md:pl-6">
+      <div class="flex items-center gap-2 md:gap-4 border-l border-border pl-2 md:pl-6">
         <div class="hidden sm:block">
           <Search lang={lang} />
         </div>
@@ -25,7 +25,7 @@ const lang = getLangFromUrl(Astro.url);
           <Search lang={lang} mobile={true} />
         </div>
         <div class="flex items-center gap-2">
-          <ThemeToggle lang={lang} />
+          <ThemeSelector lang={lang} />
           <LanguageDropdown lang={lang} />
         </div>
       </div>
