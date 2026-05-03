@@ -6,7 +6,9 @@ import { defaultLang } from '../i18n/ui';
 <html lang={defaultLang}>
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
+    <script is:inline define:vars={{ defaultLang }}>
+      window.location.replace('/' + defaultLang + '/' + window.location.hash);
+    </script>
     <title>Redirecting...</title>
   </head>
 </html>
