@@ -1,9 +1,9 @@
 /* Forest Theme */
 [data-theme="forest"] {
-  --accent: #10b981;
-  --accent-hover: #059669;
+  --accent: #047857;
+  --accent-hover: #065f46;
   --accent-subtle: #ecfdf5;
-  --accent-text: #10b981;
+  --accent-text: #047857;
 
   --primary-50: #ecfdf5;
   --primary-100: #d1fae5;
@@ -55,7 +55,7 @@
   --accent: #7c3aed;
   --accent-hover: #6d28d9;
   --accent-subtle: #ede9fe;
-  --accent-text: #7c3aed;
+  --accent-text: #5b21b6;
 
   --primary-50: #f5f3ff;
   --primary-100: #ede9fe;
@@ -84,10 +84,10 @@
   --border: #1e1e4b;
   --border-subtle: #11112e;
 
-  --accent: #a855f7;
-  --accent-hover: #c084fc;
+  --accent: #c084fc;
+  --accent-hover: #d8b4fe;
   --accent-subtle: #2e1065;
-  --accent-text: #a855f7;
+  --accent-text: #c084fc;
 
   --primary-50: #2e1065;
   --primary-100: #4c1d95;
@@ -113,7 +113,7 @@
   --accent: #6366f1;
   --accent-hover: #4f46e5;
   --accent-subtle: #eef2ff;
-  --accent-text: #6366f1;
+  --accent-text: #3730a3;
 
   --primary-50: #eef2ff;
   --primary-100: #e0e7ff;

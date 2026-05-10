@@ -67,7 +67,7 @@ const otherPosts = page.currentPage === 1 ? posts.slice(1) : posts;
                 </div>
                 <div class="p-8 md:p-12 lg:p-12 flex flex-col justify-center">
                   <div class="flex items-center gap-3 mb-6">
-                    <span class="px-3 py-1 bg-accent-subtle text-accent text-xs font-bold uppercase tracking-wider rounded-full">
+                    <span class="px-3 py-1 bg-accent-subtle text-accent-text text-xs font-bold uppercase tracking-wider rounded-full">
                       {t('blog.latest')}
                     </span>
                     <span class="text-text-muted text-sm">•</span>
@@ -81,7 +81,7 @@ const otherPosts = page.currentPage === 1 ? posts.slice(1) : posts;
                   <p class="text-lg text-text-secondary mb-8 leading-relaxed line-clamp-3">
                     {featuredPost.data.description}
                   </p>
-                  <div class="flex items-center text-accent font-bold">
+                  <div class="flex items-center text-accent-text font-bold">
                     {t('blog.readFull')}
                     <svg class="ms-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-2 rtl:-translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />

@@ -236,7 +236,7 @@ const t = useTranslations(lang);
         var html = escapeHtml(data.payload.answer);
         var sources = (data.payload.context || [])
           .filter(function(c) { return c.url; })
-          .map(function(c, i) { return '<a href="' + c.url + '" class="text-accent hover:underline text-xs">[' + (i + 1) + '] ' + escapeHtml(c.title || sourceFallback) + '</a>'; })
+          .map(function(c, i) { return '<a href="' + c.url + '" class="text-accent-text hover:underline text-xs">[' + (i + 1) + '] ' + escapeHtml(c.title || sourceFallback) + '</a>'; })
           .filter(function(v, i, a) { return a.indexOf(v) === i; })
           .slice(0, 2);
 

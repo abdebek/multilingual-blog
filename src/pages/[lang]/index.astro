@@ -25,12 +25,6 @@ const latestPosts = posts
     <section class="w-full relative border-b border-border overflow-hidden min-h-[70vh] flex items-center justify-center" id="hero-section">
       <CosmicBackground />
       <div class="container mx-auto px-4 py-24 md:py-32 relative z-10 text-center max-w-4xl">
-        <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-subtle border border-accent/20 text-accent text-sm font-semibold mb-10 tracking-wide">
-          <svg class="w-4 h-4 animate-spin" style="animation-duration: 8s;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-          </svg>
-          <span>{t('site.title')}</span>
-        </div>
         <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-text-primary leading-snug">
           {t('site.description')}
         </h1>
@@ -58,7 +52,7 @@ const latestPosts = posts
               <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-text-primary mb-2">{t('home.latest.title')}</h2>
               <p class="text-text-muted">{t('home.latest.desc')}</p>
             </div>
-            <a href={`/${lang}/blog`} class="hidden md:flex items-center text-accent hover:text-accent-hover font-medium transition-colors">
+            <a href={`/${lang}/blog`} class="hidden md:flex items-center text-accent-text hover:text-accent-hover font-medium transition-colors">
               {t('home.latest.viewAll')}
               <svg class="w-5 h-5 ms-1 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
