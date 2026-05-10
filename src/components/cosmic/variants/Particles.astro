@@ -1,0 +1,21 @@
+<div class="cosmic-dots" aria-hidden="true"></div>
+
+<style>
+  .cosmic-dots {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background-image: radial-gradient(circle, rgba(168, 85, 247, 0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  
+  :global(.dark) .cosmic-dots {
+    background-image: radial-gradient(circle, rgba(168, 85, 247, 0.15) 1px, transparent 1px);
+  }
+
+  :global(html:not(.dark)) .cosmic-dots {
+    background-image: radial-gradient(circle, rgba(124, 58, 237, 0.1) 1px, transparent 1px);
+  }
+</style>

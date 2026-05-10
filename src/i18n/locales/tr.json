@@ -88,5 +88,8 @@
   "chat.error": "Üzgünüm, şu anda bir yanıt oluşturamadım. Lütfen tekrar deneyin.",
   "chat.disclaimer": "AI tarafından oluşturulan yanıtlar %100 doğru olmayabilir.",
   "chat.enableAI": "AI Asistanını Etkinleştir",
-  "chat.enableAIDesc": "Makalelerimiz hakkında soru sormak için AI modellerini indirin (~100 MB). Her şey tarayıcınızda gizli olarak çalışır."
+  "chat.enableAIDesc": "Makalelerimiz hakkında soru sormak için AI modellerini indirin (~100 MB). Her şey tarayıcınızda gizli olarak çalışır.",
+  "social.twitter": "X (Twitter)",
+  "social.facebook": "Facebook",
+  "social.instagram": "Instagram"
 }

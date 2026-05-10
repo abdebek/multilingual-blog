@@ -19,10 +19,19 @@
       return 'light';
     };
 
+    const getInitialCosmic = () => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('cosmic')) {
+        return localStorage.getItem('cosmic');
+      }
+      return 'none';
+    };
+
     const theme = getInitialTheme();
     const mode = getInitialMode();
+    const cosmic = getInitialCosmic();
 
     document.documentElement.dataset.theme = theme;
+    document.documentElement.dataset.cosmic = cosmic;
 
     if (mode === 'dark') {
       document.documentElement.classList.add('dark');
@@ -50,6 +59,11 @@
     window.__switchTheme = (newTheme) => {
       document.documentElement.dataset.theme = newTheme;
       localStorage.setItem('theme', newTheme);
+    };
+
+    window.__switchCosmic = (newVariant) => {
+      document.documentElement.dataset.cosmic = newVariant;
+      localStorage.setItem('cosmic', newVariant);
     };
   })();
 </script>

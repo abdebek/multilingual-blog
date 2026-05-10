@@ -1,0 +1,14 @@
+---
+import { cosmicVariants, type CosmicVariant, DEFAULT_COSMIC } from './index';
+
+interface Props {
+  variant?: CosmicVariant;
+}
+
+const { variant: propVariant } = Astro.props;
+const variant: CosmicVariant = propVariant ?? DEFAULT_COSMIC;
+
+const { default: VariantComponent } = await cosmicVariants[variant]();
+---
+
+<VariantComponent />

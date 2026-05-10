@@ -63,7 +63,7 @@ const currentYear = new Date().getFullYear();
     <!-- Social Links -->
     <div>
       <h2 class="text-sm font-bold text-text-primary uppercase tracking-wider mb-6">{t('footer.followUs')}</h2>
-      <div class={`flex ${lang === 'ar' ? 'space-x-reverse space-x-5' : 'space-x-5'}`}>
+      <div class="flex gap-5">
         {socialLinks.map(({ href, path, label }) => (
           <a href={href} class="text-text-muted hover:text-accent transition-colors transform hover:-translate-y-1 duration-200" aria-label={t(label)}>
             <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">

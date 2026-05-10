@@ -1,0 +1,19 @@
+<div class="cosmic-gradient" aria-hidden="true"></div>
+
+<style>
+  .cosmic-gradient {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 0%, #1a1a3e 0%, #0a0a1a 50%, #050510 100%);
+  }
+  
+  :global(.dark) .cosmic-gradient {
+    background: radial-gradient(ellipse at 50% 0%, #1a1a3e 0%, #0a0a1a 50%, #050510 100%);
+  }
+
+  :global(html:not(.dark)) .cosmic-gradient {
+    background: radial-gradient(ellipse at 50% 0%, #ede9fe 0%, #f5f3ff 50%, #ffffff 100%);
+  }
+</style>

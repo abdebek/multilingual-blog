@@ -88,5 +88,8 @@
   "chat.error": "Sorry, I couldn't generate an answer right now. Please try again.",
   "chat.disclaimer": "AI-generated answers may not be 100% accurate.",
   "chat.enableAI": "Enable AI Assistant",
-  "chat.enableAIDesc": "Download AI models (~100 MB) to ask questions about our articles. Everything runs privately in your browser."
+  "chat.enableAIDesc": "Download AI models (~100 MB) to ask questions about our articles. Everything runs privately in your browser.",
+  "social.twitter": "X (Twitter)",
+  "social.facebook": "Facebook",
+  "social.instagram": "Instagram"
 }
