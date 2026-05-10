@@ -99,7 +99,7 @@ const t = useTranslations(lang);
   </button>
 </div>
 
-<script is:inline define:vars={{ lang, thinkingText: t('chat.thinking'), errorText: t('chat.error'), readyText: t('chat.welcome') }}>
+<script is:inline define:vars={{ lang, thinkingText: t('chat.thinking'), errorText: t('chat.error'), readyText: t('chat.welcome'), kbStatus: t('chat.status.kb'), embedderStatus: t('chat.status.embedder'), generatorStatus: t('chat.status.generator'), generatingStatus: t('chat.status.generating'), startingStatus: t('chat.status.starting'), sourceFallback: t('chat.source'), retryText: t('chat.retry'), loadingText: t('chat.loading') }}>
 (function() {
   var LS_KEY = 'gp-ai-enabled';
   var toggleBtn = document.getElementById('chat-toggle');
@@ -210,11 +210,11 @@ const t = useTranslations(lang);
 
       if (data.type === 'STATUS') {
         var label = '';
-        if (data.status === 'kb') label = 'Loading knowledge base...';
-        else if (data.status === 'embedder') label = 'Loading embedder (~22 MB)...';
-        else if (data.status === 'generator') label = 'Loading generator (~77 MB)...';
+        if (data.status === 'kb') label = kbStatus;
+        else if (data.status === 'embedder') label = embedderStatus;
+        else if (data.status === 'generator') label = generatorStatus;
         else if (data.status === 'retrieving') label = thinkingText;
-        else if (data.status === 'generating') label = 'Generating answer...';
+        else if (data.status === 'generating') label = generatingStatus;
         if (label) showStatus(label);
       }
 
@@ -236,7 +236,7 @@ const t = useTranslations(lang);
         var html = escapeHtml(data.payload.answer);
         var sources = (data.payload.context || [])
           .filter(function(c) { return c.url; })
-          .map(function(c, i) { return '<a href="' + c.url + '" class="text-accent hover:underline text-xs">[' + (i + 1) + '] ' + escapeHtml(c.title || 'Source') + '</a>'; })
+          .map(function(c, i) { return '<a href="' + c.url + '" class="text-accent hover:underline text-xs">[' + (i + 1) + '] ' + escapeHtml(c.title || sourceFallback) + '</a>'; })
           .filter(function(v, i, a) { return a.indexOf(v) === i; })
           .slice(0, 2);
 
@@ -259,7 +259,7 @@ const t = useTranslations(lang);
         setLoading(false);
         if (!workerReady) {
           enableBtn.disabled = false;
-          enableBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> Retry';
+          enableBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> ' + retryText;
         }
       }
     };
@@ -275,13 +275,13 @@ const t = useTranslations(lang);
   function loadModels() {
     initWorker();
     if (!worker) return;
-    showStatus('Starting AI models...');
+    showStatus(startingStatus);
     worker.postMessage({ type: 'LOAD', id: ++msgId });
   }
 
   enableBtn.addEventListener('click', function() {
     enableBtn.disabled = true;
-    enableBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Loading...';
+    enableBtn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> ' + loadingText;
     localStorage.setItem(LS_KEY, '1');
     showForm();
     loadModels();

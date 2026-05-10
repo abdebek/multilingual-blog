@@ -43,6 +43,9 @@
 (function() {
   if (window.matchMedia('(hover: none)').matches) return;
 
+  var cosmic = document.documentElement.dataset.cosmic;
+  if (!cosmic || cosmic === 'none') return;
+
   var glow = document.getElementById('galactic-cursor');
   if (!glow) return;
 
@@ -55,7 +58,7 @@
 
   function onMove(e) {
     var now = performance.now();
-    if (now - lastMove < 16) return; // throttle to ~60fps
+    if (now - lastMove < 16) return;
     lastMove = now;
     mx = e.clientX;
     my = e.clientY;

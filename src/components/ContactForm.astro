@@ -24,7 +24,7 @@ const t = useTranslations(lang);
         id="name"
         name="name"
         required
-        placeholder="John Doe"
+        placeholder={t('contact.form.namePlaceholder')}
         class="w-full px-5 py-4 rounded-xl border border-border bg-bg-inset text-text-primary focus:ring-2 focus:ring-accent focus:border-transparent transition-all outline-none"
       />
     </div>
@@ -38,7 +38,7 @@ const t = useTranslations(lang);
         id="email"
         name="email"
         required
-        placeholder="john@example.com"
+        placeholder={t('contact.form.emailPlaceholder')}
         class="w-full px-5 py-4 rounded-xl border border-border bg-bg-inset text-text-primary focus:ring-2 focus:ring-accent focus:border-transparent transition-all outline-none"
       />
     </div>
@@ -52,7 +52,7 @@ const t = useTranslations(lang);
         name="message"
         rows="5"
         required
-        placeholder="How can we help you?"
+        placeholder={t('contact.form.messagePlaceholder')}
         class="w-full px-5 py-4 rounded-xl border border-border bg-bg-inset text-text-primary focus:ring-2 focus:ring-accent focus:border-transparent transition-all outline-none resize-none"
       ></textarea>
     </div>

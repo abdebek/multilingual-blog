@@ -4,11 +4,13 @@
 
 An AI-powered, multi-theme publishing platform built with Astro 6 and Tailwind CSS 4. Write and manage content without touching code, deploy globally on Netlify, and give readers a cosmic browsing experience.
 
+**Live Demo:** [galacticpages.netlify.app](https://galacticpages.netlify.app)
+
 ## Key Features
 
 - **AI Chat Assistant**: Client-side RAG chat powered by Transformers.js. Answers questions using your published blog posts — zero API costs, fully private, no server required.
 - **Multi-Theme System**: Four distinct visual themes (Modern, Midnight, Forest, Galactic) switchable instantly via semantic CSS tokens.
-- **Cosmic Visuals**: Animated starfield background with nebulae, shooting stars, supernovas, and an interactive galactic cursor with stardust trail.
+- **Composable Cosmic Backgrounds**: Pluggable background system with multiple variants (Starfield, Gradient, Particles, None). Configurable via `COSMIC_VARIANT` env variable. Galactic cursor auto-enables when a cosmic variant is active.
 - **Multilingual & RTL**: Full support for English, Turkish, and Arabic (RTL) with proper typography, alignment, and Cairo font for Arabic text.
 - **Client-Side Search**: Fast full-text search powered by Pagefind. Works out of the box after building.
 - **Integrated CMS**: Pre-configured Decap CMS for writing posts and managing images through a professional UI — changes commit directly to your Git repository.
@@ -61,7 +63,8 @@ Then visit `http://localhost:4321/admin/`.
 ├── scripts/
 │   └── build-kb.mjs        # Build-time embedding generator
 ├── src/
-│   ├── components/         # Astro components (Header, Footer, Chat, Starfield, Cursor, etc.)
+│   ├── components/         # Astro components (Header, Footer, Chat, cosmic/, etc.)
+│   │   └── cosmic/          # Pluggable cosmic background variants
 │   ├── content/blog/       # Blog posts organized by language
 │   ├── i18n/               # Translation files (EN, TR, AR)
 │   ├── layouts/            # Base Layout.astro
@@ -82,6 +85,19 @@ UI text is managed in `src/i18n/ui.ts` and `src/i18n/locales/*.json`. Add new la
 ### Themes
 
 Themes are defined in `src/styles/themes.css` using CSS custom properties. The active theme is applied via `data-theme` on the `<html>` element. Add a new theme by creating a new `[data-theme="name"]` block and registering it in `ThemeSelector.astro`.
+
+### Cosmic Variants
+
+Cosmic background variants are pluggable components in `src/components/cosmic/variants/`. Available variants:
+
+| Variant | Description | File |
+|---------|-------------|------|
+| `none` | No background effect (zero overhead) | `None.astro` |
+| `gradient` | CSS-only radial gradient | `Gradient.astro` |
+| `particles` | CSS-only dot pattern | `Particles.astro` |
+| `starfield` | Animated nebulae, stars, and shooting stars | `Starfield.astro` |
+
+Set the default variant via `COSMIC_VARIANT` in `.env`. Override per-page via the `variant` prop on `<CosmicBackground />`. The galactic cursor automatically engages when a non-`none` variant is active.
 
 ### Knowledge Base & AI Chat
 
