@@ -1,10 +1,25 @@
+# Decap CMS — GitHub OAuth (Cloudflare Pages Functions at /api/auth + /api/callback)
+#
+# Setup:
+# 1. GitHub → Settings → Developer settings → OAuth Apps → New
+#    Homepage URL: https://YOUR_DOMAIN
+#    Authorization callback URL: https://YOUR_DOMAIN/api/callback
+# 2. Cloudflare Pages env: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
+# 3. Local editing: npm run cms-proxy && open http://localhost:4321/admin/
 backend:
-  name: git-gateway
+  name: github
+  repo: abdebek/multilingual-blog
   branch: main
+  # Same-origin OAuth (Cloudflare Pages Functions). Leading slash = site root.
+  auth_endpoint: /api/auth
+
 local_backend: true
+
 media_folder: "public/uploads"
 public_folder: "/uploads"
+
 publish_mode: editorial_workflow
+
 collections:
   - name: "blog"
     label: "Blog Posts"

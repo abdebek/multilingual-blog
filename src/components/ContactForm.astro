@@ -3,6 +3,9 @@ import { useTranslations } from '../utils/i18n';
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+// Default: Cloudflare Pages Function. Override with Formspree etc. via env.
+const contactEndpoint =
+  import.meta.env.PUBLIC_CONTACT_ENDPOINT || '/api/contact';
 ---
 
 <div class="max-w-xl mx-auto">
@@ -10,15 +13,14 @@ const t = useTranslations(lang);
     id="contact-form"
     name="contact"
     method="POST"
-    data-netlify="true"
-    netlify-honeypot="bot-field"
+    action={contactEndpoint}
     class="space-y-8 bg-white dark:bg-gray-800 p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 transition-all duration-500"
     novalidate
   >
-    <input type="hidden" name="form-name" value="contact" />
-    <p class="hidden">
+    <!-- Honeypot (hidden from users) -->
+    <p class="hidden" aria-hidden="true">
       <label>
-        Don’t fill this out: <input name="bot-field" />
+        Don’t fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" />
       </label>
     </p>
 
@@ -115,7 +117,7 @@ const t = useTranslations(lang);
   </div>
 </div>
 
-<script is:inline>
+<script is:inline define:vars={{ contactEndpoint }}>
   (function () {
     const form = document.getElementById('contact-form');
     const successMessage = document.getElementById('success-message');
@@ -138,7 +140,6 @@ const t = useTranslations(lang);
       form?.classList.add('hidden');
       errorMessage?.classList.add('hidden');
       successMessage?.classList.remove('hidden');
-      successMessage?.focus?.();
     };
 
     const showError = () => {
@@ -168,13 +169,25 @@ const t = useTranslations(lang);
       const formData = new FormData(form);
 
       try {
-        const res = await fetch('/', {
+        const isFormspree = /formspree\.io/i.test(contactEndpoint);
+        const res = await fetch(contactEndpoint, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(formData).toString(),
+          headers: isFormspree
+            ? { Accept: 'application/json', 'Content-Type': 'application/json' }
+            : { Accept: 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.get('name'),
+            email: formData.get('email'),
+            message: formData.get('message'),
+            'bot-field': formData.get('bot-field') || '',
+          }),
         });
 
         if (!res.ok) throw new Error('Submit failed');
+
+        // Formspree returns 200 with ok; our API returns { ok: true }
+        const data = await res.json().catch(() => ({}));
+        if (data && data.ok === false) throw new Error('Submit failed');
 
         showSuccess();
         setLoading(false);

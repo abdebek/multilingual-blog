@@ -3,7 +3,8 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://multilingual-blog.example.com',
+  // Set to your Cloudflare Pages / custom domain for correct sitemap & OG URLs
+  site: 'https://multilingual-blog.pages.dev',
   vite: {
     plugins: [tailwindcss()],
     build: {

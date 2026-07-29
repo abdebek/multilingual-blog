@@ -1,0 +1,4 @@
+# Cloudflare Pages redirects
+# SPA-style admin (Decap loads from /admin/)
+/admin /admin/index.html 200
+/admin/ /admin/index.html 200

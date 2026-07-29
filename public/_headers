@@ -1,0 +1,9 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+/admin/*
+  # CMS needs same-origin scripts from unpkg; keep framing locked down
+  X-Frame-Options: DENY

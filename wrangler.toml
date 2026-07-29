@@ -1,0 +1,24 @@
+# Cloudflare Pages — https://developers.cloudflare.com/pages/
+# Deploy: connect this repo in the dashboard, or: npm run pages:deploy
+#
+# Build command: npm run build
+# Build output directory: dist
+
+name = "multilingual-blog"
+compatibility_date = "2025-03-01"
+pages_build_output_dir = "dist"
+
+# Cloudflare Email Service — send_email binding
+# https://developers.cloudflare.com/email-service/api/send-emails/workers-api/
+#
+# Prerequisites:
+# - Domain verified for Cloudflare Email Service / sending
+# - Env: CONTACT_FROM_EMAIL, CONTACT_TO_EMAIL
+# - Binding name must match code: CONTACT_EMAIL
+#
+# Optional restrictions (see send-bindings docs):
+#   destination_address = "you@example.com"
+#   allowed_destination_addresses = ["a@x.com", "b@x.com"]
+#   allowed_sender_addresses = ["contact@yourdomain.com"]
+[[send_email]]
+name = "CONTACT_EMAIL"

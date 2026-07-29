@@ -104,7 +104,7 @@
   "privacy.cookies.title": "3. Local storage",
   "privacy.cookies.body": "This site stores your theme preference (light/dark) in your browser’s local storage. Language is chosen via the URL path (for example /en/, /tr/, /ar/) and is not stored as a cookie.",
   "privacy.form.title": "4. Contact Form",
-  "privacy.form.body": "Information submitted via the contact form is processed by Netlify Forms and is used solely to respond to your inquiries.",
+  "privacy.form.body": "Information submitted via the contact form is processed by our site’s form handler on Cloudflare and is used solely to respond to your inquiries. Messages are typically delivered by email through Cloudflare Email Routing, or optionally via a secure webhook if configured.",
   "privacy.note": "Note: This is a template privacy policy. Update this content to match your requirements and local laws.",
   "404.title": "Page not found",
   "404.description": "The page you are looking for does not exist or has been moved.",
