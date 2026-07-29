@@ -1,6 +1,8 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import ContactForm from '../../../components/ContactForm.astro';
+import PageHero from '../../../components/PageHero.astro';
+import ScrollReveal from '../../../components/ScrollReveal.astro';
 import { getLangFromUrl, useTranslations } from '../../../utils/i18n';
 import { languages } from '../../../i18n/ui';
 
@@ -14,37 +16,37 @@ const email = t('contact.email.value');
 ---
 
 <Layout title={t('nav.contact')} description={t('contact.intro')}>
-  <div class="flex flex-col items-center px-4 py-12 md:py-20 w-full max-w-7xl mx-auto">
+  <div class="flex flex-col overflow-x-clip">
+    <PageHero
+      title={t('contact.title')}
+      description={t('contact.intro')}
+      kicker={t('nav.contact')}
+      align="center"
+    />
 
-    <div class="text-center mb-16 max-w-3xl">
-      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight">
-        {t('contact.title')}
-      </h1>
-      <p class="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
-        {t('contact.intro')}
-      </p>
-    </div>
-
-    <div class="w-full mb-24">
-      <ContactForm lang={lang} />
-    </div>
-
-    <section class="w-full max-w-4xl text-center" aria-label={t('contact.title')}>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div class="p-8 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
-          <h2 class="text-sm font-bold text-gray-900 dark:text-white mb-2 tracking-widest uppercase">{t('contact.email.title')}</h2>
-          <a
-            href={`mailto:${email}`}
-            class="text-primary-600 dark:text-primary-400 font-bold text-xl hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-sm"
-          >
-            {email}
-          </a>
-        </div>
-        <div class="p-8 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
-          <h2 class="text-sm font-bold text-gray-900 dark:text-white mb-2 tracking-widest uppercase">{t('contact.follow.title')}</h2>
-          <p class="text-gray-600 dark:text-gray-400 text-xl font-medium">{t('contact.follow.value')}</p>
-        </div>
+    <div class="container mx-auto flex flex-col items-center px-4 py-14 md:py-20 w-full max-w-7xl">
+      <div class="w-full mb-20 reveal" data-reveal>
+        <ContactForm lang={lang} />
       </div>
-    </section>
+
+      <section class="w-full max-w-4xl text-center" aria-label={t('contact.title')}>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <div class="p-8 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm card-lift reveal" data-reveal>
+            <h2 class="text-sm font-bold text-gray-900 dark:text-white mb-3 tracking-widest uppercase">{t('contact.email.title')}</h2>
+            <a
+              href={`mailto:${email}`}
+              class="text-primary-700 dark:text-primary-300 font-bold text-xl hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-sm"
+            >
+              {email}
+            </a>
+          </div>
+          <div class="p-8 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm card-lift reveal reveal-delay-1" data-reveal>
+            <h2 class="text-sm font-bold text-gray-900 dark:text-white mb-3 tracking-widest uppercase">{t('contact.follow.title')}</h2>
+            <p class="text-gray-600 dark:text-gray-400 text-xl font-medium">{t('contact.follow.value')}</p>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
+  <ScrollReveal />
 </Layout>

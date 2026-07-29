@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ScrollReveal from '../../components/ScrollReveal.astro';
 import { getLangFromUrl, useTranslations } from '../../utils/i18n';
 import { languages } from '../../i18n/ui';
 
@@ -12,28 +14,33 @@ const t = useTranslations(lang);
 ---
 
 <Layout title={t('privacy.title')} description={t('privacy.lead')}>
-  <div class="container mx-auto px-4 py-16 md:py-24 max-w-4xl">
-    <article class="prose prose-lg prose-slate mx-auto text-start text-gray-800 dark:text-gray-200">
-      <h1>{t('privacy.title')}</h1>
-      <p class="lead">
-        {t('privacy.lead')}
-      </p>
+  <div class="flex flex-col overflow-x-clip">
+    <PageHero
+      title={t('privacy.title')}
+      description={t('privacy.lead')}
+      kicker={t('footer.privacyPolicy')}
+      compact
+    />
 
-      <h2>{t('privacy.collection.title')}</h2>
-      <p>{t('privacy.collection.body')}</p>
+    <div class="container mx-auto px-4 py-12 md:py-16 max-w-4xl">
+      <article class="prose prose-lg prose-slate mx-auto text-start text-gray-800 dark:text-gray-200 reveal" data-reveal>
+        <h2>{t('privacy.collection.title')}</h2>
+        <p>{t('privacy.collection.body')}</p>
 
-      <h2>{t('privacy.analytics.title')}</h2>
-      <p>{t('privacy.analytics.body')}</p>
+        <h2>{t('privacy.analytics.title')}</h2>
+        <p>{t('privacy.analytics.body')}</p>
 
-      <h2>{t('privacy.cookies.title')}</h2>
-      <p>{t('privacy.cookies.body')}</p>
+        <h2>{t('privacy.cookies.title')}</h2>
+        <p>{t('privacy.cookies.body')}</p>
 
-      <h2>{t('privacy.form.title')}</h2>
-      <p>{t('privacy.form.body')}</p>
+        <h2>{t('privacy.form.title')}</h2>
+        <p>{t('privacy.form.body')}</p>
 
-      <div class="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 italic text-sm text-center not-prose">
-        {t('privacy.note')}
-      </div>
-    </article>
+        <div class="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 italic text-sm text-center not-prose">
+          {t('privacy.note')}
+        </div>
+      </article>
+    </div>
   </div>
+  <ScrollReveal />
 </Layout>

@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import BlogCard from '../../../components/BlogCard.astro';
+import ScrollReveal from '../../../components/ScrollReveal.astro';
 import { getLangFromUrl, useTranslations } from '../../../utils/i18n';
 
 export async function getStaticPaths() {
@@ -24,7 +25,6 @@ const t = useTranslations(lang);
 const wordCount = (post.body || '').trim().split(/\s+/).filter(Boolean).length;
 const readMinutes = Math.max(1, Math.ceil(wordCount / 200));
 
-// Related: same language, exclude current, take up to 3 most recent
 const allInLang = await getCollection('blog', ({ data }) => data.lang === lang);
 const related = allInLang
   .filter((p) => p.id !== post.id)
@@ -38,79 +38,93 @@ const ogImage =
 ---
 
 <Layout title={post.data.title} description={post.data.description} image={ogImage}>
-  <div class="container mx-auto px-4 py-10 md:px-6 md:py-16 w-full max-w-6xl">
-    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
-      <a
-        href={`/${lang}/blog`}
-        class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-sm"
-      >
-        <svg class="w-5 h-5 me-2 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-        {t('blog.back')}
-      </a>
-      <button
-        type="button"
-        id="copy-link"
-        class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-sm px-2 py-1"
-        data-copied={t('blog.linkCopied')}
-        data-label={t('blog.copyLink')}
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
-        <span id="copy-link-label">{t('blog.copyLink')}</span>
-      </button>
-    </div>
+  <div class="flex flex-col overflow-x-clip">
+    <!-- Article hero -->
+    <section class="w-full relative overflow-hidden border-b border-gray-200/80 dark:border-gray-800" data-hero-parallax>
+      <div class="absolute inset-0 bg-gradient-to-b from-primary-50/80 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-900" aria-hidden="true"></div>
+      <div class="hero-orb absolute -top-16 end-0 w-80 h-80 bg-primary-300/30 dark:bg-primary-700/20" data-parallax-layer data-parallax-speed="0.15" aria-hidden="true"></div>
+      <div class="absolute inset-0 hero-grid opacity-30 dark:opacity-15" data-parallax-layer data-parallax-speed="0.05" aria-hidden="true"></div>
 
-    <article class="prose prose-lg md:prose-xl prose-slate mx-auto w-full max-w-none text-gray-800 dark:text-gray-200">
-      <header class="mb-10 text-center max-w-5xl mx-auto not-prose">
-        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 text-gray-900 dark:text-white leading-tight">
-          {post.data.title}
-        </h1>
-        <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-gray-600 dark:text-gray-400 font-medium text-sm md:text-base">
-          <time datetime={post.data.pubDate.toISOString()}>
-            {post.data.pubDate.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
-          <span aria-hidden="true">•</span>
-          <span>{readMinutes} {t('blog.readTime')}</span>
+      <div class="container mx-auto px-4 py-10 md:px-6 md:py-14 relative z-10 w-full max-w-6xl">
+        <div class="mb-8 flex flex-wrap items-center justify-between gap-4 hero-enter">
+          <a
+            href={`/${lang}/blog`}
+            class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-primary-700 dark:text-gray-400 dark:hover:text-primary-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-sm group"
+          >
+            <svg class="w-5 h-5 me-2 transition-transform duration-300 motion-safe:group-hover:-translate-x-0.5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            {t('blog.back')}
+          </a>
+          <button
+            type="button"
+            id="copy-link"
+            class="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary-700 dark:text-gray-400 dark:hover:text-primary-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-full px-3 py-1.5 border border-gray-200/80 dark:border-gray-700 bg-white/60 dark:bg-gray-800/50 backdrop-blur-sm"
+            data-copied={t('blog.linkCopied')}
+            data-label={t('blog.copyLink')}
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+            <span id="copy-link-label">{t('blog.copyLink')}</span>
+          </button>
         </div>
-      </header>
 
-      {post.data.image && (
-        <div class="aspect-[16/8.5] w-full rounded-2xl overflow-hidden mb-12 shadow-xl border border-gray-100 dark:border-gray-800 not-prose">
-          <Image
-            src={post.data.image}
-            alt={post.data.title}
-            width={1400}
-            height={744}
-            class="w-full h-full object-cover m-0"
-            loading="eager"
-          />
-        </div>
-      )}
-
-      <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 md:p-10 border border-gray-100 dark:border-gray-800 shadow-sm">
-        <Content />
+        <header class="mb-8 md:mb-10 text-center max-w-4xl mx-auto">
+          <h1 class="hero-enter hero-enter-delay-1 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 text-gray-900 dark:text-white leading-tight">
+            {post.data.title}
+          </h1>
+          <div class="hero-enter hero-enter-delay-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-gray-600 dark:text-gray-400 font-medium text-sm md:text-base">
+            <time datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' })}
+            </time>
+            <span aria-hidden="true">•</span>
+            <span>{readMinutes} {t('blog.readTime')}</span>
+          </div>
+        </header>
       </div>
-    </article>
+    </section>
 
-    {related.length > 0 && (
-      <section class="mt-20 pt-12 border-t border-gray-100 dark:border-gray-800 not-prose" aria-labelledby="related-heading">
-        <h2 id="related-heading" class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-8 text-start">
-          {t('blog.related')}
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {related.map((p) => (
-            <BlogCard
-              title={p.data.title}
-              description={p.data.description}
-              url={`/${lang}/blog/${p.id.split('/').pop()}`}
-              pubDate={p.data.pubDate}
-              image={p.data.image}
-              lang={lang}
+    <div class="container mx-auto px-4 py-10 md:px-6 md:py-14 w-full max-w-6xl">
+      <article class="prose prose-lg md:prose-xl prose-slate mx-auto w-full max-w-none text-gray-800 dark:text-gray-200">
+        {post.data.image && (
+          <div class="aspect-[16/8.5] w-full rounded-2xl overflow-hidden mb-12 shadow-xl border border-gray-100 dark:border-gray-800 not-prose reveal-scale" data-reveal>
+            <Image
+              src={post.data.image}
+              alt={post.data.title}
+              width={1400}
+              height={744}
+              class="w-full h-full object-cover m-0"
+              loading="eager"
             />
-          ))}
+          </div>
+        )}
+
+        <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 md:p-10 border border-gray-100 dark:border-gray-800 shadow-sm reveal" data-reveal>
+          <Content />
         </div>
-      </section>
-    )}
+      </article>
+
+      {related.length > 0 && (
+        <section class="mt-20 pt-12 border-t border-gray-100 dark:border-gray-800 not-prose" aria-labelledby="related-heading">
+          <h2 id="related-heading" class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-8 text-start reveal" data-reveal>
+            {t('blog.related')}
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {related.map((p, i) => (
+              <div data-reveal class:list={['reveal', i === 1 ? 'reveal-delay-1' : i === 2 ? 'reveal-delay-2' : '']}>
+                <BlogCard
+                  title={p.data.title}
+                  description={p.data.description}
+                  url={`/${lang}/blog/${p.id.split('/').pop()}`}
+                  pubDate={p.data.pubDate}
+                  image={p.data.image}
+                  lang={lang}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
   </div>
+  <ScrollReveal />
 </Layout>
 
 <script is:inline>

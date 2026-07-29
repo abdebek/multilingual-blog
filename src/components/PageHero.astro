@@ -1,0 +1,65 @@
+---
+/**
+ * Shared interior page hero — gradient atmosphere, entrance motion, optional kicker.
+ */
+interface Props {
+  title: string;
+  description?: string;
+  kicker?: string;
+  align?: 'start' | 'center';
+  compact?: boolean;
+}
+
+const { title, description, kicker, align = 'start', compact = false } = Astro.props;
+const isCenter = align === 'center';
+---
+
+<section
+  class:list={[
+    'w-full relative overflow-hidden border-b border-gray-200/80 dark:border-gray-800',
+    compact ? 'py-12 md:py-16' : 'py-16 md:py-20'
+  ]}
+  data-hero-parallax
+>
+  <div class="absolute inset-0 bg-gradient-to-b from-primary-50/90 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-900" aria-hidden="true"></div>
+  <div
+    class="hero-orb absolute -top-20 -end-16 w-72 h-72 bg-primary-300/35 dark:bg-primary-700/20"
+    data-parallax-layer
+    data-parallax-speed="0.18"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="hero-orb hero-orb-slow absolute bottom-0 -start-20 w-64 h-64 bg-primary-200/40 dark:bg-primary-800/15"
+    data-parallax-layer
+    data-parallax-speed="0.1"
+    aria-hidden="true"
+  ></div>
+  <div class="absolute inset-0 hero-grid opacity-40 dark:opacity-20" data-parallax-layer data-parallax-speed="0.06" aria-hidden="true"></div>
+
+  <div class:list={[
+    'container mx-auto px-4 relative z-10 max-w-7xl',
+    isCenter ? 'text-center' : 'text-start'
+  ]}>
+    {kicker && (
+      <p class="hero-enter inline-flex items-center gap-2 px-3 py-1 mb-5 rounded-full text-xs font-semibold uppercase tracking-wider text-primary-800 dark:text-primary-200 bg-white/70 dark:bg-gray-800/70 border border-primary-200/70 dark:border-primary-800/50 backdrop-blur-md">
+        {kicker}
+      </p>
+    )}
+    <h1 class:list={[
+      'hero-enter hero-enter-delay-1 font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight',
+      compact ? 'text-3xl md:text-4xl lg:text-5xl' : 'text-4xl md:text-5xl lg:text-6xl',
+      isCenter ? 'max-w-3xl mx-auto' : 'max-w-3xl'
+    ]}>
+      {title}
+    </h1>
+    {description && (
+      <p class:list={[
+        'hero-enter hero-enter-delay-2 mt-4 md:mt-5 text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed',
+        isCenter ? 'max-w-2xl mx-auto' : 'max-w-2xl'
+      ]}>
+        {description}
+      </p>
+    )}
+    <slot />
+  </div>
+</section>

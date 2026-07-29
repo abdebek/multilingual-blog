@@ -3,31 +3,37 @@ import Layout from '../layouts/Layout.astro';
 import { defaultLang, languages } from '../i18n/ui';
 import { useTranslations } from '../utils/i18n';
 
-// Static 404 uses default language; client may refine via path
 const lang = defaultLang;
 const t = useTranslations(lang);
 ---
 
 <Layout title={t('404.title')} description={t('404.description')}>
-  <div class="container mx-auto px-4 py-24 max-w-2xl text-center">
-    <p class="text-8xl font-extrabold text-primary-700 dark:text-primary-300 mb-4" aria-hidden="true">404</p>
-    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('404.title')}</h1>
-    <p class="text-lg text-gray-600 dark:text-gray-400 mb-10">{t('404.description')}</p>
-    <div class="flex flex-wrap items-center justify-center gap-4">
-      <a
-        href={`/${lang}/`}
-        class="px-8 py-3.5 bg-primary-700 hover:bg-primary-800 text-white rounded-full font-medium transition-all shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-        id="home-link"
-      >
-        {t('404.home')}
-      </a>
-      <a
-        href={`/${lang}/blog`}
-        class="px-8 py-3.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-full font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-        id="blog-link"
-      >
-        {t('404.blog')}
-      </a>
+  <div class="relative min-h-[70vh] flex items-center justify-center overflow-hidden border-b border-gray-200/80 dark:border-gray-800">
+    <div class="absolute inset-0 bg-gradient-to-b from-primary-50/90 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-900" aria-hidden="true"></div>
+    <div class="hero-orb absolute top-10 -start-10 w-72 h-72 bg-primary-300/30 dark:bg-primary-700/20" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb-slow absolute bottom-10 -end-10 w-64 h-64 bg-primary-200/40 dark:bg-primary-800/15" aria-hidden="true"></div>
+    <div class="absolute inset-0 hero-grid opacity-40 dark:opacity-20" aria-hidden="true"></div>
+
+    <div class="container mx-auto px-4 py-24 max-w-2xl text-center relative z-10">
+      <p class="hero-enter text-8xl md:text-9xl font-extrabold text-gradient-hero mb-2 leading-none" aria-hidden="true">404</p>
+      <h1 class="hero-enter hero-enter-delay-1 text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('404.title')}</h1>
+      <p class="hero-enter hero-enter-delay-2 text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-md mx-auto leading-relaxed">{t('404.description')}</p>
+      <div class="hero-enter hero-enter-delay-3 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href={`/${lang}/`}
+          class="btn-shine px-8 py-3.5 bg-primary-700 hover:bg-primary-800 text-white rounded-full font-semibold transition-all shadow-md motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          id="home-link"
+        >
+          {t('404.home')}
+        </a>
+        <a
+          href={`/${lang}/blog`}
+          class="px-8 py-3.5 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-full font-semibold hover:bg-white dark:hover:bg-gray-800 transition-all motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          id="blog-link"
+        >
+          {t('404.blog')}
+        </a>
+      </div>
     </div>
   </div>
 </Layout>
