@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "./typography.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -6,23 +8,77 @@
   --font-cairo: "Cairo", sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
-  --color-primary-950: #172554;
+  /* Muted slate-blue: less electric than default Tailwind blue */
+  --color-primary-50: #f4f7fb;
+  --color-primary-100: #e4ebf5;
+  --color-primary-200: #c9d7ea;
+  --color-primary-300: #a3bad8;
+  --color-primary-400: #7396c0;
+  --color-primary-500: #5278a8;
+  --color-primary-600: #3f5f8a;
+  --color-primary-700: #344d70;
+  --color-primary-800: #2e425c;
+  --color-primary-900: #2a394f;
+  --color-primary-950: #1c2535;
 }
 
 @layer base {
   :root {
-    --accent: 59, 130, 246;
-    --accent-light: 147, 197, 253;
-    --accent-dark: 30, 58, 138;
+    --accent: 63, 95, 138;
+    --accent-light: 163, 186, 216;
+    --accent-dark: 28, 37, 53;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid var(--color-primary-600, #3f5f8a);
+    outline-offset: 2px;
+  }
+
+  @media print {
+    header,
+    footer,
+    #search-modal,
+    #theme-toggle,
+    #language-button,
+    #copy-link,
+    [data-pagefind-ignore] {
+      display: none !important;
+    }
+
+    body {
+      background: white !important;
+      color: black !important;
+    }
+
+    main {
+      max-width: 100% !important;
+    }
+
+    a[href]::after {
+      content: none !important;
+    }
   }
 }

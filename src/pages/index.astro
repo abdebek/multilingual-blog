@@ -1,12 +1,45 @@
 ---
-import { defaultLang } from '../i18n/ui';
+import { defaultLang, languages } from '../i18n/ui';
+
+const codes = Object.keys(languages);
 ---
 
 <!doctype html>
 <html lang={defaultLang}>
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redirecting…</title>
+    <link rel="canonical" href={`/${defaultLang}/`} />
+    <script is:inline define:vars={{ codes, defaultLang }}>
+      (function () {
+        try {
+          const stored = localStorage.getItem('preferred-lang');
+          if (stored && codes.includes(stored)) {
+            location.replace('/' + stored + '/');
+            return;
+          }
+        } catch (e) {}
+
+        const accept = (navigator.languages && navigator.languages.length
+          ? navigator.languages
+          : [navigator.language || defaultLang]
+        ).map(function (l) {
+          return String(l).toLowerCase().slice(0, 2);
+        });
+        const match = accept.find(function (code) {
+          return codes.indexOf(code) !== -1;
+        });
+        location.replace('/' + (match || defaultLang) + '/');
+      })();
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content={`0;url=/${defaultLang}/`} />
+    </noscript>
   </head>
+  <body>
+    <p>
+      <a href={`/${defaultLang}/`}>Continue</a>
+    </p>
+  </body>
 </html>

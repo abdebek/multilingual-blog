@@ -1,8 +1,13 @@
 ---
 import { getLangFromUrl, getDirection, useTranslations } from '../utils/i18n';
+import { languages, defaultLang } from '../i18n/ui';
 import Header from '../components/Header/Header.astro';
 import Footer from '../components/Footer.astro';
-import '@fontsource/cairo';
+import '@fontsource/cairo/400.css';
+import '@fontsource/cairo/700.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
 import '../styles/global.css';
 
 interface Props {
@@ -17,23 +22,68 @@ const dir = getDirection(lang);
 const t = useTranslations(lang);
 
 const metaDescription = description || t('footer.description');
+const canonical = new URL(Astro.url.pathname, Astro.site || Astro.url).href;
+
+// Build hreflang alternates for the same path in other languages
+const segments = Astro.url.pathname.split('/').filter(Boolean);
+const pathAfterLang =
+  segments[0] && segments[0] in languages
+    ? segments.slice(1).join('/')
+    : segments.join('/');
+const isBlogPost =
+  pathAfterLang.startsWith('blog/') &&
+  pathAfterLang.split('/').length >= 2 &&
+  !/\/\d+$/.test(pathAfterLang) &&
+  pathAfterLang !== 'blog';
+
+const alternatePaths = Object.keys(languages).map((code) => {
+  // Blog posts are language-specific content; point alternates to blog index
+  if (isBlogPost) {
+    return { code, href: new URL(`/${code}/blog`, Astro.site || Astro.url).href };
+  }
+  const rest = pathAfterLang ? `/${pathAfterLang}` : '';
+  return { code, href: new URL(`/${code}${rest}`, Astro.site || Astro.url).href };
+});
+
+const ogLocaleMap: Record<string, string> = {
+  en: 'en_US',
+  tr: 'tr_TR',
+  ar: 'ar_AR',
+};
 ---
 
 <!doctype html>
 <html lang={lang} dir={dir}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    
+
     <title>{title} | {t('site.title')}</title>
     <meta name="description" content={metaDescription} />
-    <link rel="canonical" href={Astro.url} />
-    
+    <link rel="canonical" href={canonical} />
+
+    {alternatePaths.map(({ code, href }) => (
+      <link rel="alternate" hreflang={code} href={href} />
+    ))}
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(
+        `/${defaultLang}${isBlogPost ? '/blog' : pathAfterLang ? `/${pathAfterLang}` : ''}`,
+        Astro.site || Astro.url
+      ).href}
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={t('site.title')}
+      href={`/${lang}/rss.xml`}
+    />
+
     <!-- Netlify Identity Widget (Lazy Loaded) -->
     <script>
-      // Only load the widget if we are on the admin page or have an identity token in the URL
       if (window.location.hash.includes('_token=') || window.location.pathname.includes('/admin')) {
         const script = document.createElement('script');
         script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
@@ -54,19 +104,23 @@ const metaDescription = description || t('footer.description');
       }
     </script>
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={metaDescription} />
     <meta property="og:image" content={new URL(image, Astro.url)} />
+    <meta property="og:locale" content={ogLocaleMap[lang] || 'en_US'} />
+    {alternatePaths
+      .filter((a) => a.code !== lang)
+      .map(({ code, href }) => (
+        <meta property="og:locale:alternate" content={ogLocaleMap[code] || code} />
+      ))}
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={metaDescription} />
-    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonical} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={new URL(image, Astro.url)} />
 
     <script is:inline>
       const getInitialTheme = () => {
@@ -93,17 +147,20 @@ const metaDescription = description || t('footer.description');
     </script>
   </head>
   <body class:list={[
-    'min-h-screen flex flex-col selection:bg-blue-200 selection:text-blue-900',
+    'min-h-screen flex flex-col selection:bg-primary-200 selection:text-primary-900',
     `${dir === 'rtl' ? 'font-cairo' : 'font-sans antialiased'}`,
     'bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300'
   ]}>
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-[200] focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:z-[200] focus:top-4 focus:start-4 focus:px-4 focus:py-2 focus:bg-primary-700 focus:text-white focus:rounded-lg"
+    >
       {t('nav.skip')}
     </a>
     <div data-pagefind-ignore class="relative z-[100]">
       <Header />
     </div>
-    <main id="main-content" class="flex-grow w-full" data-pagefind-body data-pagefind-filter={`lang:${lang}`}>
+    <main id="main-content" class="flex-grow w-full" data-pagefind-body data-pagefind-filter={`lang:${lang}`} tabindex="-1">
       <slot />
     </main>
     <div data-pagefind-ignore>

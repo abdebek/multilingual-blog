@@ -1,51 +1,77 @@
 ---
 import { languages } from '../../i18n/ui';
+import { useTranslations } from '../../utils/i18n';
 
 const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const segments = Astro.url.pathname.split('/').filter(Boolean);
+const pathAfterLang =
+  segments[0] && segments[0] in languages
+    ? segments.slice(1)
+    : segments;
+
+// Blog post detail: /{lang}/blog/{slug} — posts are not 1:1 across locales
+const isBlogPost =
+  pathAfterLang[0] === 'blog' &&
+  pathAfterLang.length >= 2 &&
+  !/^\d+$/.test(pathAfterLang[1] || '');
+
+const buildHref = (code: string) => {
+  if (isBlogPost) {
+    return `/${code}/blog${Astro.url.search}`;
+  }
+  // Pagination: different languages can have different post counts — go to blog index
+  if (pathAfterLang[0] === 'blog' && pathAfterLang.length === 2 && /^\d+$/.test(pathAfterLang[1])) {
+    return `/${code}/blog${Astro.url.search}`;
+  }
+  const rest = pathAfterLang.join('/');
+  return `/${code}${rest ? `/${rest}` : ''}${Astro.url.search}`;
+};
 ---
 
-<div class="relative inline-block text-left">
+<div class="relative inline-block text-start">
   <button
     type="button"
-    class="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+    class="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
     id="language-button"
     aria-expanded="false"
-    aria-haspopup="true"
+    aria-haspopup="menu"
+    aria-controls="language-menu"
+    aria-label={t('nav.language')}
   >
-    {languages[lang]}
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <span>{languages[lang]}</span>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
     </svg>
   </button>
 
   <div
-    class="hidden absolute right-0 mt-2 w-36 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black/5 focus:outline-none rtl:right-auto rtl:left-0"
+    class="hidden absolute end-0 mt-2 w-40 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black/5 z-[120]"
     role="menu"
     id="language-menu"
+    aria-labelledby="language-button"
+    hidden
   >
     <div class="py-1" role="none">
-      {Object.entries(languages).map(([code, label]) => {
-        const segments = Astro.url.pathname.split('/').filter(Boolean);
-        if (segments[0] in languages) {
-          segments[0] = code;
-        } else {
-          segments.unshift(code);
-        }
-        const newPath = '/' + segments.join('/') + Astro.url.search;
-        
-        return (
-          <a
-            href={newPath}
-            class:list={[
-              'block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700',
-              code === lang ? 'text-gray-900 dark:text-gray-100 font-medium' : 'text-gray-700 dark:text-gray-400'
-            ]}
-            role="menuitem"
-          >
-            {label}
-          </a>
-        );
-      })}
+      {Object.entries(languages).map(([code, label]) => (
+        <a
+          href={buildHref(code)}
+          class:list={[
+            'block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 focus-visible:outline-none focus-visible:bg-gray-100 dark:focus-visible:bg-gray-700',
+            code === lang
+              ? 'text-gray-900 dark:text-gray-100 font-medium bg-gray-50 dark:bg-gray-700/50'
+              : 'text-gray-700 dark:text-gray-400'
+          ]}
+          role="menuitem"
+          aria-current={code === lang ? 'true' : undefined}
+          hreflang={code}
+          lang={code}
+          data-lang-code={code}
+        >
+          {label}
+        </a>
+      ))}
     </div>
   </div>
 </div>
@@ -54,13 +80,64 @@ const { lang } = Astro.props;
   const button = document.getElementById('language-button');
   const menu = document.getElementById('language-menu');
 
-  const toggleMenu = () => menu?.classList.toggle('hidden');
-  const hideMenu = (e: MouseEvent) => {
-    if (!button?.contains(e.target as Node)) {
-      menu?.classList.add('hidden');
+  const setOpen = (open: boolean) => {
+    if (!menu || !button) return;
+    menu.classList.toggle('hidden', !open);
+    if (open) {
+      menu.removeAttribute('hidden');
+      const first = menu.querySelector<HTMLElement>('[role="menuitem"]');
+      first?.focus();
+    } else {
+      menu.setAttribute('hidden', '');
     }
+    button.setAttribute('aria-expanded', open ? 'true' : 'false');
   };
 
-  button?.addEventListener('click', toggleMenu);
-  document.addEventListener('click', hideMenu);
+  button?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = button.getAttribute('aria-expanded') !== 'true';
+    setOpen(open);
+  });
+
+  menu?.querySelectorAll<HTMLAnchorElement>('[data-lang-code]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const code = link.dataset.langCode;
+      if (code) {
+        try {
+          localStorage.setItem('preferred-lang', code);
+        } catch {
+          // ignore
+        }
+      }
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (
+      !button?.contains(e.target as Node) &&
+      !menu?.contains(e.target as Node)
+    ) {
+      setOpen(false);
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (button?.getAttribute('aria-expanded') !== 'true') return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      setOpen(false);
+      button.focus();
+      return;
+    }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const items = Array.from(menu?.querySelectorAll<HTMLElement>('[role="menuitem"]') || []);
+      if (items.length === 0) return;
+      const idx = items.indexOf(document.activeElement as HTMLElement);
+      let next = 0;
+      if (e.key === 'ArrowDown') next = idx < items.length - 1 ? idx + 1 : 0;
+      else next = idx > 0 ? idx - 1 : items.length - 1;
+      items[next].focus();
+    }
+  });
 </script>

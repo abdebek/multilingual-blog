@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { defaultLang, languages } from '../i18n/ui';
+import { useTranslations } from '../utils/i18n';
+
+// Static 404 uses default language; client may refine via path
+const lang = defaultLang;
+const t = useTranslations(lang);
+---
+
+<Layout title={t('404.title')} description={t('404.description')}>
+  <div class="container mx-auto px-4 py-24 max-w-2xl text-center">
+    <p class="text-8xl font-extrabold text-primary-700 dark:text-primary-300 mb-4" aria-hidden="true">404</p>
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('404.title')}</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400 mb-10">{t('404.description')}</p>
+    <div class="flex flex-wrap items-center justify-center gap-4">
+      <a
+        href={`/${lang}/`}
+        class="px-8 py-3.5 bg-primary-700 hover:bg-primary-800 text-white rounded-full font-medium transition-all shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+        id="home-link"
+      >
+        {t('404.home')}
+      </a>
+      <a
+        href={`/${lang}/blog`}
+        class="px-8 py-3.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-full font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+        id="blog-link"
+      >
+        {t('404.blog')}
+      </a>
+    </div>
+  </div>
+</Layout>
+
+<script is:inline define:vars={{ langs: Object.keys(languages), defaultLang }}>
+  (function () {
+    const first = location.pathname.split('/').filter(Boolean)[0];
+    const lang = langs.includes(first) ? first : defaultLang;
+    const home = document.getElementById('home-link');
+    const blog = document.getElementById('blog-link');
+    if (home) home.setAttribute('href', `/${lang}/`);
+    if (blog) blog.setAttribute('href', `/${lang}/blog`);
+  })();
+</script>
