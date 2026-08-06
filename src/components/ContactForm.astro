@@ -3,9 +3,7 @@ import { useTranslations } from '../utils/i18n';
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-// Default: Cloudflare Pages Function. Override with Formspree etc. via env.
-const contactEndpoint =
-  import.meta.env.PUBLIC_CONTACT_ENDPOINT || '/api/contact';
+const contactEndpoint = '/api/contact';
 ---
 
 <div class="max-w-xl mx-auto">
@@ -17,7 +15,6 @@ const contactEndpoint =
     class="space-y-8 bg-white dark:bg-gray-800 p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 transition-all duration-500"
     novalidate
   >
-    <!-- Honeypot (hidden from users) -->
     <p class="hidden" aria-hidden="true">
       <label>
         Don’t fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" />
@@ -119,81 +116,84 @@ const contactEndpoint =
 
 <script is:inline define:vars={{ contactEndpoint }}>
   (function () {
-    const form = document.getElementById('contact-form');
-    const successMessage = document.getElementById('success-message');
-    const errorMessage = document.getElementById('error-message');
-    const submitButton = document.getElementById('submit-button');
-    const buttonText = document.getElementById('button-text');
-    const loadingSpinner = document.getElementById('loading-spinner');
-    const sendAnother = document.getElementById('send-another');
-    const dismissError = document.getElementById('dismiss-error');
+    function initContactForm() {
+      const form = document.getElementById('contact-form');
+      if (!form || form.dataset.bound === '1') return;
+      form.dataset.bound = '1';
 
-    const setLoading = (loading) => {
-      if (!submitButton || !buttonText || !loadingSpinner) return;
-      submitButton.disabled = loading;
-      submitButton.setAttribute('aria-busy', loading ? 'true' : 'false');
-      buttonText.classList.toggle('opacity-50', loading);
-      loadingSpinner.classList.toggle('hidden', !loading);
-    };
+      const successMessage = document.getElementById('success-message');
+      const errorMessage = document.getElementById('error-message');
+      const submitButton = document.getElementById('submit-button');
+      const buttonText = document.getElementById('button-text');
+      const loadingSpinner = document.getElementById('loading-spinner');
+      const sendAnother = document.getElementById('send-another');
+      const dismissError = document.getElementById('dismiss-error');
 
-    const showSuccess = () => {
-      form?.classList.add('hidden');
-      errorMessage?.classList.add('hidden');
-      successMessage?.classList.remove('hidden');
-    };
+      const setLoading = (loading) => {
+        if (!submitButton || !buttonText || !loadingSpinner) return;
+        submitButton.disabled = loading;
+        submitButton.setAttribute('aria-busy', loading ? 'true' : 'false');
+        buttonText.classList.toggle('opacity-50', loading);
+        loadingSpinner.classList.toggle('hidden', !loading);
+      };
 
-    const showError = () => {
-      errorMessage?.classList.remove('hidden');
-      setLoading(false);
-    };
+      const showSuccess = () => {
+        form.classList.add('hidden');
+        errorMessage?.classList.add('hidden');
+        successMessage?.classList.remove('hidden');
+      };
 
-    const resetToForm = () => {
-      successMessage?.classList.add('hidden');
-      errorMessage?.classList.add('hidden');
-      form?.classList.remove('hidden');
-      form?.reset();
-      setLoading(false);
-      document.getElementById('name')?.focus();
-    };
-
-    sendAnother?.addEventListener('click', resetToForm);
-    dismissError?.addEventListener('click', () => {
-      errorMessage?.classList.add('hidden');
-    });
-
-    form?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorMessage?.classList.add('hidden');
-      setLoading(true);
-
-      const formData = new FormData(form);
-
-      try {
-        const isFormspree = /formspree\.io/i.test(contactEndpoint);
-        const res = await fetch(contactEndpoint, {
-          method: 'POST',
-          headers: isFormspree
-            ? { Accept: 'application/json', 'Content-Type': 'application/json' }
-            : { Accept: 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: formData.get('name'),
-            email: formData.get('email'),
-            message: formData.get('message'),
-            'bot-field': formData.get('bot-field') || '',
-          }),
-        });
-
-        if (!res.ok) throw new Error('Submit failed');
-
-        // Formspree returns 200 with ok; our API returns { ok: true }
-        const data = await res.json().catch(() => ({}));
-        if (data && data.ok === false) throw new Error('Submit failed');
-
-        showSuccess();
+      const showError = () => {
+        errorMessage?.classList.remove('hidden');
         setLoading(false);
-      } catch (error) {
-        showError();
-      }
-    });
+      };
+
+      const resetToForm = () => {
+        successMessage?.classList.add('hidden');
+        errorMessage?.classList.add('hidden');
+        form.classList.remove('hidden');
+        form.reset();
+        setLoading(false);
+        document.getElementById('name')?.focus();
+      };
+
+      sendAnother?.addEventListener('click', resetToForm);
+      dismissError?.addEventListener('click', () => {
+        errorMessage?.classList.add('hidden');
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorMessage?.classList.add('hidden');
+        setLoading(true);
+
+        const formData = new FormData(form);
+
+        try {
+          const res = await fetch(contactEndpoint, {
+            method: 'POST',
+            headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: formData.get('name'),
+              email: formData.get('email'),
+              message: formData.get('message'),
+              'bot-field': formData.get('bot-field') || '',
+            }),
+          });
+
+          if (!res.ok) throw new Error('Submit failed');
+          const data = await res.json().catch(() => ({}));
+          if (data && data.ok === false) throw new Error('Submit failed');
+
+          showSuccess();
+          setLoading(false);
+        } catch (error) {
+          showError();
+        }
+      });
+    }
+
+    initContactForm();
+    document.addEventListener('astro:page-load', initContactForm);
   })();
 </script>

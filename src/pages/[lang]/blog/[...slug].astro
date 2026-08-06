@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import BlogCard from '../../../components/BlogCard.astro';
 import ScrollReveal from '../../../components/ScrollReveal.astro';
+import ArticleReading from '../../../components/ArticleReading.astro';
 import { getLangFromUrl, useTranslations } from '../../../utils/i18n';
 
 export async function getStaticPaths() {
@@ -38,8 +39,9 @@ const ogImage =
 ---
 
 <Layout title={post.data.title} description={post.data.description} image={ogImage}>
+  <ArticleReading lang={lang} />
+
   <div class="flex flex-col overflow-x-clip">
-    <!-- Article hero -->
     <section class="w-full relative overflow-hidden border-b border-gray-200/80 dark:border-gray-800" data-hero-parallax>
       <div class="absolute inset-0 bg-gradient-to-b from-primary-50/80 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-900" aria-hidden="true"></div>
       <div class="hero-orb absolute -top-16 end-0 w-80 h-80 bg-primary-300/30 dark:bg-primary-700/20" data-parallax-layer data-parallax-speed="0.15" aria-hidden="true"></div>
@@ -96,7 +98,11 @@ const ogImage =
           </div>
         )}
 
-        <div class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 md:p-10 border border-gray-100 dark:border-gray-800 shadow-sm reveal" data-reveal>
+        <div
+          id="article-body"
+          class="bg-white dark:bg-gray-900 rounded-3xl p-6 sm:p-8 md:p-10 border border-gray-100 dark:border-gray-800 shadow-sm reveal scroll-mt-24"
+          data-reveal
+        >
           <Content />
         </div>
       </article>
@@ -129,20 +135,25 @@ const ogImage =
 
 <script is:inline>
   (function () {
-    const btn = document.getElementById('copy-link');
-    const label = document.getElementById('copy-link-label');
-    if (!btn || !label) return;
-    btn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        const original = btn.dataset.label || label.textContent;
-        label.textContent = btn.dataset.copied || 'Copied';
-        setTimeout(() => {
-          label.textContent = original;
-        }, 2000);
-      } catch {
-        // ignore
-      }
-    });
+    function bindCopy() {
+      const btn = document.getElementById('copy-link');
+      const label = document.getElementById('copy-link-label');
+      if (!btn || !label || btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          const original = btn.dataset.label || label.textContent;
+          label.textContent = btn.dataset.copied || 'Copied';
+          setTimeout(() => {
+            label.textContent = original;
+          }, 2000);
+        } catch {
+          // ignore
+        }
+      });
+    }
+    bindCopy();
+    document.addEventListener('astro:page-load', bindCopy);
   })();
 </script>

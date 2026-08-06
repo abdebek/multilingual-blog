@@ -1,45 +1,52 @@
 ---
 /**
- * Registers IntersectionObserver for [data-reveal] elements and
- * optional hero parallax ([data-hero-parallax] / [data-parallax-layer]).
- * Include once per page. Respects prefers-reduced-motion.
+ * IntersectionObserver for [data-reveal] + optional hero parallax.
+ * Re-runs on astro:page-load for view transitions.
  */
 ---
 <script>
-  (function () {
+  let parallaxHandler: (() => void) | null = null;
+  let io: IntersectionObserver | null = null;
+
+  function teardown() {
+    if (parallaxHandler) {
+      window.removeEventListener('scroll', parallaxHandler);
+      parallaxHandler = null;
+    }
+    if (io) {
+      io.disconnect();
+      io = null;
+    }
+  }
+
+  function initScrollReveal() {
+    teardown();
+
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const nodes = document.querySelectorAll<HTMLElement>('[data-reveal]');
 
-    if (reduce) {
+    if (reduce || !('IntersectionObserver' in window)) {
       nodes.forEach((el) => el.classList.add('is-visible'));
-      return;
-    }
-
-    if (!('IntersectionObserver' in window)) {
-      nodes.forEach((el) => el.classList.add('is-visible'));
-      return;
-    }
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            io.unobserve(entry.target);
+    } else {
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io?.unobserve(entry.target);
+            }
           }
-        }
-      },
-      { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
-    );
+        },
+        { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+      );
+      nodes.forEach((el) => io!.observe(el));
+    }
 
-    nodes.forEach((el) => io.observe(el));
-
-    // Hero parallax (light touch)
     const hero = document.querySelector<HTMLElement>('[data-hero-parallax]');
     const layers = document.querySelectorAll<HTMLElement>('[data-parallax-layer]');
     if (hero && layers.length && !reduce) {
       let ticking = false;
-      const onScroll = () => {
+      parallaxHandler = () => {
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
@@ -52,8 +59,11 @@
           ticking = false;
         });
       };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
+      window.addEventListener('scroll', parallaxHandler, { passive: true });
+      parallaxHandler();
     }
-  })();
+  }
+
+  initScrollReveal();
+  document.addEventListener('astro:page-load', initScrollReveal);
 </script>

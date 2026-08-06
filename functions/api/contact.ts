@@ -1,24 +1,13 @@
 /**
  * Contact form API (Cloudflare Pages Function).
  *
- * Delivery (first match wins):
- * 1. CONTACT_EMAIL binding — Cloudflare Email Service / send_email
- * 2. FORM_WEBHOOK_URL — Zapier / Make / Discord / etc.
- * 3. CONTACT_DEV_ACCEPT=1 — accept without delivery (preview only)
+ * Delivery:
+ * - CONTACT_EMAIL binding (Cloudflare Email Service) + CONTACT_FROM_EMAIL + CONTACT_TO_EMAIL
+ * - CONTACT_DEV_ACCEPT=1 — accept without delivery (preview/local only)
  *
- * Docs (structured send API):
- * https://developers.cloudflare.com/email-service/api/send-emails/workers-api/
- *
- * Binding (wrangler.toml):
- *   [[send_email]]
- *   name = "CONTACT_EMAIL"
- *
- * Env:
- *   CONTACT_FROM_EMAIL — verified sender on your domain
- *   CONTACT_TO_EMAIL   — recipient inbox
+ * Docs: https://developers.cloudflare.com/email-service/api/send-emails/workers-api/
  */
 
-/** Structured message accepted by Cloudflare Email Service send() */
 interface EmailMessageBuilder {
   to: string | { email: string; name?: string } | (string | { email: string; name?: string })[];
   from: string | { email: string; name?: string };
@@ -40,7 +29,6 @@ interface Env {
   CONTACT_EMAIL?: SendEmailBinding;
   CONTACT_FROM_EMAIL?: string;
   CONTACT_TO_EMAIL?: string;
-  FORM_WEBHOOK_URL?: string;
   CONTACT_DEV_ACCEPT?: string;
   ALLOWED_ORIGINS?: string;
 }
@@ -127,14 +115,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json(400, { error: 'Field too long' }, headers);
   }
 
-  const payload = {
-    name,
-    email,
-    message,
-    submittedAt: new Date().toISOString(),
-  };
-
-  // 1) Cloudflare Email Service (send_email binding)
   if (context.env.CONTACT_EMAIL && context.env.CONTACT_FROM_EMAIL && context.env.CONTACT_TO_EMAIL) {
     try {
       const result = await context.env.CONTACT_EMAIL.send({
@@ -152,20 +132,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       if (err?.code === 'E_SENDER_NOT_VERIFIED' || err?.code === 'E_SENDER_DOMAIN_NOT_AVAILABLE') {
         return json(
           502,
-          {
-            error: 'Sender domain not verified for Cloudflare Email Service',
-            code: err.code,
-          },
+          { error: 'Sender domain not verified for Cloudflare Email Service', code: err.code },
           headers
         );
       }
       if (err?.code === 'E_RECIPIENT_NOT_ALLOWED') {
         return json(
           502,
-          {
-            error: 'Recipient not allowed by send_email binding',
-            code: err.code,
-          },
+          { error: 'Recipient not allowed by send_email binding', code: err.code },
           headers
         );
       }
@@ -188,23 +162,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     );
   }
 
-  // 2) Webhook fallback
-  if (context.env.FORM_WEBHOOK_URL) {
-    const res = await fetch(context.env.FORM_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) {
-      console.error('Webhook error', await res.text());
-      return json(502, { error: 'Webhook delivery failed' }, headers);
-    }
-    return json(200, { ok: true }, headers);
-  }
-
-  // 3) Dev accept
   if (context.env.CONTACT_DEV_ACCEPT === '1') {
-    console.log('CONTACT_DEV_ACCEPT', payload);
+    console.log('CONTACT_DEV_ACCEPT', { name, email, message });
     return json(200, { ok: true, dev: true }, headers);
   }
 
@@ -212,7 +171,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     501,
     {
       error:
-        'Form backend not configured. Add send_email binding CONTACT_EMAIL plus CONTACT_FROM_EMAIL and CONTACT_TO_EMAIL, or set FORM_WEBHOOK_URL / PUBLIC_CONTACT_ENDPOINT.',
+        'Form backend not configured. Add send_email binding CONTACT_EMAIL plus CONTACT_FROM_EMAIL and CONTACT_TO_EMAIL.',
     },
     headers
   );

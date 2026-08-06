@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import { getLangFromUrl, getDirection, useTranslations } from '../utils/i18n';
 import { languages, defaultLang } from '../i18n/ui';
 import Header from '../components/Header/Header.astro';
@@ -100,6 +101,8 @@ const ogLocaleMap: Record<string, string> = {
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={new URL(image, Astro.url)} />
 
+    <ClientRouter fallback="animate" />
+
     <script is:inline>
       const getInitialTheme = () => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
@@ -122,7 +125,26 @@ const ogLocaleMap: Record<string, string> = {
       };
 
       setTheme(getInitialTheme());
+      // Persist theme across view transitions (new document head may re-run)
+      document.addEventListener('astro:after-swap', () => setTheme(getInitialTheme()));
     </script>
+
+    <style is:global>
+      @media (prefers-reduced-motion: no-preference) {
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation-duration: 0.28s;
+          animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        ::view-transition-group(*),
+        ::view-transition-old(*),
+        ::view-transition-new(*) {
+          animation: none !important;
+        }
+      }
+    </style>
   </head>
   <body class:list={[
     'min-h-screen flex flex-col selection:bg-primary-200 selection:text-primary-900',
@@ -138,7 +160,7 @@ const ogLocaleMap: Record<string, string> = {
     <div data-pagefind-ignore class="relative z-[100]">
       <Header />
     </div>
-    <main id="main-content" class="flex-grow w-full" data-pagefind-body data-pagefind-filter={`lang:${lang}`} tabindex="-1">
+    <main id="main-content" class="flex-grow w-full" data-pagefind-body data-pagefind-filter={`lang:${lang}`} tabindex="-1" transition:animate="fade">
       <slot />
     </main>
     <div data-pagefind-ignore>

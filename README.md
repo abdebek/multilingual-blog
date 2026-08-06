@@ -8,8 +8,10 @@ A starter for blogs in English, Turkish, and Arabic (RTL). Built with **Astro 6*
 - **Decap CMS** — edit Markdown in the browser; commits go to GitHub  
 - **Search** — Pagefind (after `npm run build`)  
 - **Contact form** — Cloudflare Email Service (`send_email` binding) via `/api/contact`  
-
+- **View transitions** — smooth page swaps (Astro `ClientRouter`)  
+- **Reading UX** — progress bar + desktop table of contents on articles  
 - **Dark mode**, accessible nav, and privacy-friendly defaults  
+
 
 ## Quick start
 
@@ -57,15 +59,8 @@ Open [http://localhost:4321/admin/](http://localhost:4321/admin/).
 | **`CONTACT_EMAIL` binding** | Contact email | Cloudflare `send_email` (see `wrangler.toml`) |
 | `CONTACT_FROM_EMAIL` | With email binding | Verified sender, e.g. `contact@yourdomain.com` |
 | `CONTACT_TO_EMAIL` | With email binding | Inbox for submissions |
-| `FORM_WEBHOOK_URL` | Optional fallback | Zapier / Make / Discord webhook |
 | `CONTACT_DEV_ACCEPT` | Optional | Set `1` to accept form posts without delivery (preview only) |
 | `ALLOWED_ORIGINS` | Optional | Comma-separated origins for CORS on `/api/contact` |
-
-Production build env for Astro (optional):
-
-| Variable | Purpose |
-|----------|---------|
-| `PUBLIC_CONTACT_ENDPOINT` | Override form URL (default `/api/contact`). Example Formspree: `https://formspree.io/f/xxxx` |
 
 Also set **site URL** in `astro.config.mjs` (`site: 'https://your-domain.com'`) for correct sitemap/canonical/OG URLs.
 
@@ -102,11 +97,18 @@ No third-party email API keys. Mail is sent with the **`send_email`** binding us
 3. Set env vars: `CONTACT_FROM_EMAIL` (on your verified domain), `CONTACT_TO_EMAIL`.  
 4. Redeploy. Form POSTs JSON to `/api/contact`; visitor address is set as `replyTo`.
 
-**Fallbacks**
+**Dev only:** `CONTACT_DEV_ACCEPT=1` (logs payload, no send).
 
-- **Webhook:** `FORM_WEBHOOK_URL` — JSON `{ name, email, message, submittedAt }`  
-- **Formspree:** `PUBLIC_CONTACT_ENDPOINT=https://formspree.io/f/your_form_id`  
-- **Dev only:** `CONTACT_DEV_ACCEPT=1` (logs payload, no send)
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Astro dev server |
+| `npm run build` | Production build + Pagefind |
+| `npm run preview` | Preview static `dist/` |
+| `npm run test:e2e` | Playwright smoke tests (builds + previews) |
+| `npm run cms-proxy` | Local Decap backend |
+| `npm run pages:dev` | Build + Wrangler Pages with Functions |
 
 ## Project layout
 
@@ -118,16 +120,6 @@ src/pages/[lang]/      Routes
 wrangler.toml          Pages project metadata
 public/_redirects      Admin SPA rewrite for Pages
 ```
-
-## Scripts
-
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Astro dev server |
-| `npm run build` | Production build + Pagefind index |
-| `npm run preview` | Preview `dist/` (static only; no Functions) |
-| `npm run cms-proxy` | Local Decap backend (`decap-server`) |
-| `npx wrangler pages dev dist` | Preview site **with** Functions (after build) |
 
 ## Removing the CMS
 

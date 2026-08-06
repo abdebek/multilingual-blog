@@ -11,7 +11,9 @@
     "astro": "astro",
     "cms-proxy": "decap-server",
     "pages:dev": "npm run build && wrangler pages dev dist",
-    "pages:deploy": "npm run build && wrangler pages deploy dist"
+    "pages:deploy": "npm run build && wrangler pages deploy dist",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.17",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260729.1",
+    "@playwright/test": "^1.62.1",
     "decap-server": "^3.10.0",
     "pagefind": "^1.4.0",
     "wrangler": "^4.115.0"
