@@ -45,4 +45,20 @@ When you miss a day, do not let it become two. The single missed day is not the 
 
 ## Health Is Compounded
 
-Your health is the sum of small choices repeated for years. No single workout, meal, or night of sleep makes or breaks it. The good news in that is the same as the bad news: what you do most days matters far more than what you do occasionally. Build habits you can live with for a decade, and the decade takes care of itself.
+Your health is the sum of small choices repeated for years. No single workout, meal, or night of sleep makes or breaks it. The good news in that is the same as the bad news: what you do most days matters far more than what you do occasionally.
+
+The compounding is literal, not just a metaphor. If a habit makes you 1% better each day, the cumulative effect over a year is not 365%—it is exponential:
+
+$$
+\text{outcome} = \left(1 + 0.01\right)^{365} \approx 37.78
+$$
+
+And the same formula works in reverse. A 1% daily decline leaves you at:
+
+$$
+\left(1 - 0.01\right)^{365} \approx 0.03
+$$
+
+The gap between those two curves, over years rather than days, is the entire difference between a sustainable health practice and its absence. The math is unfashionable but it is the honest model.
+
+Build habits you can live with for a decade, and the decade takes care of itself.

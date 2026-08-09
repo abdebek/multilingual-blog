@@ -18,6 +18,32 @@ Everything else is built on these three, and skipping them is the most common mi
 
 **JavaScript** is the only programming language that runs natively in the browser, and for that reason alone it is non-negotiable. Learn the language itself—variables, functions, the DOM, events, async with promises and `async/await`—before learning any library built on top of it. The language is small enough to learn in weeks; the libraries change yearly.
 
+Here is the kind of small, complete program that is worth being able to write from memory—a debounce helper and a search input that uses it:
+
+```javascript
+// Debounce: wait until the user stops typing for `delay` ms, then call `fn`.
+function debounce(fn, delay) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
+const onSearch = debounce(async (query) => {
+  if (!query) return;
+  const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+  const results = await res.json();
+  console.log(results);
+}, 250);
+
+document.querySelector('#search').addEventListener('input', (e) => {
+  onSearch(e.target.value);
+});
+```
+
+If you can read that, write it without copy-pasting, and explain why `clearTimeout` is necessary, you have the JavaScript fundamentals you need.
+
 ## Version Control and the Command Line
 
 Two tools that beginners often postpone but that pay off immediately:
